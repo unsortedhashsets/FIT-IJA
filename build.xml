@@ -1,58 +1,57 @@
+<!--
+    Project Implementation IJA 2019/2020
+    Ant configuration
+    build.xml
+    Date: 02.05.2020
+    Authors: 
+        Mikhail Abramov (xabram00@stud.fit.vutbr.cz),
+        Serhii Salatskyi (xsalat01@stud.fit.vutbr.cz)
+-->
+
 <project name="IJA_2020" basedir="." default="main">
-
-    <property name="main-class" value="Main"/>
-
-    <!--Destination variables
-        src   - source files (package hierarchy)
-        build - translated class files
-        dest  - location of the resulting jar archive
-        lib   - external files and libraries
-        doc   - generated program documentation
-     -->
-    <property name="src.dir" value="src"/>
-    <property name="build.dir" value="build"/>
-    <property name="dest.dir" value="dest"/>
-    <property name="lib.dir" value="lib"/>
-    <property name="doc.dir" value="doc"/>
-
 
     <!-- ant clean command -->
     <target name="clean">
-        <delete dir="${build.dir}"/>
-        <delete dir="${dest.dir}"/>
-        <delete dir="${doc.dir}"/>
+        <delete dir="build"/>
+        <delete dir="dest"/>
+        <delete dir="doc"/>
     </target>
 
     <!-- ant compile command -->
-    <target name="compile" depends="clean, doc">
-        <mkdir dir="${build.dir}"/>
-        <javac srcdir="${src.dir}" destdir="${build.dir}" debug="true" includeantruntime="false"></javac>
-        <copy todir="${build.dir}">
-            <fileset dir="${src.dir}" includes="**/*.fxml"></fileset>
-            <fileset dir="${src.dir}" includes="**/*.css"></fileset>
+    <target name="compile" depends="clean">
+        <mkdir dir="doc"/>
+        <javadoc locale="cs_CZ" 
+            packagenames="gui" 
+            sourcepath="src" 
+            excludepackagenames="" 
+            defaultexcludes="yes" 
+            destdir="doc" 
+            author="true" 
+            version="true" 
+            use="true" 
+            windowtitle="IJA_PROJECT_2020" 
+            charset="UTF-8">
+                <doctitle><![CDATA[<h1>Project Implementation IJA 2019/2020</h1>]]></doctitle>
+                <bottom><![CDATA[<i>Autors: Mikhail Abramov, Serhii Salatskyi</i>]]></bottom>
+        </javadoc>
+        <mkdir dir="build"/>
+        <javac srcdir="src" destdir="build" debug="true" includeantruntime="false"></javac>
+        <copy todir="build">
+            <fileset dir="src" includes="**/*.fxml"></fileset>
+            <fileset dir="src" includes="**/*.css"></fileset>
             <fileset dir="lib" includes="**/*.png"></fileset>
         </copy>
-        <mkdir dir="${dest.dir}"/>
-        <jar destfile="${dest.dir}/ija-app.jar" basedir="${build.dir}">
+        <mkdir dir="dest"/>
+        <jar destfile="dest/ija-app.jar" basedir="build">
             <manifest>
-                <attribute name="Main-Class" value="${main-class}"/>
-                <!-- ПОМЕНЯТЬ НА МЕЙН main-class когда он будет-->
+                <attribute name="Main-Class" value="Main"/>
             </manifest>
         </jar>
     </target>
 
-    <!-- ant compile command -->
-    <target name="doc" depends="clean">
-        <mkdir dir="${doc.dir}"/>
-        <javadoc locale="cs_CZ" packagenames="gui" sourcepath="src" excludepackagenames="" defaultexcludes="yes" destdir="${doc.dir}" author="true" version="true" use="true" windowtitle="IJA_PROJECT_2020" charset="UTF-8">
-            <doctitle><![CDATA[<h1>IJA PROJEKT 2020</h1>]]></doctitle>
-            <bottom><![CDATA[<i>Autors: Mikhail Abramov, Serhii Salatskyi</i>]]></bottom>
-        </javadoc>
-    </target>
-
     <!-- ant run command -->
     <target name="run" depends="compile">
-        <java jar="${dest.dir}/ija-app.jar" fork="true"/>
+        <java jar="dest/ija-app.jar" fork="true"/>
     </target>
 
 </project>
