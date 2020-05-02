@@ -9,6 +9,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import gui.Test;
+import clock.InternalClock;
 
 /**
  * Main program class - Provides window and scene creation
