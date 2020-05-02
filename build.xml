@@ -18,22 +18,21 @@
 
     <!-- ant clean command -->
     <target name="clean">
-        <echo message="Delete contents of folders build, dest and doc"/>
-        <delete>
-            <fileset dir="${build.dir}" defaultexcludes="false"/>
-            <fileset dir="${dest.dir}" defaultexcludes="false"/>
-            <fileset dir="${doc.dir}" defaultexcludes="false"/>
-        </delete>
+        <delete dir="${build.dir}"/>
+        <delete dir="${dest.dir}"/>
+        <delete dir="${doc.dir}"/>
     </target>
 
     <!-- ant compile command -->
     <target name="compile" depends="clean, doc">
+        <mkdir dir="${build.dir}"/>
         <javac srcdir="${src.dir}" destdir="${build.dir}" debug="true" includeantruntime="false"></javac>
         <copy todir="${build.dir}">
             <fileset dir="${src.dir}" includes="**/*.fxml"></fileset>
             <fileset dir="${src.dir}" includes="**/*.css"></fileset>
             <fileset dir="lib" includes="**/*.png"></fileset>
         </copy>
+        <mkdir dir="${dest.dir}"/>
         <jar destfile="${dest.dir}/ija-app.jar" basedir="${build.dir}">
             <manifest>
                 <attribute name="Main-Class" value="${main-class}"/>
@@ -44,18 +43,8 @@
 
     <!-- ant compile command -->
     <target name="doc" depends="clean">
-        <echo message="СКИПНУТЫ, Т.К НЕТ ПАКЕТОВ"/>
-        <javadoc locale="cs_CZ"
-         packagenames="gui"
-         sourcepath="src"
-         excludepackagenames=""
-         defaultexcludes="yes"
-         destdir="${doc.dir}"
-         author="true"
-         version="true"
-         use="true"
-         windowtitle="IJA_PROJECT_2020"
-         charset="UTF-8">
+        <mkdir dir="${doc.dir}"/>
+        <javadoc locale="cs_CZ" packagenames="gui" sourcepath="src" excludepackagenames="" defaultexcludes="yes" destdir="${doc.dir}" author="true" version="true" use="true" windowtitle="IJA_PROJECT_2020" charset="UTF-8">
             <doctitle><![CDATA[<h1>IJA PROJEKT 2020</h1>]]></doctitle>
             <bottom><![CDATA[<i>Autors: Mikhail Abramov, Serhii Salatskyi</i>]]></bottom>
         </javadoc>
