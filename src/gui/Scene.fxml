@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    Project Implementation IJA 2019/2020
+    Main window configuration
+    Scene.fxml
+    Date: 03.05.2020
+    Authors: 
+        Mikhail Abramov (xabram00@stud.fit.vutbr.cz),
+        Serhii Salatskyi (xsalat01@stud.fit.vutbr.cz)
+-->
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="800.0" prefWidth="600.0"  style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+  <center>
+      <ScrollPane >
+        <content>
+          <AnchorPane fx:id="work_area" minHeight="10000.0" minWidth="10000.0"  styleClass="work_area" />
+        </content>
+      </ScrollPane>
+  </center>
+  <top>
+    <MenuBar prefHeight="30.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+      <menus>
+        <Menu mnemonicParsing="false" text="File">
+          <items>
+            <MenuItem fx:id="openSchemeButton" mnemonicParsing="false"  text="Open" />
+            <MenuItem fx:id="closeButton" mnemonicParsing="false"  text="Close" />
+          </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Visualization">
+          <items>
+            <MenuItem fx:id="Start" mnemonicParsing="false" text="Start" />
+            <MenuItem fx:id="SpeedIn" mnemonicParsing="false" text="Speed increase" />
+            <MenuItem fx:id="SpeeDe" mnemonicParsing="false" text="Speed decrease" />
+            <MenuItem fx:id="zoomIn" mnemonicParsing="false" text="Zoom In" />
+            <MenuItem fx:id="zoomOut" mnemonicParsing="false" text="Zoom Out" />
+          </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Help">
+          <items>
+            <MenuItem fx:id="About" mnemonicParsing="false" text="About" />
+          </items>
+        </Menu>
+      </menus>
+    </MenuBar>
+  </top>
+</BorderPane>
+

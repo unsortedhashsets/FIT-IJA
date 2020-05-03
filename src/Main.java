@@ -1,15 +1,8 @@
 import javafx.application.Application;
-
-//import javafx.fxml.FXMLLoader;
-//import javafx.scene.Parent;
-
-import javafx.scene.Group;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import gui.Test;
-import clock.InternalClock;
 
 /**
  * Main program class - Provides window and scene creation
@@ -26,28 +19,13 @@ public class Main extends Application {
 
     public void start(Stage primaryStage) throws Exception {
 
-        // Parent root = FXMLLoader.load(getClass().getResource("gui/scene.fxml")); some
-        // example
-        Test.HelloWorld();
-        
-        Group root = new Group();
-
-        Scene scene = new Scene(root, 300, 300, Color.BLACK);
-        // scene.getStylesheets().add("gui/mainScene.css");
-
-        Rectangle r = new Rectangle(25, 25, 250, 250);
-        r.setFill(Color.BLUE);
-
-        root.getChildren().add(r);
-
+        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("gui/Scene.fxml")), 800, 600);
         primaryStage.setScene(scene);
         primaryStage.setTitle("IJA-JA-JA-JA");
-
+        scene.getStylesheets().add("gui/Scene.css");
         primaryStage.show();
 
-    }
-
-    public int getInt() {
-        return 1;
+        Test.HelloWorld();
+        
     }
 }
