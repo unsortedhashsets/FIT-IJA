@@ -1,5 +1,7 @@
 package maps;
 
+import java.lang.Math;
+
 public class Coordinate{
     private final int X;
     private final int Y;
@@ -27,6 +29,12 @@ public class Coordinate{
 
     public int diffY(Coordinate c) {
         return this.Y - c.getY();
+    }
+
+    public float length(Coordinate c){
+        return (float) Math.sqrt((diffX(c) * diffX(c)) 
+                                           + 
+                                 (diffY(c) * diffY(c)));
     }
 
     public boolean equals(Object obj){
