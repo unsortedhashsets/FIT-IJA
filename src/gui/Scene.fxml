@@ -31,39 +31,50 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="800.0" prefWidth="600.0"  style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="800.0" prefWidth="600.0" style="-fx-background-color: #FFFFFF;" 
+  xmlns="http://javafx.com/javafx/8" 
+  xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SceneController">
   <center>
-      <ScrollPane >
-        <content>
-          <AnchorPane fx:id="work_area" minHeight="10000.0" minWidth="10000.0"  styleClass="work_area" />
-        </content>
-      </ScrollPane>
+    <ScrollPane >
+      <content>
+        <AnchorPane fx:id="work_area" minHeight="10000.0" minWidth="10000.0" styleClass="work_area" />
+      </content>
+    </ScrollPane>
   </center>
   <top>
-    <MenuBar prefHeight="30.0" prefWidth="600.0" BorderPane.alignment="CENTER">
-      <menus>
-        <Menu mnemonicParsing="false" text="File">
-          <items>
-            <MenuItem fx:id="openSchemeButton" mnemonicParsing="false"  text="Open" />
-            <MenuItem fx:id="closeButton" mnemonicParsing="false"  text="Close" />
-          </items>
-        </Menu>
-        <Menu mnemonicParsing="false" text="Visualization">
-          <items>
-            <MenuItem fx:id="Start" mnemonicParsing="false" text="Start" />
-            <MenuItem fx:id="SpeedIn" mnemonicParsing="false" text="Speed increase" />
-            <MenuItem fx:id="SpeeDe" mnemonicParsing="false" text="Speed decrease" />
-            <MenuItem fx:id="zoomIn" mnemonicParsing="false" text="Zoom In" />
-            <MenuItem fx:id="zoomOut" mnemonicParsing="false" text="Zoom Out" />
-          </items>
-        </Menu>
-        <Menu mnemonicParsing="false" text="Help">
-          <items>
-            <MenuItem fx:id="About" mnemonicParsing="false" text="About" />
-          </items>
-        </Menu>
-      </menus>
-    </MenuBar>
+    <AnchorPane xmlns:fx="http://javafx.com/fxml/1" styleClass="menu-bar">
+      <BorderPane AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.leftAnchor="0">
+        <center>
+          <Label fx:id="Clocks" text="TIME" />
+        </center>
+      </BorderPane>
+      <Label fx:id="Coordinates" text="X:Y" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.rightAnchor="0" />
+      <MenuBar AnchorPane.leftAnchor="0" AnchorPane.topAnchor="0">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem fx:id="newButton" mnemonicParsing="false" onAction="#newClick" text="New" />
+              <MenuItem fx:id="cleanButton" mnemonicParsing="false" onAction="#cleanClick" text="Clean" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Visualization">
+            <items>
+              <MenuItem fx:id="Start" mnemonicParsing="false" onAction="#startClick" text="Start" />
+              <MenuItem fx:id="SetTime" mnemonicParsing="false" onAction="#setTimeClick" text="Set Time" />
+              <MenuItem fx:id="SpeedIn" mnemonicParsing="false" onAction="#speedIncrClick" text="Speed increase" />
+              <MenuItem fx:id="SpeeDe" mnemonicParsing="false" onAction="#speedDecrClick" text="Speed decrease" />
+              <MenuItem fx:id="zoomIn" mnemonicParsing="false" onAction="#zoomInClick" text="Zoom In" />
+              <MenuItem fx:id="zoomOut" mnemonicParsing="false" onAction="#zoomOutClick" text="Zoom Out" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem fx:id="About" mnemonicParsing="false" onAction="#aboutClick" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+    </AnchorPane>
   </top>
 </BorderPane>
 

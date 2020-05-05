@@ -1,8 +1,8 @@
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import gui.Test;
 
 /**
  * Main program class - Provides window and scene creation
@@ -14,18 +14,22 @@ import gui.Test;
 public class Main extends Application {
 
     public static void main(String[] args) {
+        System.out.println("START CLOCKS");
         launch(args);
+        System.out.println("STOP CLOCKS");
     }
 
     public void start(Stage primaryStage) throws Exception {
 
-        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("gui/Scene.fxml")), 800, 600);
+        Parent root = FXMLLoader.load(getClass().getResource("gui/Scene.fxml"));
+        
+        Scene scene = new Scene(root, 800, 600);
+
         primaryStage.setScene(scene);
         primaryStage.setTitle("IJA-JA-JA-JA");
         scene.getStylesheets().add("gui/Scene.css");
         primaryStage.show();
-
-        Test.HelloWorld();
-        
     }
+
+
 }
