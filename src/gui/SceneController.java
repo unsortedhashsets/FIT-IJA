@@ -5,23 +5,28 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.transform.Scale;
+import javafx.stage.FileChooser;
 import javafx.util.Duration;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
-
 import javafx.event.EventHandler;
 
+import java.io.File;
 import java.net.URL;
 import java.util.*;
 
-
+import internal.Parser;
 /**
  * Scen controller (Scene.fxml)
  * 
@@ -31,6 +36,9 @@ import java.util.*;
  */
 public class SceneController implements Initializable {
 
+    private Scale scale = new Scale();
+    private int cordX;
+    private int cordY;
     @FXML
     private MenuItem Start;
 
@@ -62,6 +70,9 @@ public class SceneController implements Initializable {
     private AnchorPane work_area;
 
     @FXML
+    private ScrollPane scroll_work_area;
+
+    @FXML
     private Label Coordinates;
 
     @FXML
@@ -75,6 +86,8 @@ public class SceneController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        scroll_work_area.setPannable(true);
+        work_area.getChildren().add(new ImageView(new Image("Paris_Revisited_preview.png")));
 
         newButton.setAccelerator(new KeyCodeCombination(KeyCode.N, KeyCombination.CONTROL_DOWN));
         cleanButton.setAccelerator(new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_DOWN));
@@ -98,7 +111,9 @@ public class SceneController implements Initializable {
     EventHandler<MouseEvent> mouseMove = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent e) {
-            Coordinates.setText("Coordinates: " + (int) e.getX() + ":" + (int) e.getY());
+            cordX = (int) e.getX();
+            cordY = (int) e.getY();
+            Coordinates.setText("Coordinates: " + cordX + ":" + cordY);
         }
     };
 
@@ -107,12 +122,20 @@ public class SceneController implements Initializable {
      */
     @FXML
     private void cleanClick() {
-        System.out.println("TEST SceneController.cleanClick");
+        work_area.getChildren().clear();
+        work_area.getChildren().add(new ImageView(new Image("pngwing.com.png")));
     }
 
     @FXML
     private void newClick() {
-        System.out.println("TEST SceneController.newClick");
+        FileChooser fileChooser = new FileChooser();
+        File file = fileChooser.showOpenDialog(null);
+
+        if (file != null)
+            Parser.parse(file);
+        else
+            System.out.println("No file choosed");
+
     }
 
     @FXML
@@ -137,12 +160,26 @@ public class SceneController implements Initializable {
 
     @FXML
     private void zoomInClick() {
-        System.out.println("TEST SceneController.zoomInClick");
+        scale.setPivotX(cordX);
+        scale.setPivotY(cordY);
+
+        scale.setX(work_area.getScaleX() * 1.1);
+        scale.setY(work_area.getScaleY() * 1.1);
+
+        work_area.getTransforms().add(scale);
+
     }
 
     @FXML
     private void zoomOutClick() {
-        System.out.println("TEST SceneController.zoomOutClick");
+        scale.setPivotX(cordX);
+        scale.setPivotY(cordY);
+
+        scale.setX(work_area.getScaleX() * 0.9);
+        scale.setY(work_area.getScaleY() * 0.9);
+
+        work_area.getTransforms().add(scale);
+
     }
 
     @FXML

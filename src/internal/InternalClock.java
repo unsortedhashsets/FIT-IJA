@@ -1,4 +1,4 @@
-package clock;
+package internal;
 
 import java.time.Clock;
 import java.time.Duration;

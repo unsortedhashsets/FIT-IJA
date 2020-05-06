@@ -1,4 +1,0 @@
-streets
-lines
-buses
-etc.

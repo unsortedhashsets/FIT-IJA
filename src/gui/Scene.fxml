@@ -15,66 +15,59 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SeparatorMenuItem?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
+<?import javafx.scene.image.*?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="800.0" prefWidth="600.0" style="-fx-background-color: #FFFFFF;" 
   xmlns="http://javafx.com/javafx/8" 
   xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SceneController">
   <center>
-    <ScrollPane >
+    <ScrollPane fx:id="scroll_work_area" hbarPolicy="ALWAYS" vbarPolicy="ALWAYS">
       <content>
-        <AnchorPane fx:id="work_area" minHeight="10000.0" minWidth="10000.0" styleClass="work_area" />
+        <AnchorPane fx:id="work_area" styleClass="work_area"/>
       </content>
     </ScrollPane>
   </center>
   <top>
-    <AnchorPane xmlns:fx="http://javafx.com/fxml/1" styleClass="menu-bar">
-      <BorderPane AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.leftAnchor="0">
-        <center>
-          <Label fx:id="Clocks" text="TIME" />
-        </center>
-      </BorderPane>
-      <Label fx:id="Coordinates" text="X:Y" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.rightAnchor="0" />
-      <MenuBar AnchorPane.leftAnchor="0" AnchorPane.topAnchor="0">
-        <menus>
-          <Menu mnemonicParsing="false" text="File">
-            <items>
-              <MenuItem fx:id="newButton" mnemonicParsing="false" onAction="#newClick" text="New" />
-              <MenuItem fx:id="cleanButton" mnemonicParsing="false" onAction="#cleanClick" text="Clean" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Visualization">
-            <items>
-              <MenuItem fx:id="Start" mnemonicParsing="false" onAction="#startClick" text="Start" />
-              <MenuItem fx:id="SetTime" mnemonicParsing="false" onAction="#setTimeClick" text="Set Time" />
-              <MenuItem fx:id="SpeedIn" mnemonicParsing="false" onAction="#speedIncrClick" text="Speed increase" />
-              <MenuItem fx:id="SpeeDe" mnemonicParsing="false" onAction="#speedDecrClick" text="Speed decrease" />
-              <MenuItem fx:id="zoomIn" mnemonicParsing="false" onAction="#zoomInClick" text="Zoom In" />
-              <MenuItem fx:id="zoomOut" mnemonicParsing="false" onAction="#zoomOutClick" text="Zoom Out" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Help">
-            <items>
-              <MenuItem fx:id="About" mnemonicParsing="false" onAction="#aboutClick" text="About" />
-            </items>
-          </Menu>
-        </menus>
-      </MenuBar>
-    </AnchorPane>
-  </top>
-</BorderPane>
+      <AnchorPane xmlns:fx="http://javafx.com/fxml/1" styleClass="menu-bar">
+        <BorderPane AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.leftAnchor="0">
+          <center>
+            <Label fx:id="Clocks" text="TIME" />
+          </center>
+        </BorderPane>
+        <Label fx:id="Coordinates" text="X:Y" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.rightAnchor="0" />
+        <MenuBar AnchorPane.leftAnchor="0" AnchorPane.topAnchor="0">
+          <menus>
+            <Menu mnemonicParsing="false" text="File">
+              <items>
+                <MenuItem fx:id="newButton" mnemonicParsing="false" onAction="#newClick" text="New" />
+                <MenuItem fx:id="cleanButton" mnemonicParsing="false" onAction="#cleanClick" text="Clean" />
+              </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Visualization">
+              <items>
+                <MenuItem fx:id="Start" mnemonicParsing="false" onAction="#startClick" text="Start" />
+                <MenuItem fx:id="SetTime" mnemonicParsing="false" onAction="#setTimeClick" text="Set Time" />
+                <MenuItem fx:id="SpeedIn" mnemonicParsing="false" onAction="#speedIncrClick" text="Speed increase" />
+                <MenuItem fx:id="SpeeDe" mnemonicParsing="false" onAction="#speedDecrClick" text="Speed decrease" />
+                <MenuItem fx:id="zoomIn" mnemonicParsing="false" onAction="#zoomInClick" text="Zoom In" />
+                <MenuItem fx:id="zoomOut" mnemonicParsing="false" onAction="#zoomOutClick" text="Zoom Out" />
+              </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Help">
+              <items>
+                <MenuItem fx:id="About" mnemonicParsing="false" onAction="#aboutClick" text="About" />
+              </items>
+            </Menu>
+          </menus>
+        </MenuBar>
+      </AnchorPane>
+    </top>
+  </BorderPane>
 

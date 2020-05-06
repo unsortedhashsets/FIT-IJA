@@ -1,3 +1,5 @@
+package internal;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,8 +19,7 @@ public class Parser {
     private static List<Stop> stops = new ArrayList<>();
     private static List<Line> lines = new ArrayList<>();
 
-    public static void parse(String filename){
-        File XML = new File(filename);
+    public static void parse(File XML){
 
         parseStreets(XML);
         parseStops(XML);
