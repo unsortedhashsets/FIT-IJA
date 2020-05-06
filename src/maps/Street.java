@@ -1,50 +1,24 @@
-/*
- * Zdrojové kódy josu součástí zadání 1. úkolu pro předmětu IJA v ak. roce 2019/2020.
- * (C) Radek Kočí
- */
 package maps;
 
 import java.util.List;
+import java.util.ArrayList;
 
-/**
- * Reprezentuje jednu ulici v mapě. Ulice má svůj identifikátor (název) a je definována souřadnicemi. Pro 1. úkol
- * předpokládejte pouze souřadnice začátku a konce ulice.
- * Na ulici se mohou nacházet zastávky.
- * @author koci
- */
-public interface Street {
-    /**
-     * Vrátí identifikátor ulice.
-     * @return Identifikátor ulice.
-     */
-    public String getId();
+public class Street{
+    private String id;
+    private List<Stop> stops;
+    private List<Coordinate> coordinates;
     
-    /**
-     * Vrátí seznam souřadnic definujících ulici. První v seznamu je vždy počátek a poslední v seznamu konec ulice.
-     * @return Seznam souřadnic ulice.
-     */
+    private Street(String id, Coordinate... coordinates){
+        this.id = id;
+        this.stops = new ArrayList<Stop>();
+        this.coordinates = new ArrayList<Coordinate>();
+
+        for(Coordinate coor : coordinates){
+            this.coordinates.add(coor);
+        }
+    }
     
-    public List<Coordinate> getCoordinates();
-    
-    /**
-     * Vrátí seznam zastávek na ulici.
-     * @return Seznam zastávek na ulici. Pokud ulize nemá žádnou zastávku, je seznam prázdný.
-     */
-    public List<Stop> getStops();
-    
-    /**
-     * Přidá do seznamu zastávek novou zastávku.
-     * @param stop Nově přidávaná zastávka.
-     */
-    public boolean addStop(Stop stop);
-
-    public boolean follows(Street s);
-
-    public Coordinate begin();
-
-    public Coordinate end();
-
-    public static Street defaultStreet(String id, Coordinate... coordinates) {
+    public static Street create(String id, Coordinate... coordinates) {
         int length = coordinates.length;
 
         if (length > 2){
@@ -63,6 +37,61 @@ public interface Street {
             }
         }
 
-        return new MyStreet(id, coordinates);
+        return new Street(id, coordinates);
+    }
+
+    public String getId(){
+        return this.id;
+    }
+
+    public List<Coordinate> getCoordinates(){
+        return this.coordinates;
+    }
+
+    public List<Stop> getStops(){
+        return this.stops;
+    }
+
+    public boolean addStop(Stop stop){
+        int dot_stop_X = stop.getCoordinate().getX();
+        int dot_stop_Y = stop.getCoordinate().getY();
+
+        for (int i = 0; i < this.coordinates.size() - 1; i++){
+            int dot1_X = coordinates.get(i).getX();
+            int dot1_Y = coordinates.get(i).getY();
+
+            int dot2_X = coordinates.get(i+1).getX();
+            int dot2_Y = coordinates.get(i+1).getY();
+
+            float x = (dot_stop_X - dot1_X)*(dot2_Y - dot1_Y);
+            float y = (dot_stop_Y - dot1_Y)*(dot2_X - dot1_X);
+
+            if (x == y && (dot1_X <= dot_stop_X && dot_stop_X <= dot2_X
+                       &&  dot1_Y <= dot_stop_Y && dot_stop_Y <= dot2_Y)
+                       || (dot2_X <= dot_stop_X && dot_stop_X <= dot1_X
+                       &&  dot2_Y <= dot_stop_Y && dot_stop_Y <= dot1_Y)
+                       ){
+                this.stops.add(stop);
+                stop.setStreet(this);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public Coordinate begin() {
+        return coordinates.get(0);
+    }
+
+    public Coordinate end() {
+        return coordinates.get(coordinates.size() - 1);
+    }
+
+    public boolean follows(Street s) {
+        return this.begin().equals(s.end()) 
+            || this.end().equals(s.begin())
+            || this.begin().equals(s.begin())
+            || this.end().equals(s.end());
     }
 }

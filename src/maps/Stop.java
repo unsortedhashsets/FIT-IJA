@@ -1,42 +1,48 @@
-/*
- * Zdrojové kódy josu součástí zadání 1. úkolu pro předmětu IJA v ak. roce 2019/2020.
- * (C) Radek Kočí
- */
 package maps;
 
-/**
- * Reprezentuje zastávku. Zastávka má svůj unikátní identifikátor a dále souřadnice umístění a zná ulici, na které je umístěna.
- * Zastávka je jedinečná svým identifikátorem. Reprezentace zastávky může existovat, ale nemusí mít
- * přiřazeno umístění (tj. je bez souřadnic a bez znalosti ulice). Pro shodu objektů platí, že dvě zastávky jsou shodné, pokud
- * mají stejný identifikátor.
- * @author koci
- */
-public interface Stop {
-    /**
-     * Vrátí identifikátor zastávky.
-     * @return Identifikátor zastávky.
-     */
-    public String getId();
-    
-    /**
-     * Vrátí pozici zastávky.
-     * @return Pozice zastávky. Pokud zastávka existuje, ale dosud nemá umístění, vrací null.
-     */
-    public Coordinate getCoordinate();
+public class Stop {
+    private String id;
+    private Coordinate coor;
+    private Street street;
 
-    /**
-     * Nastaví ulici, na které je zastávka umístěna.
-     * @param s Ulice, na které je zastávka umístěna.
-     */
-    public void setStreet(Street s);
+    public Stop(String id, Coordinate coordinate){
+        this.id = id;
+        this.coor = coordinate;
+        this.street = null;
+    }
 
-    /**
-     * Vrátí ulici, na které je zastávka umístěna.
-     * @return Ulice, na které je zastávka umístěna. Pokud zastávka existuje, ale dosud nemá umístění, vrací null.
-     */
-    public Street getStreet();
+    public Stop(String id){
+        this.id = id;
+        this.coor = null;
+        this.street = null;
+    }
 
-    public static Stop defaultStop(String id, Coordinate c){
-        return new MyStop(id, c);
+    public String getId(){
+        return this.id;
+    }
+
+    public Coordinate getCoordinate(){
+        return this.coor;
+    }
+
+    public void setStreet(Street s){
+        this.street = s;
+    }
+
+    public Street getStreet(){
+        return this.street;
+    }
+
+    public boolean equals(Object obj){
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (this.getClass() != obj.getClass()) return false;
+        
+        Stop that = (Stop)obj;
+        return that.id.equals(this.id);
+    }
+
+    public String toString(){
+        return "stop(" + this.id + ")";
     }
 }
