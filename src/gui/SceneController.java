@@ -5,16 +5,15 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.transform.Scale;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
 import javafx.animation.KeyFrame;
@@ -26,6 +25,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.*;
 
+import internal.InternalClock;
 import internal.Parser;
 /**
  * Scen controller (Scene.fxml)
@@ -36,9 +36,10 @@ import internal.Parser;
  */
 public class SceneController implements Initializable {
 
-    private Scale scale = new Scale();
+
     private int cordX;
     private int cordY;
+
     @FXML
     private MenuItem Start;
 
@@ -46,7 +47,7 @@ public class SceneController implements Initializable {
     private MenuItem SpeedIn;
 
     @FXML
-    private MenuItem SpeeDe;
+    private MenuItem SpeedDe;
 
     @FXML
     private MenuItem SetTime;
@@ -58,6 +59,9 @@ public class SceneController implements Initializable {
     private MenuItem zoomOut;
 
     @FXML
+    private MenuItem zoomDef;
+
+    @FXML
     private BorderPane scene;
 
     @FXML
@@ -66,17 +70,22 @@ public class SceneController implements Initializable {
     @FXML
     private MenuItem cleanButton;
 
-    @FXML
-    private AnchorPane work_area;
-
-    @FXML
-    private ScrollPane scroll_work_area;
+    //@FXML
+    //private AnchorPane work_area;
 
     @FXML
     private Label Coordinates;
 
     @FXML
     private Label Clocks;
+
+    @FXML
+    private BorderPane main;
+
+    private AnchorPane work_area;
+
+    private ZoomableScrollPane scroll_work_area;
+
 
     /**
      * Inicializace sceny
@@ -86,23 +95,32 @@ public class SceneController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        scroll_work_area.setPannable(true);
+    
+        this.work_area = new AnchorPane();
         work_area.getChildren().add(new ImageView(new Image("Paris_Revisited_preview.png")));
+        this.scroll_work_area = new ZoomableScrollPane(work_area);
+
+        scroll_work_area.setFitToWidth(true);
+        scroll_work_area.setFitToHeight(true);
+
+        main.setCenter(scroll_work_area);
 
         newButton.setAccelerator(new KeyCodeCombination(KeyCode.N, KeyCombination.CONTROL_DOWN));
         cleanButton.setAccelerator(new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_DOWN));
         Start.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN));
-        SpeedIn.setAccelerator(new KeyCodeCombination(KeyCode.I));
-        SpeeDe.setAccelerator(new KeyCodeCombination(KeyCode.D));
+        SpeedIn.setAccelerator(new KeyCodeCombination(KeyCode.A));
+        SpeedDe.setAccelerator(new KeyCodeCombination(KeyCode.D));
         SetTime.setAccelerator(new KeyCodeCombination(KeyCode.T, KeyCombination.CONTROL_DOWN));
-        zoomIn.setAccelerator(new KeyCodeCombination(KeyCode.PLUS));
-        zoomOut.setAccelerator(new KeyCodeCombination(KeyCode.MINUS));
+        zoomIn.setAccelerator(new KeyCodeCombination(KeyCode.W));
+        zoomOut.setAccelerator(new KeyCodeCombination(KeyCode.S));
+        zoomDef.setAccelerator(new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_DOWN));
 
         work_area.setOnMouseMoved(mouseMove);
+        work_area.setOnScroll(mouseScroll);
 
         Timeline timeline = new Timeline();
         timeline.getKeyFrames()
-                .add(new KeyFrame(Duration.millis(10), new KeyValue(Clocks.textProperty(), "ТУТ НАДО ВЕРНУТЬ СТРИНГ")));
+                .add(new KeyFrame(Duration.millis(10), new KeyValue(Clocks.textProperty(), "23:59:59")));
 
         timeline.play();
         System.out.println("TEST SceneController.initialize");
@@ -117,6 +135,22 @@ public class SceneController implements Initializable {
         }
     };
 
+    EventHandler<ScrollEvent> mouseScroll = new EventHandler<ScrollEvent>() {
+        @Override
+        public void handle(ScrollEvent scrollEvent) {
+            if (scrollEvent.isControlDown()) {
+
+                if (scrollEvent.getDeltaY() < 0) {
+                    scroll_work_area.zoomOut();
+                } else {
+                    scroll_work_area.zoomIn();
+                }
+
+                scrollEvent.consume();
+            }
+        }
+    };
+        
     /**
      * closeClick
      */
@@ -130,12 +164,10 @@ public class SceneController implements Initializable {
     private void newClick() {
         FileChooser fileChooser = new FileChooser();
         File file = fileChooser.showOpenDialog(null);
-
         if (file != null)
             Parser.parse(file);
         else
             System.out.println("No file choosed");
-
     }
 
     @FXML
@@ -150,40 +182,37 @@ public class SceneController implements Initializable {
 
     @FXML
     private void speedIncrClick() {
+        //___.increaseAccelerationLevel();
         System.out.println("TEST SceneController.speedIncrClick");
     }
 
     @FXML
     private void speedDecrClick() {
+        //___.decreaseAccelerationLevel();
         System.out.println("TEST SceneController.speedDecrClick");
     }
 
     @FXML
     private void zoomInClick() {
-        scale.setPivotX(cordX);
-        scale.setPivotY(cordY);
+        scroll_work_area.zoomIn();
+        System.out.println("TEST SceneController.zoomInClick");
+    }
 
-        scale.setX(work_area.getScaleX() * 1.1);
-        scale.setY(work_area.getScaleY() * 1.1);
-
-        work_area.getTransforms().add(scale);
-
+    @FXML
+    private void zoomDefClick() {
+        scroll_work_area.zoomToDefault();
+        System.out.println("TEST SceneController.zoomDefClick");
     }
 
     @FXML
     private void zoomOutClick() {
-        scale.setPivotX(cordX);
-        scale.setPivotY(cordY);
-
-        scale.setX(work_area.getScaleX() * 0.9);
-        scale.setY(work_area.getScaleY() * 0.9);
-
-        work_area.getTransforms().add(scale);
-
+        scroll_work_area.zoomOut();
+        System.out.println("TEST SceneController.zoomOutClick");
     }
 
     @FXML
     private void aboutClick() {
         System.out.println("TEST SceneController.aboutClick");
     }
+
 }

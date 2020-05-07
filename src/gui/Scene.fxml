@@ -24,15 +24,16 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.image.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="800.0" prefWidth="600.0" style="-fx-background-color: #FFFFFF;" 
+<BorderPane fx:id="main" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="800.0" prefWidth="600.0" style="-fx-background-color: #FFFFFF;" 
   xmlns="http://javafx.com/javafx/8" 
   xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SceneController">
   <center>
-    <ScrollPane fx:id="scroll_work_area" hbarPolicy="ALWAYS" vbarPolicy="ALWAYS">
+    <AnchorPane />
+  <!--   <ScrollPane fx:id="scroll_work_area" hbarPolicy="ALWAYS" vbarPolicy="ALWAYS">
       <content>
         <AnchorPane fx:id="work_area" styleClass="work_area"/>
       </content>
-    </ScrollPane>
+    </ScrollPane> -->
   </center>
   <top>
       <AnchorPane xmlns:fx="http://javafx.com/fxml/1" styleClass="menu-bar">
@@ -55,9 +56,10 @@
                 <MenuItem fx:id="Start" mnemonicParsing="false" onAction="#startClick" text="Start" />
                 <MenuItem fx:id="SetTime" mnemonicParsing="false" onAction="#setTimeClick" text="Set Time" />
                 <MenuItem fx:id="SpeedIn" mnemonicParsing="false" onAction="#speedIncrClick" text="Speed increase" />
-                <MenuItem fx:id="SpeeDe" mnemonicParsing="false" onAction="#speedDecrClick" text="Speed decrease" />
+                <MenuItem fx:id="SpeedDe" mnemonicParsing="false" onAction="#speedDecrClick" text="Speed decrease" />
                 <MenuItem fx:id="zoomIn" mnemonicParsing="false" onAction="#zoomInClick" text="Zoom In" />
                 <MenuItem fx:id="zoomOut" mnemonicParsing="false" onAction="#zoomOutClick" text="Zoom Out" />
+                <MenuItem fx:id="zoomDef" mnemonicParsing="false" onAction="#zoomDefClick" text="Zoom Default" />
               </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Help">
