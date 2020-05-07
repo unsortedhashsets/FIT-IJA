@@ -7,6 +7,9 @@ import jdk.nashorn.internal.objects.annotations.Setter;
 public class Vehicle{
     private String id;
     
+    private float float_X;
+    private float float_Y;
+
     private Coordinate position;
     private Coordinate departure;
     private Coordinate arrival;
@@ -17,12 +20,7 @@ public class Vehicle{
 
     protected Vehicle(String id, float velocity){
         this.id = id;
-        this.velocity = velocity;
-    }
-
-    @Setter
-    public void setId(String id){
-        this.id = id;
+        this.velocity = (velocity * 1000)/3600; // transform from km/h to m/s
     }
 
     @Setter
@@ -41,10 +39,10 @@ public class Vehicle{
 
     @Setter
     public void actualizePosition(){
-        int X = this.position.getX() + (int)(velocity_X * 1.0f); // 1.0f = time
-        int Y = this.position.getY() + (int)(velocity_Y * 1.0f); // 1.0f = time
+        float_X += velocity_X * 1.0f; // 1.0f = time
+        float_Y += velocity_Y * 1.0f; // 1.0f = time
         
-        this.position = Coordinate.create(X, Y);
+        this.position = Coordinate.create((int)float_X, (int)float_Y);
     }
 
     @Getter
