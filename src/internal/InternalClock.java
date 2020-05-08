@@ -7,39 +7,34 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 
 public class InternalClock {
-    private float acceleration;
-    private Clock clock;
+    private static float acceleration = 1;
+    private static Clock clock;
 
-    public InternalClock(){
-        setDefaultClock();
-        this.acceleration = 1;
+    public static void setDefaultClock(){
+        clock = Clock.fixed(Instant.parse("2020-05-01T10:00:00.00Z"), ZoneId.of("Europe/Prague"));
     }
 
-    public void setDefaultClock(){
-        this.clock = Clock.fixed(Instant.parse("2020-05-01T10:00:00.00Z"), ZoneId.of("Europe/Prague"));
-    }
+    public static String updateClock(){
+        long millis = (long) acceleration * 10;
+        clock = Clock.offset(clock, Duration.ofMillis(millis));
 
-    public String updateClock(){
-        long millis = (long) acceleration * 40;
-        this.clock = Clock.offset(this.clock, Duration.ofMillis(millis));
-
-        String localTime = this.clock.instant().atZone(ZoneOffset.UTC).toLocalTime().toString();
+        String localTime = clock.instant().atZone(ZoneOffset.UTC).toLocalTime().toString();
         return localTime.substring(0, 8); // get time without millis
     }
 
-    public void increaseAccelerationLevel(){
-        if (this.acceleration < 2){
-            this.acceleration += 0.25;
+    public static void increaseAccelerationLevel(){
+        if (acceleration < 2){
+            acceleration += 0.25;
         }
     }
 
-    public void decreaseAccelerationLevel(){
-        if (this.acceleration > 0.25){
-            this.acceleration -= 0.25;
+    public static void decreaseAccelerationLevel(){
+        if (acceleration > 0.25){
+            acceleration -= 0.25;
         }
     }
 
-    public float getAccelerationLevel(){
-        return this.acceleration;
+    public static float getAccelerationLevel(){
+        return acceleration;
     }
 }
