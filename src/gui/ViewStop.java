@@ -1,48 +1,56 @@
 package gui;
 
-import javafx.scene.Group;
+import javafx.event.EventHandler;
 import javafx.scene.control.Tooltip;
-import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Glow;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Sphere;
-import maps.Coordinate;
 import maps.Stop;
 
 public class ViewStop extends Circle {
-    private String id;
-    private Coordinate coor;
-    private static final DropShadow highlight = new DropShadow(20, Color.GOLDENROD);
+    private Stop stop;
+    private Glow glow = new Glow();
 
-    public ViewStop(Stop stop) {
-        this.id = stop.getId();
-        this.coor = stop.getCoordinate();
-
-        Tooltip tooltip = new Tooltip();
-        tooltip.setText("\n"+this.id+"\n ");
-        Tooltip.install(this, tooltip);
-
-
-        setOnMouseEntered(e -> {
-            setEffect(highlight);
-            System.out.println("Mouse entered on " + this.id);
-        });
-
-        setOnMouseExited(e -> {
-            setEffect(null);
-            System.out.println("Mouse exited on " + this.id);
-        });
-
+    public ViewStop(Stop in_stop) {
+        this.stop = in_stop;
+        glow.setLevel(0.9);
+        setOnMouseEntered(mouseEntered);
+        setOnMouseExited(mouseExited);
+        setupToolTip();
         drawStop();
     }
 
+    private void setupToolTip() {
+        Tooltip tooltip = new Tooltip();
+        tooltip.setText("stop: " + stop.getId());
+        Tooltip.install(this, tooltip);
+        tooltip.getStyleClass().add("stop-tip");
+    }
+
     private void drawStop() {
-        setCenterX(coor.getX());
-        setCenterY(coor.getY());
-        setRadius(6);
+        setCenterX(stop.getCoordinate().getX());
+        setCenterY(stop.getCoordinate().getY());
+        setRadius(8);
         setFill(Color.WHITE);
         setStroke(Color.GREY);
-        setStrokeWidth(2);
+        setStrokeWidth(4);
     }
+
+    EventHandler<MouseEvent> mouseEntered = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent e) {
+            setEffect(glow);
+            System.out.println("Mouse entered on stop: " + stop.getId());
+        }
+    };
+
+    EventHandler<MouseEvent> mouseExited = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent e) {
+            setEffect(null);
+            System.out.println("Mouse exited from stop: " + stop.getId());
+        }
+    };
 
 }

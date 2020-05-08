@@ -39,10 +39,10 @@
       <AnchorPane xmlns:fx="http://javafx.com/fxml/1" styleClass="menu-bar">
         <BorderPane AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.leftAnchor="0">
           <center>
-            <Label fx:id="Clocks" text="TIME" />
+            <Label fx:id="Clocks" text="" />
           </center>
         </BorderPane>
-        <Label fx:id="Coordinates" text="X:Y" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.rightAnchor="0" />
+        <Label fx:id="Coordinates" text="" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.rightAnchor="0" />
         <MenuBar AnchorPane.leftAnchor="0" AnchorPane.topAnchor="0">
           <menus>
             <Menu mnemonicParsing="false" text="File">

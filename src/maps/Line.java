@@ -4,19 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.AbstractMap.SimpleImmutableEntry;
 
-public class Line{
+public class Line {
     private String id;
     private String color;
     private String type;
 
+    private ArrayList<SimpleImmutableEntry<Street, Stop>> route;
     private List<String> times;
     private List<Street> streets;
     private List<Stop> stops;
 
-    public Line(String id, String color, String type){
+    public Line(String id, String color, String type) {
         this.id = id;
         this.color = color;
         this.type = type;
+        this.route = new ArrayList<SimpleImmutableEntry<Street, Stop>>();
 
         this.times = new ArrayList<String>();
         this.streets = new ArrayList<Street>();
@@ -24,61 +26,33 @@ public class Line{
     }
 
     public boolean addStop(Stop stop) {
-        if (this.stops.isEmpty()){
-            this.stops.add(stop);
-            this.streets.add(stop.getStreet());
+        if (this.route.isEmpty() && stop.getStreet() != null) {
+            this.route.add(new SimpleImmutableEntry<>(stop.getStreet(), stop));
             return true;
         }
-        else{
-            Street last_street = this.streets.get(streets.size() - 1);
-
-            if(last_street.follows(stop.getStreet())){
-                this.stops.add(stop);
-                this.streets.add(stop.getStreet());
+        if (!this.route.isEmpty() && stop.getStreet() != null) {
+            if (stop.getStreet().follows(this.route.get(this.route.size() - 1).getKey())) {
+                this.route.add(new SimpleImmutableEntry<>(stop.getStreet(), stop));
                 return true;
             }
-            else{
-                return false;
-            }
         }
-        
+        return false;
     }
 
     public boolean addStreet(Street street) {
-        if (this.stops.isEmpty() || !street.getStops().isEmpty()){
+        if (this.route.isEmpty() || !street.follows(this.route.get(this.route.size() - 1).getKey())) {
             return false;
         }
-        else if (!this.streets.get(streets.size() - 1).follows(street)){
-            return false;
-        }
-        else{
-            this.streets.add(street);
-            return true;
-        }
+        this.route.add(new SimpleImmutableEntry<>(street, null));
+        return true;
     }
 
-    public void addTime(String time){
+    public java.util.List<java.util.AbstractMap.SimpleImmutableEntry<Street, Stop>> getRoute() {
+        return new ArrayList<>(this.route);
+    }
+
+    public void addTime(String time) {
         this.times.add(time);
-    }
-
-    public List<SimpleImmutableEntry<Street, Stop>> getRoute() {
-        List<SimpleImmutableEntry<Street, Stop>> route = new ArrayList<SimpleImmutableEntry<Street, Stop>>();
-        
-        for (Street street : streets){
-            boolean notInList = true;
-            for (Stop stop : street.getStops()){
-                if (this.stops.contains(stop)){
-                    route.add(new SimpleImmutableEntry<>(street, stop));
-                    notInList = false;
-                }
-            }
-            
-            if (notInList){
-                route.add(new SimpleImmutableEntry<>(street, null));
-            }
-        }
-
-        return route;
     }
 
     public String getColor() {

@@ -1,0 +1,14 @@
+.stop-tip{
+    -fx-background-radius: 0 0 0 0;
+    -fx-background-color:	linear-gradient(red  , grey  );
+}
+
+.street-tip{
+    -fx-background-radius: 3 3 3 3;
+    -fx-background-color:	linear-gradient(green  , grey  );
+}
+
+.line-tip{
+    -fx-background-radius: 6 6 6 6;
+    -fx-background-color:	linear-gradient(yellow  , grey  );
+}

@@ -19,18 +19,19 @@ public class Parser {
     private static List<Stop> stops = new ArrayList<>();
     private static List<Line> lines = new ArrayList<>();
 
-    public static void parse(File XML){
+    public static void parse(File XML) {
 
         parseStreets(XML);
         parseStops(XML);
         parseLines(XML);
     }
 
-    private static void parseStreets(File file){
+    private static void parseStreets(File file) {
         NodeList list = getListOfNodes(file, "street");
 
         for (int index = 0; index < list.getLength(); index++) {
-            Element streetElement = (Element) list.item(index);;
+            Element streetElement = (Element) list.item(index);
+            ;
             String id = streetElement.getAttribute("id");
             List<Coordinate> coors = new ArrayList<>();
 
@@ -50,17 +51,14 @@ public class Parser {
         }
     }
 
-    private static void parseStops(File file){
+    private static void parseStops(File file) {
         NodeList list = getListOfNodes(file, "stop");
 
         for (int index = 0; index < list.getLength(); index++) {
-            Element stopElement = (Element) list.item(index);;
-            Element coordinateElement = (Element) stopElement
-                                          .getElementsByTagName("coordinate_stop")
-                                          .item(0);
-            Element streetElement = (Element) stopElement
-                                             .getElementsByTagName("street_stop")
-                                             .item(0);
+            Element stopElement = (Element) list.item(index);
+            ;
+            Element coordinateElement = (Element) stopElement.getElementsByTagName("coordinate_stop").item(0);
+            Element streetElement = (Element) stopElement.getElementsByTagName("street_stop").item(0);
 
             String id = stopElement.getAttribute("id");
 
@@ -71,8 +69,8 @@ public class Parser {
             String streetId = streetElement.getTextContent();
 
             Stop stop = new Stop(id, coordinate);
-            for(Street street:streets){
-                if (street.getId().equals(streetId)){
+            for (Street street : streets) {
+                if (street.getId().equals(streetId)) {
                     stop.setStreet(street);
                 }
             }
@@ -81,12 +79,13 @@ public class Parser {
         }
     }
 
-    private static void parseLines(File file){
+    private static void parseLines(File file) {
         NodeList list = getListOfNodes(file, "line");
 
         for (int index = 0; index < list.getLength(); index++) {
-            Element lineElement = (Element) list.item(index);;
-            
+            Element lineElement = (Element) list.item(index);
+            ;
+
             String id = lineElement.getAttribute("id");
             String color = lineElement.getAttribute("color");
             String type = lineElement.getAttribute("type");
@@ -97,28 +96,27 @@ public class Parser {
                 Element stopElement = (Element) listOfStops.item(j);
                 String nodeName = stopElement.getNodeName();
 
-                if (nodeName.equals("stop_line")){
+                if (nodeName.equals("stop_line")) {
                     String stopId = stopElement.getTextContent();
 
-                    for(Stop stop: stops){
-                        if (stop.getId().equals(stopId)){
+                    for (Stop stop : stops) {
+                        if (stop.getId().equals(stopId)) {
                             line.addStop(stop);
                         }
                     }
-                }
-                else if (nodeName.equals("street_line")){
+                } else if (nodeName.equals("street_line")) {
                     String streetId = stopElement.getTextContent();
 
-                    for(Street street: streets){
-                        if (street.getId().equals(streetId)){
+                    for (Street street : streets) {
+                        if (street.getId().equals(streetId)) {
                             line.addStreet(street);
                         }
                     }
                 }
             }
-            
+
             NodeList listOfTimes = lineElement.getElementsByTagName("departure_time");
-            for (int i = 0; i < listOfTimes.getLength(); i++){
+            for (int i = 0; i < listOfTimes.getLength(); i++) {
                 Element timeElement = (Element) listOfTimes.item(i);
 
                 line.addTime(timeElement.getTextContent());
@@ -128,8 +126,8 @@ public class Parser {
         }
     }
 
-    private static NodeList getListOfNodes(File file, String node){
-        try{
+    private static NodeList getListOfNodes(File file, String node) {
+        try {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(file);
@@ -137,23 +135,21 @@ public class Parser {
             doc.getDocumentElement().normalize();
 
             return doc.getElementsByTagName(node);
-        } 
-        catch (Exception e){
+        } catch (Exception e) {
             System.err.println("Got an error");
             return null;
         }
     }
 
-    public static List<Street> getStreets(){
+    public static List<Street> getStreets() {
         return streets;
     }
 
-    public static List<Stop> getStops(){
+    public static List<Stop> getStops() {
         return stops;
     }
 
-    public static List<Line> getLines(){
+    public static List<Line> getLines() {
         return lines;
     }
 }
-

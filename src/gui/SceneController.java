@@ -20,7 +20,6 @@ import maps.Line;
 import maps.Stop;
 import maps.Street;
 import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -31,6 +30,7 @@ import java.util.*;
 
 import internal.InternalClock;
 import internal.Parser;
+
 /**
  * Scen controller (Scene.fxml)
  * 
@@ -43,6 +43,7 @@ public class SceneController implements Initializable {
     private List<ViewStreet> viewStreets;
     private List<ViewLine> viewLines;
     private List<ViewStop> viewStops;
+
     private int cordX;
     private int cordY;
 
@@ -79,9 +80,6 @@ public class SceneController implements Initializable {
     @FXML
     private MenuItem cleanButton;
 
-    //@FXML
-    //private AnchorPane work_area;
-
     @FXML
     private Label Coordinates;
 
@@ -95,7 +93,6 @@ public class SceneController implements Initializable {
 
     private ZoomableScrollPane scroll_work_area;
 
-
     /**
      * Inicializace sceny
      * 
@@ -104,18 +101,38 @@ public class SceneController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        
-        InternalClock.setDefaultClock();
+        setInitialScen();
+        setHandlers();
+        setHotKeys();
+        setClockTimeLine();
+    }
 
+    private void setInitialScen() {
         this.work_area = new AnchorPane();
-        //work_area.getChildren().add(new ImageView(new Image("Paris_Revisited_preview.png")));
+        // work_area.getChildren().add(new ImageView(new
+        // Image("Paris_Revisited_preview.png")));
         this.scroll_work_area = new ZoomableScrollPane(work_area);
-
         scroll_work_area.setFitToWidth(true);
         scroll_work_area.setFitToHeight(true);
-
         main.setCenter(scroll_work_area);
+    }
 
+    private void setClockTimeLine() {
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100), (ActionEvent event) -> {
+            Clocks.textProperty().set(InternalClock.updateClock());
+        }));
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
+    }
+
+    private void setHandlers() {
+        work_area.setOnMouseEntered(mouseEnteredAndMove);
+        work_area.setOnMouseMoved(mouseEnteredAndMove);
+        work_area.setOnMouseExited(mouseExited);
+        work_area.setOnScroll(mouseScroll);
+    }
+
+    private void setHotKeys() {
         newButton.setAccelerator(new KeyCodeCombination(KeyCode.N, KeyCombination.CONTROL_DOWN));
         cleanButton.setAccelerator(new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_DOWN));
         Start.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN));
@@ -126,45 +143,8 @@ public class SceneController implements Initializable {
         zoomIn.setAccelerator(new KeyCodeCombination(KeyCode.W));
         zoomOut.setAccelerator(new KeyCodeCombination(KeyCode.S));
         zoomDef.setAccelerator(new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_DOWN));
-
-        work_area.setOnMouseMoved(mouseMove);
-        work_area.setOnScroll(mouseScroll);
-
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100), (ActionEvent event) ->
-        {
-            Clocks.textProperty().set(InternalClock.updateClock());
-        }));
-        timeline.setCycleCount(Timeline.INDEFINITE);
-        timeline.play();
-
-        System.out.println("TEST SceneController.initialize");
     }
 
-    EventHandler<MouseEvent> mouseMove = new EventHandler<MouseEvent>() {
-        @Override
-        public void handle(MouseEvent e) {
-            cordX = (int) e.getX();
-            cordY = (int) e.getY();
-            Coordinates.setText("Coordinates: " + cordX + ":" + cordY);
-        }
-    };
-
-    EventHandler<ScrollEvent> mouseScroll = new EventHandler<ScrollEvent>() {
-        @Override
-        public void handle(ScrollEvent scrollEvent) {
-            if (scrollEvent.isControlDown()) {
-
-                if (scrollEvent.getDeltaY() < 0) {
-                    scroll_work_area.zoomOut();
-                } else {
-                    scroll_work_area.zoomIn();
-                }
-
-                scrollEvent.consume();
-            }
-        }
-    };
-        
     /**
      * closeClick
      */
@@ -232,7 +212,6 @@ public class SceneController implements Initializable {
         InternalClock.defaultAccelerationLevel();
         System.out.println("TEST SceneController.speedDefaClick");
     }
-    
 
     @FXML
     private void zoomInClick() {
@@ -257,4 +236,33 @@ public class SceneController implements Initializable {
         System.out.println("TEST SceneController.aboutClick");
     }
 
+    EventHandler<MouseEvent> mouseExited = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent e) {
+            Coordinates.setText("");
+        }
+    };
+
+    EventHandler<MouseEvent> mouseEnteredAndMove = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent e) {
+            cordX = (int) e.getX();
+            cordY = (int) e.getY();
+            Coordinates.setText("Coordinates: " + cordX + ":" + cordY);
+        }
+    };
+
+    EventHandler<ScrollEvent> mouseScroll = new EventHandler<ScrollEvent>() {
+        @Override
+        public void handle(ScrollEvent scrollEvent) {
+            if (scrollEvent.isControlDown()) {
+                if (scrollEvent.getDeltaY() < 0) {
+                    scroll_work_area.zoomOut();
+                } else {
+                    scroll_work_area.zoomIn();
+                }
+                scrollEvent.consume();
+            }
+        }
+    };
 }

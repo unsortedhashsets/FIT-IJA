@@ -1,39 +1,48 @@
 package gui;
 
-import java.util.List;
-import java.util.AbstractMap.SimpleImmutableEntry;
-import java.util.stream.Collectors;
-
+import javafx.event.EventHandler;
 import javafx.scene.control.Tooltip;
-import javafx.scene.paint.Color;
+import javafx.scene.effect.Glow;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Polyline;
-import maps.Coordinate;
 import maps.Line;
-import maps.Street;
-import maps.Stop;
 
 public class ViewLine extends Polyline {
     Line line;
+    private Glow glow = new Glow();
 
-    public ViewLine(Line line) {
-        this.line = line;
-
-        Tooltip tooltip = new Tooltip();
-        tooltip.setText("\n"+this.line.getID()+"\n ");
-        Tooltip.install(this, tooltip);
-
-        
+    public ViewLine(Line in_line) {
+        this.line = in_line;
+        glow.setLevel(0.9);
+        setOnMouseEntered(mouseEntered);
+        setOnMouseExited(mouseExited);
+        setupToolTip();
         drawLine();
     }
 
-    private void drawLine() {
-        List<SimpleImmutableEntry<Street, Stop>> tmpRoute = this.line.getRoute();
-
-        System.out.println("------------");
-        String res = tmpRoute.stream().map(entry -> entry.getKey().getId() + ":" + entry.getValue() + ";")
-        .collect(Collectors.joining());
-        System.out.println(res);
-
+    private void setupToolTip() {
+        Tooltip tooltip = new Tooltip();
+        tooltip.setText("line: " + line.getID());
+        Tooltip.install(this, tooltip);
+        tooltip.getStyleClass().add("line-tip");
     }
 
+    private void drawLine() {
+    }
+
+    EventHandler<MouseEvent> mouseEntered = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent e) {
+            setEffect(glow);
+            System.out.println("Mouse entered on Line: " + line.getID());
+        }
+    };
+
+    EventHandler<MouseEvent> mouseExited = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent e) {
+            setEffect(null);
+            System.out.println("Mouse exited from Line: " + line.getID());
+        }
+    };
 }

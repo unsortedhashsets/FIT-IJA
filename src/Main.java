@@ -1,3 +1,4 @@
+import internal.InternalClock;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,9 +15,8 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
     public static void main(String[] args) {
-        System.out.println("START CLOCKS");
+        InternalClock.setDefaultClock();
         launch(args);
-        System.out.println("STOP CLOCKS");
     }
 
     public void start(Stage primaryStage) throws Exception {
@@ -26,7 +26,7 @@ public class Main extends Application {
         Scene scene = new Scene(root, 800, 600);
 
         primaryStage.setScene(scene);
-        primaryStage.setTitle("IJA-JA-JA-JA");
+        primaryStage.setTitle("I");
         scene.getStylesheets().add("gui/Scene.css");
         primaryStage.show();
     }

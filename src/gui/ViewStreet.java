@@ -1,47 +1,55 @@
 package gui;
 
-import java.util.List;
-
+import javafx.event.EventHandler;
 import javafx.scene.control.Tooltip;
-import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Glow;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polyline;
 import maps.Coordinate;
 import maps.Street;
 
 public class ViewStreet extends Polyline {
-    private String id;
-    private List<Coordinate> coordinates;
-    private static final DropShadow highlight = new DropShadow(20, Color.GOLDENROD);
+    private Street street;
+    private Glow glow = new Glow();
 
-    public ViewStreet(Street street) {
-        this.id = street.getId();
-        this.coordinates = street.getCoordinates();
-
-        Tooltip tooltip = new Tooltip();
-        tooltip.setText("\n"+this.id+"\n ");
-        Tooltip.install(this, tooltip);
-
-
-        setOnMouseEntered(e -> {
-            setEffect(highlight);
-            System.out.println("Mouse entered on " + this.id);
-        });
-
-        setOnMouseExited(e -> {
-            setEffect(null);
-            System.out.println("Mouse exited on " + this.id);
-        });
-
+    public ViewStreet(Street in_street) {
+        this.street = in_street;
+        glow.setLevel(0.9);
+        setOnMouseEntered(mouseEntered);
+        setOnMouseExited(mouseExited);
+        setupToolTip();
         drawStreet();
     }
 
+    private void setupToolTip() {
+        Tooltip tooltip = new Tooltip();
+        tooltip.setText("street: " + street.getId());
+        Tooltip.install(this, tooltip);
+        tooltip.getStyleClass().add("street-tip");
+    }
+
     private void drawStreet() {
-        for (Coordinate tmp : this.coordinates) {
+        for (Coordinate tmp : street.getCoordinates()) {
             getPoints().addAll(new Double[] { (double) tmp.getX(), (double) tmp.getY() });
         }
         setStroke(Color.GREY);
         setStrokeWidth(8);
     }
 
+    EventHandler<MouseEvent> mouseEntered = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent e) {
+            setEffect(glow);
+            System.out.println("Mouse entered on street: " + street.getId());
+        }
+    };
+
+    EventHandler<MouseEvent> mouseExited = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent e) {
+            setEffect(null);
+            System.out.println("Mouse exited from street: " + street.getId());
+        }
+    };
 }
