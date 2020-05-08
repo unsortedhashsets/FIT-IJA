@@ -95,15 +95,35 @@ public class Parser {
             NodeList listOfStops = lineElement.getElementsByTagName("stop_line");
             for (int j = 0; j < listOfStops.getLength(); j++) {
                 Element stopElement = (Element) listOfStops.item(j);
-                String stopId = stopElement.getTextContent();
+                String nodeName = stopElement.getNodeName();
 
-                for(Stop stop: stops){
-                    if (stop.getId().equals(stopId)){
-                        line.addStop(stop);
+                if (nodeName.equals("stop_line")){
+                    String stopId = stopElement.getTextContent();
+
+                    for(Stop stop: stops){
+                        if (stop.getId().equals(stopId)){
+                            line.addStop(stop);
+                        }
+                    }
+                }
+                else if (nodeName.equals("street_line")){
+                    String streetId = stopElement.getTextContent();
+
+                    for(Street street: streets){
+                        if (street.getId().equals(streetId)){
+                            line.addStreet(street);
+                        }
                     }
                 }
             }
             
+            NodeList listOfTimes = lineElement.getElementsByTagName("departure_time");
+            for (int i = 0; i < listOfTimes.getLength(); i++){
+                Element timeElement = (Element) listOfTimes.item(i);
+
+                line.addTime(timeElement.getTextContent());
+            }
+
             lines.add(line);
         }
     }

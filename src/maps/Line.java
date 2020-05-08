@@ -8,6 +8,8 @@ public class Line{
     private String id;
     private String color;
     private String type;
+
+    private List<String> times;
     private List<Street> streets;
     private List<Stop> stops;
 
@@ -16,6 +18,7 @@ public class Line{
         this.color = color;
         this.type = type;
 
+        this.times = new ArrayList<String>();
         this.streets = new ArrayList<Street>();
         this.stops = new ArrayList<Stop>();
     }
@@ -52,6 +55,10 @@ public class Line{
             this.streets.add(street);
             return true;
         }
+    }
+
+    public void addTime(String time){
+        this.times.add(time);
     }
 
     public List<SimpleImmutableEntry<Street, Stop>> getRoute() {
