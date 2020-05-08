@@ -20,6 +20,7 @@ import maps.Street;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
 import java.io.File;
@@ -52,6 +53,9 @@ public class SceneController implements Initializable {
 
     @FXML
     private MenuItem SetTime;
+
+    @FXML
+    private MenuItem DefTime;
 
     @FXML
     private MenuItem zoomIn;
@@ -96,7 +100,9 @@ public class SceneController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-    
+        
+        InternalClock.setDefaultClock();
+
         this.work_area = new AnchorPane();
         //work_area.getChildren().add(new ImageView(new Image("Paris_Revisited_preview.png")));
         this.scroll_work_area = new ZoomableScrollPane(work_area);
@@ -111,6 +117,7 @@ public class SceneController implements Initializable {
         Start.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN));
         SpeedIn.setAccelerator(new KeyCodeCombination(KeyCode.A));
         SpeedDe.setAccelerator(new KeyCodeCombination(KeyCode.D));
+        DefTime.setAccelerator(new KeyCodeCombination(KeyCode.T));
         SetTime.setAccelerator(new KeyCodeCombination(KeyCode.T, KeyCombination.CONTROL_DOWN));
         zoomIn.setAccelerator(new KeyCodeCombination(KeyCode.W));
         zoomOut.setAccelerator(new KeyCodeCombination(KeyCode.S));
@@ -119,11 +126,13 @@ public class SceneController implements Initializable {
         work_area.setOnMouseMoved(mouseMove);
         work_area.setOnScroll(mouseScroll);
 
-        Timeline timeline = new Timeline();
-        timeline.getKeyFrames()
-                .add(new KeyFrame(Duration.millis(10), new KeyValue(Clocks.textProperty(), "23:59:59")));
-
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(10), (ActionEvent event) ->
+        {
+            Clocks.textProperty().set(InternalClock.updateClock());
+        }));
+        timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
+
         System.out.println("TEST SceneController.initialize");
     }
 
@@ -191,15 +200,22 @@ public class SceneController implements Initializable {
 
     @FXML
     private void speedIncrClick() {
-        //___.increaseAccelerationLevel();
+        InternalClock.increaseAccelerationLevel();
         System.out.println("TEST SceneController.speedIncrClick");
     }
 
     @FXML
     private void speedDecrClick() {
-        //___.decreaseAccelerationLevel();
+        InternalClock.decreaseAccelerationLevel();
         System.out.println("TEST SceneController.speedDecrClick");
     }
+
+    @FXML
+    private void speedDefaClick() {
+        InternalClock.defaultAccelerationLevel();
+        System.out.println("TEST SceneController.speedDefaClick");
+    }
+    
 
     @FXML
     private void zoomInClick() {
