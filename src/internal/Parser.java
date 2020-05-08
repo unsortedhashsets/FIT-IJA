@@ -121,5 +121,9 @@ public class Parser {
             return null;
         }
     }
+
+    public static List<Street> getStreets(){
+        return streets;
+    }
 }
 

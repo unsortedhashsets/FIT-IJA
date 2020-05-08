@@ -16,6 +16,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
+import maps.Street;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -36,7 +37,7 @@ import internal.Parser;
  */
 public class SceneController implements Initializable {
 
-
+    private List<ViewStreet> viewStreets;
     private int cordX;
     private int cordY;
 
@@ -97,7 +98,7 @@ public class SceneController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
     
         this.work_area = new AnchorPane();
-        work_area.getChildren().add(new ImageView(new Image("Paris_Revisited_preview.png")));
+        //work_area.getChildren().add(new ImageView(new Image("Paris_Revisited_preview.png")));
         this.scroll_work_area = new ZoomableScrollPane(work_area);
 
         scroll_work_area.setFitToWidth(true);
@@ -168,6 +169,14 @@ public class SceneController implements Initializable {
             Parser.parse(file);
         else
             System.out.println("No file choosed");
+
+        List<Street> streets = Parser.getStreets();
+
+        this.viewStreets = new ArrayList<>();
+        for (int i = 0; i < streets.size(); i++) {
+            this.viewStreets.add(new ViewStreet(streets.get(i)));
+            work_area.getChildren().add(this.viewStreets.get(i));
+        }
     }
 
     @FXML
