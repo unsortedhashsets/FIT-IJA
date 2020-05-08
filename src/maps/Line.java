@@ -80,4 +80,12 @@ public class Line{
 
         return route;
     }
+
+    public String getColor() {
+        return this.color;
+    }
+
+    public String getID() {
+        return this.id;
+    }
 }

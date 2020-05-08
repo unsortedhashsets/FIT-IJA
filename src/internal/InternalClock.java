@@ -16,7 +16,7 @@ public class InternalClock {
     }
 
     public static String updateClock(){
-        long millis = (long) (acceleration * 10);
+        long millis = (long) (acceleration * 100);
         clock = Clock.offset(clock, Duration.ofMillis(millis));
 
         localTime = clock.instant().atZone(ZoneOffset.UTC).toLocalTime().toString();

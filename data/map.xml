@@ -21,17 +21,9 @@
             <coordinate_stop X="10" Y="70"></coordinate_stop>
             <street_stop>Stefanikova</street_stop>
         </stop>
-        <stop id="Bozetechova">
-            <coordinate_stop X="50" Y="100"></coordinate_stop>
-            <street_stop>Stefanikova</street_stop>
-        </stop>
         <stop id="Manesky">
             <coordinate_stop X="100" Y="140"></coordinate_stop>
             <street_stop>Manesky</street_stop>
-        </stop>
-        <stop id="Ceska">
-            <coordinate_stop X="140" Y="200"></coordinate_stop>
-            <street_stop>Namesti Svobody</street_stop>
         </stop>
         <stop id="Namesti Svobody">
             <coordinate_stop X="150" Y="202"></coordinate_stop>
@@ -43,7 +35,6 @@
             <stop_line>Stefanikova</stop_line>
             <street_line>Bozetechova</street_line>
             <stop_line>Manesky</stop_line>
-            <stop_line>Ceska</stop_line>
             <departure_time>
                 <time>10:10</time>
                 <time>10:50</time>
@@ -57,7 +48,6 @@
         <line id="2" color="#228B22" type="trolley">
             <stop_line>Stefanikova</stop_line>
             <street_line>Bozetechova</street_line>
-            <stop_line>Bozetechova</stop_line>
             <stop_line>Namesti Svobody</stop_line>
             <departure_time>
                 <time>10:00</time>
@@ -75,7 +65,6 @@
             <stop_line>Namesti Svobody</stop_line>
             <street_line>Bozetechova</street_line>
             <stop_line>Manesky</stop_line>
-            <stop_line>Ceska</stop_line>
             <departure_time>
                 <time>10:00</time>
                 <time>10:30</time>

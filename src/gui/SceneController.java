@@ -16,6 +16,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
+import maps.Line;
+import maps.Stop;
 import maps.Street;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -39,6 +41,8 @@ import internal.Parser;
 public class SceneController implements Initializable {
 
     private List<ViewStreet> viewStreets;
+    private List<ViewLine> viewLines;
+    private List<ViewStop> viewStops;
     private int cordX;
     private int cordY;
 
@@ -126,7 +130,7 @@ public class SceneController implements Initializable {
         work_area.setOnMouseMoved(mouseMove);
         work_area.setOnScroll(mouseScroll);
 
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(10), (ActionEvent event) ->
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100), (ActionEvent event) ->
         {
             Clocks.textProperty().set(InternalClock.updateClock());
         }));
@@ -180,11 +184,24 @@ public class SceneController implements Initializable {
             System.out.println("No file choosed");
 
         List<Street> streets = Parser.getStreets();
-
         this.viewStreets = new ArrayList<>();
         for (int i = 0; i < streets.size(); i++) {
             this.viewStreets.add(new ViewStreet(streets.get(i)));
             work_area.getChildren().add(this.viewStreets.get(i));
+        }
+
+        List<Stop> stops = Parser.getStops();
+        this.viewStops = new ArrayList<>();
+        for (int i = 0; i < stops.size(); i++) {
+            this.viewStops.add(new ViewStop(stops.get(i)));
+            work_area.getChildren().add(this.viewStops.get(i));
+        }
+
+        List<Line> lines = Parser.getLines();
+        this.viewLines = new ArrayList<>();
+        for (int i = 0; i < lines.size(); i++) {
+            this.viewLines.add(new ViewLine(lines.get(i)));
+            work_area.getChildren().add(this.viewLines.get(i));
         }
     }
 

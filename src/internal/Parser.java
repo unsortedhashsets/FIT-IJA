@@ -147,5 +147,13 @@ public class Parser {
     public static List<Street> getStreets(){
         return streets;
     }
+
+    public static List<Stop> getStops(){
+        return stops;
+    }
+
+    public static List<Line> getLines(){
+        return lines;
+    }
 }
 
