@@ -6,11 +6,16 @@ import java.util.AbstractMap.SimpleImmutableEntry;
 
 public class Line{
     private String id;
+    private String color;
+    private String type;
     private List<Street> streets;
     private List<Stop> stops;
 
-    public Line(String id){
+    public Line(String id, String color, String type){
         this.id = id;
+        this.color = color;
+        this.type = type;
+
         this.streets = new ArrayList<Street>();
         this.stops = new ArrayList<Stop>();
     }

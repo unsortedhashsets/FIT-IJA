@@ -88,7 +88,9 @@ public class Parser {
             Element lineElement = (Element) list.item(index);;
             
             String id = lineElement.getAttribute("id");
-            Line line = new Line(id);
+            String color = lineElement.getAttribute("color");
+            String type = lineElement.getAttribute("type");
+            Line line = new Line(id, color, type);
 
             NodeList listOfStops = lineElement.getElementsByTagName("stop_line");
             for (int j = 0; j < listOfStops.getLength(); j++) {
