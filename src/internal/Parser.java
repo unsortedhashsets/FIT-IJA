@@ -7,6 +7,7 @@ import java.util.List;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import javax.xml.parsers.*;
 
 import maps.Coordinate;
@@ -86,20 +87,19 @@ public class Parser {
 
         for (int index = 0; index < list.getLength(); index++) {
             Element lineElement = (Element) list.item(index);
-            ;
 
             String id = lineElement.getAttribute("id");
             String color = lineElement.getAttribute("color");
             String type = lineElement.getAttribute("type");
             Line line = new Line(id, color, type);
 
-            NodeList listOfStops = lineElement.getElementsByTagName("stop_line");
+            NodeList listOfStops = lineElement.getChildNodes();
             for (int j = 0; j < listOfStops.getLength(); j++) {
-                Element stopElement = (Element) listOfStops.item(j);
-                String nodeName = stopElement.getNodeName();
+                Node stopNode = listOfStops.item(j);
+                String nodeName = stopNode.getNodeName();
 
                 if (nodeName.equals("stop_line")) {
-                    String stopId = stopElement.getTextContent();
+                    String stopId = stopNode.getTextContent();
 
                     for (Stop stop : stops) {
                         if (stop.getId().equals(stopId)) {
@@ -107,7 +107,7 @@ public class Parser {
                         }
                     }
                 } else if (nodeName.equals("street_line")) {
-                    String streetId = stopElement.getTextContent();
+                    String streetId = stopNode.getTextContent();
 
                     for (Street street : streets) {
                         if (street.getId().equals(streetId)) {
