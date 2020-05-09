@@ -1,0 +1,149 @@
+<?xml version="1.0"?>
+<map>
+    <streets>
+        <street id="street_1">
+            <coordinate_street X="50" Y="100"></coordinate_street>
+            <coordinate_street X="1050" Y="100"></coordinate_street>
+        </street>
+        <street id="street_2">
+            <coordinate_street X="50" Y="400"></coordinate_street>
+            <coordinate_street X="250" Y="200"></coordinate_street>
+            <coordinate_street X="450" Y="400"></coordinate_street>
+            <coordinate_street X="650" Y="200"></coordinate_street>
+            <coordinate_street X="850" Y="400"></coordinate_street>
+            <coordinate_street X="1050" Y="200"></coordinate_street>
+        </street>
+        <street id="street_3">
+            <coordinate_street X="50" Y="700"></coordinate_street>
+            <coordinate_street X="250" Y="700"></coordinate_street>
+        </street>
+        <street id="street_4">
+            <coordinate_street X="250" Y="700"></coordinate_street>
+            <coordinate_street X="250" Y="500"></coordinate_street>
+        </street>
+        <street id="street_5">
+            <coordinate_street X="50" Y="1000"></coordinate_street>
+            <coordinate_street X="250" Y="1000"></coordinate_street>
+            <coordinate_street X="250" Y="800"></coordinate_street>
+        </street>
+        <street id="street_6">
+            <coordinate_street X="250" Y="800"></coordinate_street>
+            <coordinate_street X="450" Y="800"></coordinate_street>
+            <coordinate_street X="450" Y="1000"></coordinate_street>
+        </street>
+    </streets>
+    <stops>
+        <stop id="stop_1">
+            <coordinate_stop X="140" Y="100"></coordinate_stop>
+            <street_stop>street_1</street_stop>
+        </stop>
+        <stop id="stop_2">
+            <coordinate_stop X="300" Y="100"></coordinate_stop>
+            <street_stop>street_1</street_stop>
+        </stop>
+        <stop id="stop_3">
+            <coordinate_stop X="525" Y="100"></coordinate_stop>
+            <street_stop>street_1</street_stop>
+        </stop>
+        <stop id="stop_4">
+            <coordinate_stop X="150" Y="300"></coordinate_stop>
+            <street_stop>street_2</street_stop>
+        </stop>
+        <stop id="stop_5">
+            <coordinate_stop X="550" Y="300"></coordinate_stop>
+            <street_stop>street_2</street_stop>
+        </stop>
+        <stop id="stop_6">
+            <coordinate_stop X="750" Y="300"></coordinate_stop>
+            <street_stop>street_2</street_stop>
+        </stop>
+        <stop id="stop_7">
+            <coordinate_stop X="150" Y="700"></coordinate_stop>
+            <street_stop>street_3</street_stop>
+        </stop>
+        <stop id="stop_8">
+            <coordinate_stop X="250" Y="600"></coordinate_stop>
+            <street_stop>street_4</street_stop>
+        </stop>
+        <stop id="stop_9">
+            <coordinate_stop X="150" Y="1000"></coordinate_stop>
+            <street_stop>street_5</street_stop>
+        </stop>
+        <stop id="stop_10">
+            <coordinate_stop X="250" Y="900"></coordinate_stop>
+            <street_stop>street_5</street_stop>
+        </stop>
+        <stop id="stop_11">
+            <coordinate_stop X="350" Y="800"></coordinate_stop>
+            <street_stop>street_6</street_stop>
+        </stop>
+        <stop id="stop_12">
+            <coordinate_stop X="450" Y="900"></coordinate_stop>
+            <street_stop>street_6</street_stop>
+        </stop>
+    </stops>
+    <lines>
+        <line id="line_1" color="#A52A2A" type="tram">
+            <stop_line>stop_1</stop_line>
+            <stop_line>stop_2</stop_line>
+            <stop_line>stop_3</stop_line>
+            <departure_time>
+                <time>10:10</time>
+                <time>10:50</time>
+                <time>11:35</time>
+                <time>12:20</time>
+                <time>13:20</time>
+                <time>14:35</time>
+                <time>15:00</time>
+            </departure_time>
+        </line>
+        <line id="line_2" color="#228B22" type="trolley">
+            <stop_line>stop_4</stop_line>
+            <stop_line>stop_5</stop_line>
+            <stop_line>stop_6</stop_line>
+            <departure_time>
+                <time>10:00</time>
+                <time>10:50</time>
+                <time>11:20</time>
+                <time>12:00</time>
+                <time>13:10</time>
+                <time>13:35</time>
+                <time>14:00</time>
+                <time>14:30</time>
+                <time>15:00</time>
+            </departure_time>
+        </line>
+        <line id="line_3" color="#6A5ACD" type="autobus">
+            <stop_line>stop_7</stop_line>
+            <stop_line>stop_8</stop_line>
+            <departure_time>
+                <time>10:00</time>
+                <time>10:30</time>
+                <time>11:00</time>
+                <time>12:00</time>
+                <time>13:00</time>
+                <time>13:30</time>
+                <time>14:00</time>
+                <time>14:30</time>
+                <time>15:00</time>
+            </departure_time>
+        </line>
+        <line id="line_4" color="#6B5ACD" type="tram">
+            <stop_line>stop_9</stop_line>
+            <stop_line>stop_10</stop_line>
+            <stop_line>stop_11</stop_line>
+            <stop_line>stop_12</stop_line>
+            <departure_time>
+                <time>10:00</time>
+                <time>10:30</time>
+                <time>11:00</time>
+                <time>12:00</time>
+                <time>13:00</time>
+                <time>13:30</time>
+                <time>14:00</time>
+                <time>14:30</time>
+                <time>15:00</time>
+            </departure_time>
+        </line>
+    </lines>
+</map> 
