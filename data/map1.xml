@@ -77,19 +77,19 @@
             <coordinate_stop X="450" Y="600"></coordinate_stop>
             <street_stop>street_6</street_stop>
         </stop>
-        <stop id="stop_9">
+        <stop id="stop_10">
             <coordinate_stop X="150" Y="1000"></coordinate_stop>
             <street_stop>street_7</street_stop>
         </stop>
-        <stop id="stop_10">
+        <stop id="stop_11">
             <coordinate_stop X="250" Y="900"></coordinate_stop>
             <street_stop>street_7</street_stop>
         </stop>
-        <stop id="stop_11">
+        <stop id="stop_12">
             <coordinate_stop X="350" Y="800"></coordinate_stop>
             <street_stop>street_8</street_stop>
         </stop>
-        <stop id="stop_12">
+        <stop id="stop_13">
             <coordinate_stop X="450" Y="900"></coordinate_stop>
             <street_stop>street_8</street_stop>
         </stop>
