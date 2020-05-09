@@ -4,10 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.AbstractMap.SimpleImmutableEntry;
 
+import vehicles.Autobus;
+import vehicles.Tram;
+import vehicles.Trolley;
+import vehicles.Vehicle;
+
 public class Line {
     private String id;
     private String color;
+
     private String type;
+    private int counterID;
 
     private ArrayList<SimpleImmutableEntry<Street, Stop>> route;
     private List<String> times;
@@ -17,9 +24,11 @@ public class Line {
     public Line(String id, String color, String type) {
         this.id = id;
         this.color = color;
-        this.type = type;
-        this.route = new ArrayList<SimpleImmutableEntry<Street, Stop>>();
 
+        this.type = type;
+        this.counterID = 0;
+
+        this.route = new ArrayList<SimpleImmutableEntry<Street, Stop>>();
         this.times = new ArrayList<String>();
         this.streets = new ArrayList<Street>();
         this.stops = new ArrayList<Stop>();
@@ -51,8 +60,19 @@ public class Line {
         return new ArrayList<>(this.route);
     }
 
-    public void addTime(String time) {
-        this.times.add(time);
+    public Vehicle createVehicle(String from, String to) {
+        String vehicleID = "(" + this.id + ")_" + (++counterID);
+
+        switch (this.type) {
+            case "tram":
+                return new Tram(vehicleID, this, from, to);
+            case "trolley":
+                return new Trolley(vehicleID, this, from, to);
+            case "autobus":
+                return new Autobus(vehicleID, this, from, to);
+            default:
+                return null;
+        }
     }
 
     public String getColor() {

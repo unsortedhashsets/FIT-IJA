@@ -1,12 +1,14 @@
 package vehicles;
 
 import maps.Coordinate;
-import jdk.nashorn.internal.objects.annotations.Getter;
-import jdk.nashorn.internal.objects.annotations.Setter;
+import maps.Line;
 
 public class Vehicle{
     private String id;
-    
+    private Line line;
+    private String from;
+    private String to;
+
     private float float_X;
     private float float_Y;
 
@@ -18,12 +20,16 @@ public class Vehicle{
     private float velocity_X;
     private float velocity_Y;
 
-    protected Vehicle(String id, float velocity){
+    protected Vehicle(String id, Line line, String from, String to, float velocity){
         this.id = id;
+        this.line = line;
+
+        this.from = from;
+        this.to = to;
+
         this.velocity = (velocity * 1000)/3600; // transform from km/h to m/s
     }
 
-    @Setter
     public void setVelocity(float velocity){
         this.velocity = velocity;
     }
@@ -37,7 +43,6 @@ public class Vehicle{
         this.velocity_Y = (this.velocity * length_Y) / length;
     }
 
-    @Setter
     public void actualizePosition(){
         float_X += velocity_X * 1.0f; // 1.0f = time
         float_Y += velocity_Y * 1.0f; // 1.0f = time
@@ -45,18 +50,23 @@ public class Vehicle{
         this.position = Coordinate.create((int)float_X, (int)float_Y);
     }
 
-    @Getter
     public String getId(){
         return this.id;
     }
 
-    @Getter
     public float getVelocity(){
         return this.velocity;
     }
 
-    @Getter
     public Coordinate getPosition(){
         return this.position;
     }   
+
+    @Override
+    public String toString(){
+        return "Vehicle " + this.id + ": " +
+               "is running from " + this.from +
+               " to " + this.to;
+
+    }
 }

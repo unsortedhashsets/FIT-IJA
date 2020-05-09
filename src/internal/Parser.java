@@ -13,11 +13,13 @@ import maps.Coordinate;
 import maps.Line;
 import maps.Stop;
 import maps.Street;
+import vehicles.Vehicle;
 
 public class Parser {
     private static List<Street> streets = new ArrayList<>();
     private static List<Stop> stops = new ArrayList<>();
     private static List<Line> lines = new ArrayList<>();
+    private static List<Vehicle> vehicles = new ArrayList<>();
 
     public static void parse(File XML) {
 
@@ -115,11 +117,14 @@ public class Parser {
                 }
             }
 
-            NodeList listOfTimes = lineElement.getElementsByTagName("departure_time");
+            NodeList listOfTimes = lineElement.getElementsByTagName("time");
             for (int i = 0; i < listOfTimes.getLength(); i++) {
                 Element timeElement = (Element) listOfTimes.item(i);
 
-                line.addTime(timeElement.getTextContent());
+                String from = timeElement.getAttribute("from");
+                String to = timeElement.getAttribute("to");
+
+                vehicles.add(line.createVehicle(from, to));
             }
 
             lines.add(line);

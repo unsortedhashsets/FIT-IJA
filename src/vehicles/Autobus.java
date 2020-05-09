@@ -1,9 +1,9 @@
 package vehicles;
 
-import vehicles.Vehicle;
+import maps.Line;
 
 public class Autobus extends Vehicle{    
-    public Autobus(String id){
-        super(id, 70);
+    public Autobus(String id, Line line, String from, String to){
+        super(id, line, from, to, 70);
     }
 }
