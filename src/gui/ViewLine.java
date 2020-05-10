@@ -122,6 +122,7 @@ public class ViewLine extends Polyline {
                                 if (tmp.get(i-1).getKey().end().equals(tmp.get(i).getKey().end())) {
                                     System.out.println(i + " CORNER: " + tmp.get(i-1).getKey().getCoordinates().get(tmp.get(i-1).getKey().getCoordinates().size()-1).getX() + " - " + tmp.get(i-1).getKey().getCoordinates().get(tmp.get(i-1).getKey().getCoordinates().size()-1).getY());                 // <----------- CORD
                                     getPoints().addAll(new Double[] { (double) tmp.get(i-1).getKey().getCoordinates().get(tmp.get(i-1).getKey().getCoordinates().size()-1).getX(), (double) tmp.get(i-1).getKey().getCoordinates().get(tmp.get(i-1).getKey().getCoordinates().size()-1).getY() });
+                                    line.addCoordinate(tmp.get(i-1).getKey().getCoordinates().get(tmp.get(i-1).getKey().getCoordinates().size()-1), tmp.get(i-1).getKey());
                                 // END-BEGIN     
                                 } else {
                                     System.out.println(i + " CORNER: " + tmp.get(i-1).getKey().getCoordinates().get(j).getX() + " - " + tmp.get(i-1).getKey().getCoordinates().get(j).getY());      
@@ -145,6 +146,7 @@ public class ViewLine extends Polyline {
                                 if (tmp.get(i-1).getKey().begin().equals(tmp.get(i).getKey().end())) {                                    
                                     System.out.println(i + " CORNER: " + tmp.get(i-1).getKey().getCoordinates().get(tmp.get(i-1).getKey().getCoordinates().size()-1).getX() + " - " + tmp.get(i-1).getKey().getCoordinates().get(tmp.get(i-1).getKey().getCoordinates().size()-1).getY());   // <----------- CORD
                                     getPoints().addAll(new Double[] { (double) tmp.get(i-1).getKey().getCoordinates().get(tmp.get(i-1).getKey().getCoordinates().size()-1).getX(), (double) tmp.get(i-1).getKey().getCoordinates().get(tmp.get(i-1).getKey().getCoordinates().size()-1).getY() });
+                                    line.addCoordinate(tmp.get(i-1).getKey().getCoordinates().get(tmp.get(i-1).getKey().getCoordinates().size()-1), tmp.get(i-1).getKey());
                                 // BEGIN-BEGIN
                                 } else {
                                     System.out.println(i + " CORNER: " + tmp.get(i-1).getKey().getCoordinates().get(j).getX() + " - " + tmp.get(i-1).getKey().getCoordinates().get(j).getY());              
