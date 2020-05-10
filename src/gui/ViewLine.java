@@ -1,15 +1,15 @@
 package gui;
 
 import java.util.List;
-import java.util.TreeMap;
+
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.stream.Collectors;
-
 import javafx.event.EventHandler;
 import javafx.scene.control.Tooltip;
 import javafx.scene.effect.Glow;
-import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polyline;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.shape.StrokeLineJoin;
@@ -19,11 +19,13 @@ import maps.Stop;
 import maps.Street;
 
 public class ViewLine extends Polyline {
+    AnchorPane work_pane;
     Line line;
 
     private Glow glow = new Glow();
 
-    public ViewLine(Line in_line) {
+    public ViewLine(Line in_line, AnchorPane in_work_pane) {
+        this.work_pane = in_work_pane;
         this.line = in_line;
         setId(line.getID());
         glow.setLevel(1.0);
@@ -51,7 +53,8 @@ public class ViewLine extends Polyline {
         for (int i = 0; i < tmp.size(); i++) {
             // ZERO STOP
             if (i == 0) {
-                System.out.println("0 POINT: " + tmp.get(i).getValue().getCoordinate().getX() + " - " + tmp.get(i).getValue().getCoordinate().getY());                    
+                drawStop(tmp.get(i).getValue().getCoordinate());
+                System.out.println("0 POINT: " + tmp.get(i).getValue().getCoordinate().getX() + " - " + tmp.get(i).getValue().getCoordinate().getY());                
                 line.addCoordinate(tmp.get(i).getValue().getCoordinate(), tmp.get(i).getValue());
                 getPoints().addAll(new Double[] { (double) tmp.get(i).getValue().getCoordinate().getX(), (double) tmp.get(i).getValue().getCoordinate().getY() });
             // EMPTY STREET
@@ -79,6 +82,7 @@ public class ViewLine extends Polyline {
                     }
                     // N STOPS IF ON ONE STRAIGHT LINE
                     if (tmp.get(i).getKey().getCoordinates().size() == 2){
+                        drawStop(tmp.get(i).getValue().getCoordinate());
                         System.out.println(i + " POINT: " + tmp.get(i).getValue().getCoordinate().getX() + " - " + tmp.get(i).getValue().getCoordinate().getY());
                         line.addCoordinate(tmp.get(i).getValue().getCoordinate(), tmp.get(i).getValue());
                         getPoints().addAll(new Double[] { (double) tmp.get(i).getValue().getCoordinate().getX(), (double) tmp.get(i).getValue().getCoordinate().getY() });
@@ -89,6 +93,7 @@ public class ViewLine extends Polyline {
                                 System.out.println(i + " CORNER: " + tmp.get(i).getKey().getCoordinates().get(j).getX() + " - " + tmp.get(i).getKey().getCoordinates().get(j).getY());
                                 line.addCoordinate(tmp.get(i).getKey().getCoordinates().get(j), tmp.get(i).getKey());
                                 getPoints().addAll(new Double[] { (double) tmp.get(i).getKey().getCoordinates().get(j).getX(), (double) tmp.get(i).getKey().getCoordinates().get(j).getY() }); 
+                                drawStop(tmp.get(i).getValue().getCoordinate());
                                 System.out.println(i + " POINT: " + tmp.get(i).getValue().getCoordinate().getX() + " - " + tmp.get(i).getValue().getCoordinate().getY());                  
                                 getPoints().addAll(new Double[] { (double) tmp.get(i).getValue().getCoordinate().getX(), (double) tmp.get(i).getValue().getCoordinate().getY() });
                                 line.addCoordinate(tmp.get(i).getValue().getCoordinate(), tmp.get(i).getValue());
@@ -163,6 +168,7 @@ public class ViewLine extends Polyline {
                             }
                         }
                     }
+                    drawStop(tmp.get(i).getValue().getCoordinate());
                     System.out.println(i + " POINT: " + tmp.get(i).getValue().getCoordinate().getX() + " - " + tmp.get(i).getValue().getCoordinate().getY());
                     line.addCoordinate(tmp.get(i).getValue().getCoordinate(), tmp.get(i).getValue());
                     getPoints().addAll(new Double[] { (double) tmp.get(i).getValue().getCoordinate().getX(), (double) tmp.get(i).getValue().getCoordinate().getY() });
@@ -175,6 +181,15 @@ public class ViewLine extends Polyline {
         setStrokeLineCap(StrokeLineCap.ROUND);
         setStrokeLineJoin(StrokeLineJoin.ROUND);
         setStrokeWidth(4);
+    }
+
+    private void drawStop(Coordinate coor) {
+        Circle circle = new Circle();
+        circle.setCenterX(coor.getX());
+        circle.setCenterY(coor.getY());
+        circle.setRadius(6);
+        circle.setStyle("-fx-fill: " + line.getColor());
+        this.work_pane.getChildren().add(circle);
     }
 
     private Boolean checkIfStopIsBetweenCoords(Stop s, Coordinate first, Coordinate second) {
