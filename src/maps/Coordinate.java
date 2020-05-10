@@ -55,4 +55,9 @@ public class Coordinate {
 
         return hash;
     }
+
+    @Override
+    public String toString(){
+        return "(" + this.X + ", " + this.Y + ")";
+    }
 }

@@ -100,15 +100,6 @@
             <stop_line>stop_2</stop_line>
             <stop_line>stop_3</stop_line>
             <departure_time>
-                <time from="10:00" to="20:00"></time>
-                <time from="10:30" to="20:00"></time>
-                <time from="11:00" to="21:00"></time>
-                <time from="12:00" to="22:00"></time>
-                <time from="13:00" to="22:00"></time>
-                <time from="13:30" to="23:00"></time>
-                <time from="14:00" to="23:00"></time>
-                <time from="14:30" to="23:00"></time>
-                <time from="15:00" to="23:00"></time>
             </departure_time>
         </line>
         <line id="line_2" color="#228B22" type="trolley">
@@ -116,15 +107,6 @@
             <stop_line>stop_5</stop_line>
             <stop_line>stop_6</stop_line>
             <departure_time>
-                <time from="10:00" to="20:00"></time>
-                <time from="10:30" to="20:00"></time>
-                <time from="11:00" to="21:00"></time>
-                <time from="12:00" to="22:00"></time>
-                <time from="13:00" to="22:00"></time>
-                <time from="13:30" to="23:00"></time>
-                <time from="14:00" to="23:00"></time>
-                <time from="14:30" to="23:00"></time>
-                <time from="15:00" to="23:00"></time>
             </departure_time>
         </line>
         <line id="line_3" color="#6A5ACD" type="autobus">
@@ -133,15 +115,7 @@
             <street_line>street_5</street_line>
             <stop_line>stop_9</stop_line>
             <departure_time>
-                <time from="10:00" to="20:00"></time>
-                <time from="10:30" to="20:00"></time>
-                <time from="11:00" to="21:00"></time>
-                <time from="12:00" to="22:00"></time>
-                <time from="13:00" to="22:00"></time>
-                <time from="13:30" to="23:00"></time>
-                <time from="14:00" to="23:00"></time>
-                <time from="14:30" to="23:00"></time>
-                <time from="15:00" to="23:00"></time>
+                <time from="10:01" to="20:00"></time>
             </departure_time>
         </line>
         <line id="line_4" color="#ffff00" type="tram">
@@ -150,15 +124,6 @@
             <stop_line>stop_12</stop_line>
             <stop_line>stop_13</stop_line>
             <departure_time>
-                <time from="10:00" to="20:00"></time>
-                <time from="10:30" to="20:00"></time>
-                <time from="11:00" to="21:00"></time>
-                <time from="12:00" to="22:00"></time>
-                <time from="13:00" to="22:00"></time>
-                <time from="13:30" to="23:00"></time>
-                <time from="14:00" to="23:00"></time>
-                <time from="14:30" to="23:00"></time>
-                <time from="15:00" to="23:00"></time>
             </departure_time>
         </line>
     </lines>

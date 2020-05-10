@@ -41,7 +41,7 @@
     <lines>
         <line id="1" color="#A52A2A" type="tram">
             <stop_line>Stefanikova</stop_line>
-            <street_line>Bozetechova</street_line>
+            <stop_line>Bozetechova</stop_line>
             <stop_line>Manesky</stop_line>
             <departure_time>
                 <time>10:10</time>
@@ -55,7 +55,8 @@
         </line>
         <line id="2" color="#228B22" type="trolley">
             <stop_line>Stefanikova</stop_line>
-            <street_line>Bozetechova</street_line>
+            <stop_line>Bozetechova</stop_line>
+            <street_line>Manesky</street_line>
             <stop_line>Namesti Svobody</stop_line>
             <departure_time>
                 <time>10:00</time>
@@ -71,7 +72,8 @@
         </line>
         <line id="3" color="#6A5ACD" type="autobus">
             <stop_line>Namesti Svobody</stop_line>
-            <street_line>Bozetechova</street_line>
+            <street_line>Manesky</street_line>
+            <stop_line>Bozetechova</stop_line>
             <stop_line>Manesky</stop_line>
             <departure_time>
                 <time>10:00</time>
