@@ -46,10 +46,17 @@ public class InternalClock {
         System.out.println("TEST SceneController.speedDecrClick: " + acceleration);
     }
 
+    public static String getStopTime(){
+        clock = Clock.offset(clock, Duration.ofMinutes(1));
+        String stopTime = clock.instant().atZone(ZoneOffset.UTC).toLocalTime().toString();
+        clock = Clock.offset(clock, Duration.ofMinutes(-1));
+
+        return stopTime;
+    }
+
     public static boolean isTime(String time){
         String localTime = clock.instant().atZone(ZoneOffset.UTC).toLocalTime()
                           .toString().substring(0, 5); // get HH:MM
-        
         return localTime.equals(time);
     }
 

@@ -8,6 +8,8 @@ import java.util.Iterator;
 import internal.InternalClock;
 import maps.Coordinate;
 import maps.Line;
+import maps.Stop;
+import maps.Street;
 
 public class Vehicle implements Runnable{
     private String id;
@@ -16,10 +18,10 @@ public class Vehicle implements Runnable{
     private String to;
 
     private Thread thread;
-    private boolean isStopped;
 
-    private float float_X;
-    private float float_Y;
+    private LinkedHashMap<Coordinate, Object> coordinates;
+    private ArrayList<Coordinate> listOfCoors;
+    private Iterator<Coordinate> iter;
 
     private Coordinate position;
     private Coordinate departure;
@@ -28,6 +30,9 @@ public class Vehicle implements Runnable{
     private float velocity;
     private float velocity_X;
     private float velocity_Y;
+
+    private float float_X;
+    private float float_Y;
 
     protected Vehicle(String id, Line line, String from, String to, float velocity){
         this.id = id;
@@ -52,21 +57,59 @@ public class Vehicle implements Runnable{
         this.velocity_Y = (this.velocity * length_Y) / length;
     }
 
-    public void actualizePosition(){
+    private void setMovingParameters(){
+        this.coordinates = this.line.getCoordinates();
+        this.listOfCoors = new ArrayList<Coordinate>(coordinates.keySet());
+        this.iter = listOfCoors.iterator();
+
+        this.position = this.departure = (Coordinate) iter.next();
+        this.arrival = (Coordinate) iter.next();
+
+        this.float_X = this.position.getX();
+        this.float_Y = this.position.getY();
+
+        setAxisVelocities();
+    }
+
+    public boolean actualizePosition(){
         float acceleration = InternalClock.getAccelerationLevel();
-        float deltaLength = arrival.length(this.position);
 
-        float_X += acceleration * velocity_X * 0.1f; // 1.0f = time
-        float_Y += acceleration * velocity_Y * 0.1f; // 1.0f = time
+        float distance = acceleration * velocity * 0.01f;
 
-        float_X = (velocity_X > 0) 
-                ? Math.min(float_X, this.arrival.getX())
-                : Math.max(float_X, this.arrival.getX());
-        float_Y = (velocity_Y > 0) 
-                ? Math.min(float_Y, this.arrival.getY())
-                : Math.max(float_Y, this.arrival.getY());
+        while (!(0 <= distance && distance <= 0.0001)){
+            float distance_X = acceleration * velocity_X * 0.01f; // 1.0f = 1 second
+            float distance_Y = acceleration * velocity_Y * 0.01f; // 1.0f = 1 second
 
-        this.position = Coordinate.create((int)float_X, (int)float_Y);
+            
+            this.float_X += (velocity_X > 0) 
+                          ? Math.min(distance_X, this.arrival.diffX(this.position))
+                          : Math.max(distance_X, this.arrival.diffX(this.position));
+            this.float_Y += (velocity_Y > 0) 
+                          ? Math.min(distance_Y, this.arrival.diffY(this.position))
+                          : Math.max(distance_Y, this.arrival.diffY(this.position));
+
+            this.position = Coordinate.create((int)float_X, (int)float_Y);
+            if (this.position.equals(this.arrival)){
+                this.departure = this.arrival;
+                if (!iter.hasNext()){
+                    Collections.reverse(listOfCoors);
+                    iter = listOfCoors.iterator();
+                    iter.next();
+                }
+                this.arrival = (Coordinate) iter.next();
+                setAxisVelocities();
+
+                Object object = coordinates.get(this.departure);
+                if (object.getClass().getName().equals("maps.Stop")){
+                    return true;
+                }
+            }
+
+            float length = (float) Math.sqrt((distance_X * distance_X) + (distance_Y * distance_Y));
+            distance -= length;
+        } 
+
+        return false;
     }
 
     public String getId(){
@@ -83,40 +126,24 @@ public class Vehicle implements Runnable{
 
     @Override
     public void run() {
-        LinkedHashMap<Coordinate, Object> coordinates = this.line.getCoordinates();
-        ArrayList<Coordinate> listOfCoors = new ArrayList<Coordinate>(coordinates.keySet());
-        Iterator<Coordinate> iter = listOfCoors.iterator();
-
-        this.position = this.departure 
-                      = this.arrival = (Coordinate) iter.next();
-        this.float_X = this.position.getX();
-        this.float_Y = this.position.getY();
+        setMovingParameters();
 
         while (true){
             if (InternalClock.isTime(from)){
                 while (!InternalClock.isTime(to)){
-                    if (iter.hasNext()){
-                        this.departure = this.arrival;
-                        this.arrival = (Coordinate) iter.next();
-
-                        setAxisVelocities();
-                        while (!this.position.equals(this.arrival)){
+                    try{
+                        Thread.sleep(10);
+                    } catch (InterruptedException exc){}
+                    
+                    System.out.println("position: " + this.position);
+                    boolean isStop = actualizePosition();
+                    if (isStop){
+                        String stopTime = InternalClock.getStopTime().substring(0,5);
+                        while(!InternalClock.isTime(stopTime)){
                             try{
-                                Thread.sleep(100);
+                                Thread.sleep(10);
                             } catch (InterruptedException exc){}
-                            
-                            actualizePosition();
                         }
-
-                        Object object = coordinates.get(this.arrival);
-                        System.out.println(object.getClass().getName());
-                        if (object.getClass().getName().equals("Stop")){
-
-                        }
-                    }
-                    else{
-                        Collections.reverse(listOfCoors);
-                        iter = listOfCoors.iterator();
                     }
                 }
             }
@@ -134,6 +161,10 @@ public class Vehicle implements Runnable{
         if (this.thread != null) {
             this.thread.interrupt();
         }
+    }
+
+    public Line getLine() {
+        return this.line;
     }
 
     @Override
