@@ -23,6 +23,7 @@ import javafx.util.Duration;
 import maps.Line;
 import maps.Stop;
 import maps.Street;
+import vehicles.Vehicle;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -47,6 +48,9 @@ public class SceneController implements Initializable {
     private List<ViewStreet> viewStreets;
     private List<ViewLine> viewLines;
     private List<ViewStop> viewStops;
+    private List<ViewVehicle> viewVehicles;
+
+    private Timeline updatePos;
 
     private int cordX;
     private int cordY;
@@ -153,13 +157,14 @@ public class SceneController implements Initializable {
      */
     @FXML
     private void cleanClick() {
+        stopClick();
         work_area.getChildren().clear();
+        System.out.println("TEST SceneController.cleanClick");
         // work_area.getChildren().add(new ImageView(new Image("pngwing.com.png")));
     }
 
     @FXML
     private void newClick() {
-
         FileChooser fileChooser = new FileChooser();
         File file = fileChooser.showOpenDialog(null);
         if (file != null) {
@@ -187,6 +192,15 @@ public class SceneController implements Initializable {
                 work_area.getChildren().add(this.viewLines.get(i));
             }
 
+            List<Vehicle> vehicles = Parser.getVehicles();
+            this.viewVehicles = new ArrayList<>();
+            for (int i = 0; i < vehicles.size(); i++) {
+                this.viewVehicles.add(new ViewVehicle(vehicles.get(i)));
+                work_area.getChildren().add(this.viewVehicles.get(i));
+            }
+
+
+
             BackgroundImage myBI = new BackgroundImage(new Image("ground.png", 375, 216, false, true),
                     BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
                     BackgroundSize.DEFAULT);
@@ -200,7 +214,27 @@ public class SceneController implements Initializable {
 
     @FXML
     private void startClick() {
+        for (ViewVehicle tmp : viewVehicles) {
+            tmp.GetVehicle().start();
+        }
+        updatePos = new Timeline(new KeyFrame(Duration.millis(40), (ActionEvent event) -> {
+            for (ViewVehicle tmp : viewVehicles) {
+                tmp.UpdatePosition();
+            }
+        }));
+        updatePos.setCycleCount(Timeline.INDEFINITE);
+        updatePos.play();
+
         System.out.println("TEST SceneController.startClick");
+    }
+
+    @FXML
+    private void stopClick() {
+        for (ViewVehicle tmp : viewVehicles) {
+            tmp.GetVehicle().stop();
+        }
+        updatePos.stop();
+        System.out.println("TEST SceneController.stopClick");
     }
 
     @FXML
