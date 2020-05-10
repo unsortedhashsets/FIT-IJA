@@ -17,12 +17,16 @@ import maps.Street;
 import vehicles.Vehicle;
 
 public class Parser {
-    private static List<Street> streets = new ArrayList<>();
-    private static List<Stop> stops = new ArrayList<>();
-    private static List<Line> lines = new ArrayList<>();
-    private static List<Vehicle> vehicles = new ArrayList<>();
+    private static List<Street> streets;
+    private static List<Stop> stops;
+    private static List<Line> lines;
+    private static List<Vehicle> vehicles;
 
     public static void parse(File XML) {
+        streets = new ArrayList<>();
+        stops = new ArrayList<>();
+        lines = new ArrayList<>();
+        vehicles = new ArrayList<>();
 
         parseStreets(XML);
         parseStops(XML);

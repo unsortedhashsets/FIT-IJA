@@ -144,7 +144,7 @@
                 <time from="15:00" to="23:00"></time>
             </departure_time>
         </line>
-        <line id="line_4" color="#6B5ACD" type="tram">
+        <line id="line_4" color="#ffff00" type="tram">
             <stop_line>stop_10</stop_line>
             <stop_line>stop_11</stop_line>
             <stop_line>stop_12</stop_line>

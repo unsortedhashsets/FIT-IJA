@@ -28,12 +28,7 @@
   xmlns="http://javafx.com/javafx/8" 
   xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SceneController">
   <center>
-    <AnchorPane />
-  <!--   <ScrollPane fx:id="scroll_work_area" hbarPolicy="ALWAYS" vbarPolicy="ALWAYS">
-      <content>
-        <AnchorPane fx:id="work_area" styleClass="work_area"/>
-      </content>
-    </ScrollPane> -->
+    <AnchorPane fx:id="Default_work_area"/>
   </center>
   <top>
       <AnchorPane xmlns:fx="http://javafx.com/fxml/1" styleClass="menu-bar">

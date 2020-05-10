@@ -5,10 +5,16 @@
 
 .street-tip{
     -fx-background-radius: 3 3 3 3;
-    -fx-background-color:	linear-gradient(green  , grey  );
+    -fx-background-color:	linear-gradient(#008000  , grey  );
 }
 
 .line-tip{
     -fx-background-radius: 6 6 6 6;
-    -fx-background-color:	linear-gradient(yellow  , grey  );
+    -fx-background-color:	linear-gradient(#ffff00  , grey  );
+}
+
+.work-area {
+    -fx-background-image: url("https://www.google.com/images/srpr/logo3w.png");
+    -fx-background-repeat: repeat;
+    -fx-background-size: 240;
 }

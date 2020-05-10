@@ -13,6 +13,11 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
@@ -151,38 +156,48 @@ public class SceneController implements Initializable {
     @FXML
     private void cleanClick() {
         work_area.getChildren().clear();
-        work_area.getChildren().add(new ImageView(new Image("pngwing.com.png")));
+        // work_area.getChildren().add(new ImageView(new Image("pngwing.com.png")));
     }
 
     @FXML
     private void newClick() {
+
         FileChooser fileChooser = new FileChooser();
         File file = fileChooser.showOpenDialog(null);
-        if (file != null)
+        if (file != null) {
             Parser.parse(file);
-        else
+            work_area.getChildren().clear();
+            List<Street> streets = Parser.getStreets();
+            this.viewStreets = new ArrayList<>();
+            for (int i = 0; i < streets.size(); i++) {
+                this.viewStreets.add(new ViewStreet(streets.get(i), work_area));
+                work_area.getChildren().add(this.viewStreets.get(i));
+            }
+
+            List<Stop> stops = Parser.getStops();
+            this.viewStops = new ArrayList<>();
+            for (int i = 0; i < stops.size(); i++) {
+                this.viewStops.add(new ViewStop(stops.get(i)));
+                work_area.getChildren().add(this.viewStops.get(i));
+
+            }
+
+            List<Line> lines = Parser.getLines();
+            this.viewLines = new ArrayList<>();
+            for (int i = 0; i < lines.size(); i++) {
+                this.viewLines.add(new ViewLine(lines.get(i)));
+                work_area.getChildren().add(this.viewLines.get(i));
+            }
+
+            BackgroundImage myBI = new BackgroundImage(new Image("ground.png", 375, 216, false, true),
+                    BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
+                    BackgroundSize.DEFAULT);
+            // then you set to your node
+            work_area.setBackground(new Background(myBI));
+        } else {
             System.out.println("No file choosed");
-
-        List<Street> streets = Parser.getStreets();
-        this.viewStreets = new ArrayList<>();
-        for (int i = 0; i < streets.size(); i++) {
-            this.viewStreets.add(new ViewStreet(streets.get(i)));
-            work_area.getChildren().add(this.viewStreets.get(i));
         }
 
-        List<Stop> stops = Parser.getStops();
-        this.viewStops = new ArrayList<>();
-        for (int i = 0; i < stops.size(); i++) {
-            this.viewStops.add(new ViewStop(stops.get(i)));
-            work_area.getChildren().add(this.viewStops.get(i));
-        }
-
-        List<Line> lines = Parser.getLines();
-        this.viewLines = new ArrayList<>();
-        for (int i = 0; i < lines.size(); i++) {
-            this.viewLines.add(new ViewLine(lines.get(i)));
-            work_area.getChildren().add(this.viewLines.get(i));
-        }
     }
 
     @FXML

@@ -14,6 +14,7 @@ public class ViewStop extends Circle {
 
     public ViewStop(Stop in_stop) {
         this.stop = in_stop;
+        setId(stop.getId());
         glow.setLevel(0.9);
         setOnMouseEntered(mouseEntered);
         setOnMouseExited(mouseExited);
@@ -33,7 +34,7 @@ public class ViewStop extends Circle {
         setCenterY(stop.getCoordinate().getY());
         setRadius(8);
         setFill(Color.WHITE);
-        setStroke(Color.GREY);
+        setStroke(Color.BLACK);
         setStrokeWidth(4);
     }
 

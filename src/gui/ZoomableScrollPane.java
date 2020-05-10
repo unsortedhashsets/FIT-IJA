@@ -25,14 +25,7 @@ public class ZoomableScrollPane extends ScrollPane {
     }
 
     public void zoomToDefault() {
-        scaleTransform.setX(1.0);
-        scaleTransform.setY(1.0);
-    }
-
-    public void zoomTo(double scaleValue) {
-        this.scaleValue = scaleValue;
-        scaleTransform.setX(scaleValue);
-        scaleTransform.setY(scaleValue);
+        zoomTo(1.0);
     }
 
     public void zoomOut() {
@@ -49,5 +42,11 @@ public class ZoomableScrollPane extends ScrollPane {
             scaleValue = 10;
         }
         zoomTo(scaleValue);
+    }
+
+    public void zoomTo(double scaleValue) {
+        this.scaleValue = scaleValue;
+        scaleTransform.setX(scaleValue);
+        scaleTransform.setY(scaleValue);
     }
 }

@@ -7,7 +7,8 @@ public class Street{
     private String id;
     private List<Stop> stops;
     private List<Coordinate> coordinates;
-    
+    private int drivingDifficulties = 0; 
+
     private Street(String id, Coordinate... coordinates){
         this.id = id;
         this.stops = new ArrayList<Stop>();
@@ -94,4 +95,13 @@ public class Street{
             || this.begin().equals(s.begin())
             || this.end().equals(s.end());
     }
+
+    public int GetdrivingDifficulties() {
+        return this.drivingDifficulties;
+    }
+
+    public void SetdrivingDifficulties(int DD) {
+        this.drivingDifficulties = DD;
+    }
+
 }
