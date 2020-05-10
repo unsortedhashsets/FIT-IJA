@@ -1,7 +1,9 @@
 package vehicles;
 
-import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.Iterator;
 
 import internal.InternalClock;
 import maps.Coordinate;
@@ -82,10 +84,11 @@ public class Vehicle implements Runnable{
     @Override
     public void run() {
         LinkedHashMap<Coordinate, Object> coordinates = this.line.getCoordinates();
-        Iterator iter = coordinates.keySet().iterator();
+        ArrayList<Coordinate> listOfCoors = new ArrayList<Coordinate>(coordinates.keySet());
+        Iterator<Coordinate> iter = listOfCoors.iterator();
+
         this.position = this.departure 
                       = this.arrival = (Coordinate) iter.next();
-
         this.float_X = this.position.getX();
         this.float_Y = this.position.getY();
 
@@ -104,6 +107,16 @@ public class Vehicle implements Runnable{
                             
                             actualizePosition();
                         }
+
+                        Object object = coordinates.get(this.arrival);
+                        System.out.println(object.getClass().getName());
+                        if (object.getClass().getName().equals("Stop")){
+
+                        }
+                    }
+                    else{
+                        Collections.reverse(listOfCoors);
+                        iter = listOfCoors.iterator();
                     }
                 }
             }
@@ -114,6 +127,12 @@ public class Vehicle implements Runnable{
         if (this.thread == null) {
             this.thread = new Thread(this, id);
             this.thread.start();
+        }
+    }
+
+    public void stop() {
+        if (this.thread != null) {
+            this.thread.interrupt();
         }
     }
 
