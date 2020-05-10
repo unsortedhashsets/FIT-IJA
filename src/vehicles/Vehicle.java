@@ -1,6 +1,7 @@
 package vehicles;
 
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.TreeMap;
 
 import internal.InternalClock;
@@ -74,7 +75,7 @@ public class Vehicle implements Runnable{
 
     @Override
     public void run() {
-        TreeMap<Coordinate, Object> coordinates = this.line.getCoordinates();
+        LinkedHashMap<Coordinate, Object> coordinates = this.line.getCoordinates();
         Iterator iter = coordinates.keySet().iterator();
         this.position = this.departure 
                       = this.arrival = (Coordinate) iter.next();

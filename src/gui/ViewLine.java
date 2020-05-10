@@ -1,6 +1,7 @@
 package gui;
 
 import java.util.List;
+import java.util.TreeMap;
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.stream.Collectors;
 
@@ -50,12 +51,14 @@ public class ViewLine extends Polyline {
         for (int i = 0; i < tmp.size(); i++) {
             // ZERO STOP
             if (i == 0) {
-                System.out.println("0 POINT: " + tmp.get(i).getValue().getCoordinate().getX() + " - " + tmp.get(i).getValue().getCoordinate().getY());                    // <----------- CORD
+                System.out.println("0 POINT: " + tmp.get(i).getValue().getCoordinate().getX() + " - " + tmp.get(i).getValue().getCoordinate().getY());                    
+                line.addCoordinate(tmp.get(i).getValue().getCoordinate(), tmp.get(i).getValue());
                 getPoints().addAll(new Double[] { (double) tmp.get(i).getValue().getCoordinate().getX(), (double) tmp.get(i).getValue().getCoordinate().getY() });
             // EMPTY STREET
             } else if (tmp.get(i).getValue() == null) {
                 for (int c = 0; c < tmp.get(i).getKey().getCoordinates().size() - 1; c++){
-                    System.out.println(i + " CORNER: " + tmp.get(i).getKey().getCoordinates().get(c).getX() + " - " + tmp.get(i).getKey().getCoordinates().get(c).getY());           // <----------- CORD
+                    System.out.println(i + " CORNER: " + tmp.get(i).getKey().getCoordinates().get(c).getX() + " - " + tmp.get(i).getKey().getCoordinates().get(c).getY());           
+                    line.addCoordinate(tmp.get(i).getKey().getCoordinates().get(c), tmp.get(i).getKey());
                     getPoints().addAll(new Double[] { (double) tmp.get(i).getKey().getCoordinates().get(c).getX(), (double) tmp.get(i).getKey().getCoordinates().get(c).getY()});
                 }
             // STREET WITH STOP
@@ -76,20 +79,24 @@ public class ViewLine extends Polyline {
                     }
                     // N STOPS IF ON ONE STRAIGHT LINE
                     if (tmp.get(i).getKey().getCoordinates().size() == 2){
-                        System.out.println(i + " POINT: " + tmp.get(i).getValue().getCoordinate().getX() + " - " + tmp.get(i).getValue().getCoordinate().getY());                   // <----------- CORD
+                        System.out.println(i + " POINT: " + tmp.get(i).getValue().getCoordinate().getX() + " - " + tmp.get(i).getValue().getCoordinate().getY());
+                        line.addCoordinate(tmp.get(i).getValue().getCoordinate(), tmp.get(i).getValue());
                         getPoints().addAll(new Double[] { (double) tmp.get(i).getValue().getCoordinate().getX(), (double) tmp.get(i).getValue().getCoordinate().getY() });
                     // N STOPS IF ON ONE not STRAIGHT LINE
                     } else {
                         for (; j < tmp.get(i).getKey().getCoordinates().size() - 1; j++) {
                             if (checkIfStopIsBetweenCoords(tmp.get(i).getValue(), tmp.get(i).getKey().getCoordinates().get(j), tmp.get(i).getKey().getCoordinates().get(j + 1))) {
-                                System.out.println(i + " CORNER: " + tmp.get(i).getKey().getCoordinates().get(j).getX() + " - " + tmp.get(i).getKey().getCoordinates().get(j).getY());          // <----------- CORD
+                                System.out.println(i + " CORNER: " + tmp.get(i).getKey().getCoordinates().get(j).getX() + " - " + tmp.get(i).getKey().getCoordinates().get(j).getY());
+                                line.addCoordinate(tmp.get(i).getKey().getCoordinates().get(j), tmp.get(i).getKey());
                                 getPoints().addAll(new Double[] { (double) tmp.get(i).getKey().getCoordinates().get(j).getX(), (double) tmp.get(i).getKey().getCoordinates().get(j).getY() }); 
-                                System.out.println(i + " POINT: " + tmp.get(i).getValue().getCoordinate().getX() + " - " + tmp.get(i).getValue().getCoordinate().getY());                   // <----------- CORD
+                                System.out.println(i + " POINT: " + tmp.get(i).getValue().getCoordinate().getX() + " - " + tmp.get(i).getValue().getCoordinate().getY());                  
                                 getPoints().addAll(new Double[] { (double) tmp.get(i).getValue().getCoordinate().getX(), (double) tmp.get(i).getValue().getCoordinate().getY() });
+                                line.addCoordinate(tmp.get(i).getValue().getCoordinate(), tmp.get(i).getValue());
                                 break;
                             } else {
-                                System.out.println(i + " CORNER: " + tmp.get(i).getKey().getCoordinates().get(j).getX() + " - " + tmp.get(i).getKey().getCoordinates().get(j).getY());           // <----------- CORD
+                                System.out.println(i + " CORNER: " + tmp.get(i).getKey().getCoordinates().get(j).getX() + " - " + tmp.get(i).getKey().getCoordinates().get(j).getY());
                                 getPoints().addAll(new Double[] { (double) tmp.get(i).getKey().getCoordinates().get(j).getX(), (double) tmp.get(i).getKey().getCoordinates().get(j).getY() });
+                                line.addCoordinate(tmp.get(i).getKey().getCoordinates().get(j), tmp.get(i).getKey());
                             }
                         }
                     }
@@ -117,13 +124,15 @@ public class ViewLine extends Polyline {
                                     getPoints().addAll(new Double[] { (double) tmp.get(i-1).getKey().getCoordinates().get(tmp.get(i-1).getKey().getCoordinates().size()-1).getX(), (double) tmp.get(i-1).getKey().getCoordinates().get(tmp.get(i-1).getKey().getCoordinates().size()-1).getY() });
                                 // END-BEGIN     
                                 } else {
-                                    System.out.println(i + " CORNER: " + tmp.get(i-1).getKey().getCoordinates().get(j).getX() + " - " + tmp.get(i-1).getKey().getCoordinates().get(j).getY());             // <----------- CORD
-                                    getPoints().addAll(new Double[] { (double) tmp.get(i-1).getKey().getCoordinates().get(j).getX(), (double) tmp.get(i-1).getKey().getCoordinates().get(j).getY() }); 
+                                    System.out.println(i + " CORNER: " + tmp.get(i-1).getKey().getCoordinates().get(j).getX() + " - " + tmp.get(i-1).getKey().getCoordinates().get(j).getY());      
+                                    getPoints().addAll(new Double[] { (double) tmp.get(i-1).getKey().getCoordinates().get(j).getX(), (double) tmp.get(i-1).getKey().getCoordinates().get(j).getY() });
+                                    line.addCoordinate(tmp.get(i-1).getKey().getCoordinates().get(j), tmp.get(i-1).getKey());
                                 }
                             } else if (checkIfStopIsBetweenCoords(tmp.get(i-1).getValue(), tmp.get(i-1).getKey().getCoordinates().get(c-1), tmp.get(i-1).getKey().getCoordinates().get(c))) { 
                                 for (; c < tmp.get(i-1).getKey().getCoordinates().size(); c++){
-                                    System.out.println(i + " CORNER: " + tmp.get(i-1).getKey().getCoordinates().get(c).getX() + " - " + tmp.get(i-1).getKey().getCoordinates().get(c).getY());                  // <----------- CORD
+                                    System.out.println(i + " CORNER: " + tmp.get(i-1).getKey().getCoordinates().get(c).getX() + " - " + tmp.get(i-1).getKey().getCoordinates().get(c).getY());             
                                     getPoints().addAll(new Double[] { (double) tmp.get(i-1).getKey().getCoordinates().get(c).getX(), (double) tmp.get(i-1).getKey().getCoordinates().get(c).getY() });
+                                    line.addCoordinate(tmp.get(i-1).getKey().getCoordinates().get(c), tmp.get(i-1).getKey());
                                 }
                                 break;
                             }
@@ -138,19 +147,22 @@ public class ViewLine extends Polyline {
                                     getPoints().addAll(new Double[] { (double) tmp.get(i-1).getKey().getCoordinates().get(tmp.get(i-1).getKey().getCoordinates().size()-1).getX(), (double) tmp.get(i-1).getKey().getCoordinates().get(tmp.get(i-1).getKey().getCoordinates().size()-1).getY() });
                                 // BEGIN-BEGIN
                                 } else {
-                                    System.out.println(i + " CORNER: " + tmp.get(i-1).getKey().getCoordinates().get(j).getX() + " - " + tmp.get(i-1).getKey().getCoordinates().get(j).getY());              // <----------- CORD
+                                    System.out.println(i + " CORNER: " + tmp.get(i-1).getKey().getCoordinates().get(j).getX() + " - " + tmp.get(i-1).getKey().getCoordinates().get(j).getY());              
                                     getPoints().addAll(new Double[] { (double) tmp.get(i-1).getKey().getCoordinates().get(j).getX(), (double) tmp.get(i-1).getKey().getCoordinates().get(j).getY() });
+                                    line.addCoordinate(tmp.get(i-1).getKey().getCoordinates().get(j), tmp.get(i-1).getKey());
                                 }
                             } else if (checkIfStopIsBetweenCoords(tmp.get(i-1).getValue(), tmp.get(i-1).getKey().getCoordinates().get(c), tmp.get(i-1).getKey().getCoordinates().get(c+1))) { 
                                 for (; c >= 0; c--){
-                                    System.out.println(i + " CORNER: " + tmp.get(i-1).getKey().getCoordinates().get(c).getX() + " - " + tmp.get(i-1).getKey().getCoordinates().get(c).getY());              // <----------- CORD
+                                    System.out.println(i + " CORNER: " + tmp.get(i-1).getKey().getCoordinates().get(c).getX() + " - " + tmp.get(i-1).getKey().getCoordinates().get(c).getY());              
                                     getPoints().addAll(new Double[] { (double) tmp.get(i-1).getKey().getCoordinates().get(c).getX(), (double) tmp.get(i-1).getKey().getCoordinates().get(c).getY() });
+                                    line.addCoordinate(tmp.get(i-1).getKey().getCoordinates().get(c), tmp.get(i-1).getKey());
                                 }
                                 break;
                             }
                         }
                     }
-                    System.out.println(i + " POINT: " + tmp.get(i).getValue().getCoordinate().getX() + " - " + tmp.get(i).getValue().getCoordinate().getY());                             // <----------- CORD
+                    System.out.println(i + " POINT: " + tmp.get(i).getValue().getCoordinate().getX() + " - " + tmp.get(i).getValue().getCoordinate().getY());
+                    line.addCoordinate(tmp.get(i).getValue().getCoordinate(), tmp.get(i).getValue());
                     getPoints().addAll(new Double[] { (double) tmp.get(i).getValue().getCoordinate().getX(), (double) tmp.get(i).getValue().getCoordinate().getY() });
                 }
 
