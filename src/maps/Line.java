@@ -1,7 +1,7 @@
 package maps;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.TreeMap;
 import java.util.AbstractMap.SimpleImmutableEntry;
 
 import vehicles.Autobus;
@@ -17,9 +17,7 @@ public class Line {
     private int counterID;
 
     private ArrayList<SimpleImmutableEntry<Street, Stop>> route;
-    private List<String> times;
-    private List<Street> streets;
-    private List<Stop> stops;
+    private TreeMap<Coordinate, Object> coordinates;
 
     public Line(String id, String color, String type) {
         this.id = id;
@@ -29,9 +27,7 @@ public class Line {
         this.counterID = 0;
 
         this.route = new ArrayList<SimpleImmutableEntry<Street, Stop>>();
-        this.times = new ArrayList<String>();
-        this.streets = new ArrayList<Street>();
-        this.stops = new ArrayList<Stop>();
+        this.coordinates = new TreeMap<>();
     }
 
     public boolean addStop(Stop stop) {
@@ -54,6 +50,10 @@ public class Line {
         }
         this.route.add(new SimpleImmutableEntry<>(street, null));
         return true;
+    }
+
+    public void addCoordinate(Coordinate coordinate, Object object){
+        this.coordinates.put(coordinate, object);
     }
 
     public java.util.List<java.util.AbstractMap.SimpleImmutableEntry<Street, Stop>> getRoute() {
@@ -81,5 +81,9 @@ public class Line {
 
     public String getID() {
         return this.id;
+    }
+
+    public TreeMap<Coordinate, Object> getCoordinates(){
+        return this.coordinates;
     }
 }

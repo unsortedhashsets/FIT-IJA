@@ -128,7 +128,8 @@ public class Parser {
                 String from = timeElement.getAttribute("from");
                 String to = timeElement.getAttribute("to");
 
-                vehicles.add(line.createVehicle(from, to));
+                Vehicle vehicle = line.createVehicle(from, to);
+                vehicles.add(vehicle);
             }
 
             lines.add(line);
