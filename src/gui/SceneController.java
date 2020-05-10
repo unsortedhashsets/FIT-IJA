@@ -114,8 +114,7 @@ public class SceneController implements Initializable {
 
     private void setInitialScen() {
         this.work_area = new AnchorPane();
-        // work_area.getChildren().add(new ImageView(new
-        // Image("Paris_Revisited_preview.png")));
+        // work_area.getChildren().add(new ImageView(new Image("Paris_Revisited_preview.png")));
         this.scroll_work_area = new ZoomableScrollPane(work_area);
         scroll_work_area.setFitToWidth(true);
         scroll_work_area.setFitToHeight(true);
@@ -170,7 +169,7 @@ public class SceneController implements Initializable {
             List<Street> streets = Parser.getStreets();
             this.viewStreets = new ArrayList<>();
             for (int i = 0; i < streets.size(); i++) {
-                this.viewStreets.add(new ViewStreet(streets.get(i), work_area));
+                this.viewStreets.add(new ViewStreet(streets.get(i), work_area, work_area));
                 work_area.getChildren().add(this.viewStreets.get(i));
             }
 

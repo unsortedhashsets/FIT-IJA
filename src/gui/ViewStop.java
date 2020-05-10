@@ -32,16 +32,16 @@ public class ViewStop extends Circle {
     private void drawStop() {
         setCenterX(stop.getCoordinate().getX());
         setCenterY(stop.getCoordinate().getY());
-        setRadius(8);
+        setRadius(14);
         setFill(Color.WHITE);
         setStroke(Color.BLACK);
-        setStrokeWidth(4);
+        setStrokeWidth(6);
     }
 
     EventHandler<MouseEvent> mouseEntered = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent e) {
-            setEffect(glow);
+            setEffect(glow);  
             System.out.println("Mouse entered on stop: " + stop.getId());
         }
     };

@@ -1,20 +1,13 @@
 .stop-tip{
-    -fx-background-radius: 0 0 0 0;
-    -fx-background-color:	linear-gradient(red  , grey  );
+    -fx-background-radius: 6 6 6 6;
+    -fx-background-color:	linear-gradient(rgb(255, 255, 255)  ,#000000  );
 }
 
 .street-tip{
-    -fx-background-radius: 3 3 3 3;
-    -fx-background-color:	linear-gradient(#008000  , grey  );
-}
-
-.line-tip{
     -fx-background-radius: 6 6 6 6;
-    -fx-background-color:	linear-gradient(#ffff00  , grey  );
+    -fx-background-color:	linear-gradient(#000000  , rgb(255, 255, 255));
 }
 
-.work-area {
-    -fx-background-image: url("https://www.google.com/images/srpr/logo3w.png");
-    -fx-background-repeat: repeat;
-    -fx-background-size: 240;
+.alert { 
+    -fx-background-color: linear-gradient(90deg, rgba(255,241,0,1) 0%, rgba(255,0,0,1) 10%, rgba(255,241,0,1) 20%, rgba(255,0,0,1) 30%, rgba(255,241,0,1) 40%, rgba(255,0,0,1) 50%, rgba(255,241,0,1) 60%, rgba(255,0,0,1) 70%, rgba(255,241,0,1) 80%, rgba(255,0,0,1) 90%, rgba(255,241,0,1) 100%);
 }
