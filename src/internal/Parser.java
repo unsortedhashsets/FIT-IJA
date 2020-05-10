@@ -162,4 +162,8 @@ public class Parser {
     public static List<Line> getLines() {
         return lines;
     }
+
+    public static List<Vehicle> getVehicles() {
+        return vehicles;
+    }
 }

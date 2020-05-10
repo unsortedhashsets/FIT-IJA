@@ -2,7 +2,6 @@ package vehicles;
 
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.TreeMap;
 
 import internal.InternalClock;
 import maps.Coordinate;
@@ -55,8 +54,15 @@ public class Vehicle implements Runnable{
         float acceleration = InternalClock.getAccelerationLevel();
         float deltaLength = arrival.length(this.position);
 
-        float_X += acceleration * velocity_X * 1.0f; // 1.0f = time
-        float_Y += acceleration * velocity_Y * 1.0f; // 1.0f = time
+        float_X += acceleration * velocity_X * 0.1f; // 1.0f = time
+        float_Y += acceleration * velocity_Y * 0.1f; // 1.0f = time
+
+        float_X = (velocity_X > 0) 
+                ? Math.min(float_X, this.arrival.getX())
+                : Math.max(float_X, this.arrival.getX());
+        float_Y = (velocity_Y > 0) 
+                ? Math.min(float_Y, this.arrival.getY())
+                : Math.max(float_Y, this.arrival.getY());
 
         this.position = Coordinate.create((int)float_X, (int)float_Y);
     }
@@ -80,6 +86,9 @@ public class Vehicle implements Runnable{
         this.position = this.departure 
                       = this.arrival = (Coordinate) iter.next();
 
+        this.float_X = this.position.getX();
+        this.float_Y = this.position.getY();
+
         while (true){
             if (InternalClock.isTime(from)){
                 while (!InternalClock.isTime(to)){
@@ -87,7 +96,12 @@ public class Vehicle implements Runnable{
                         this.departure = this.arrival;
                         this.arrival = (Coordinate) iter.next();
 
+                        setAxisVelocities();
                         while (!this.position.equals(this.arrival)){
+                            try{
+                                Thread.sleep(100);
+                            } catch (InterruptedException exc){}
+                            
                             actualizePosition();
                         }
                     }
