@@ -32,7 +32,7 @@ public class Coordinate {
     }
 
     public float length(Coordinate c) {
-        return (float) Math.sqrt((diffX(c) * diffX(c)) + (diffY(c) * diffY(c)));
+        return (float) Math.sqrt(Math.pow(this.diffX(c), 2) + Math.pow(this.diffY(c), 2));
     }
 
     public boolean equals(Object obj) {

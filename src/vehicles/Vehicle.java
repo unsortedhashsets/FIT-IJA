@@ -74,21 +74,30 @@ public class Vehicle implements Runnable{
     public boolean actualizePosition(){
         float acceleration = InternalClock.getAccelerationLevel();
 
-        float distance = acceleration * velocity * 0.01f;
+        float time = 0.04f;
 
-        while (!(0 <= distance && distance <= 0.0001)){
-            float distance_X = acceleration * velocity_X * 0.01f; // 1.0f = 1 second
-            float distance_Y = acceleration * velocity_Y * 0.01f; // 1.0f = 1 second
+        while (time != 0){
+            Object delayObject = coordinates.get(this.departure);
+            float delay = 1.0f;
+            if (delayObject.getClass().getName().equals("maps.Street")){
+                Street street = (Street) delayObject;
+                delay = 1 - street.GetdrivingDifficulties() * 0.01f;
+            } else if (delayObject.getClass().getName().equals("maps.Stop")){
+                Stop stop = (Stop) delayObject;
+                delay = 1 - stop.getStreet().GetdrivingDifficulties() * 0.01f;
+            }
 
-            
+            float distance_X = delay * acceleration * velocity_X * 0.01f; // 1.0f = 1 second
+            float distance_Y = delay * acceleration * velocity_Y * 0.01f; // 1.0f = 1 second
+
             this.float_X += (velocity_X > 0) 
                           ? Math.min(distance_X, this.arrival.diffX(this.position))
                           : Math.max(distance_X, this.arrival.diffX(this.position));
             this.float_Y += (velocity_Y > 0) 
                           ? Math.min(distance_Y, this.arrival.diffY(this.position))
                           : Math.max(distance_Y, this.arrival.diffY(this.position));
-
-            this.position = Coordinate.create((int)float_X, (int)float_Y);
+ 
+            this.position = Coordinate.create(Math.round(float_X), Math.round(float_Y));
             if (this.position.equals(this.arrival)){
                 this.departure = this.arrival;
                 if (!iter.hasNext()){
@@ -105,8 +114,8 @@ public class Vehicle implements Runnable{
                 }
             }
 
-            float length = (float) Math.sqrt((distance_X * distance_X) + (distance_Y * distance_Y));
-            distance -= length;
+            float length = (float) Math.sqrt(Math.pow(distance_X, 2) + Math.pow(distance_Y, 2));
+            time -= length / (acceleration * this.velocity * delay);
         } 
 
         return false;
@@ -132,16 +141,15 @@ public class Vehicle implements Runnable{
             if (InternalClock.isTime(from)){
                 while (!InternalClock.isTime(to)){
                     try{
-                        Thread.sleep(10);
+                        Thread.sleep(40);
                     } catch (InterruptedException exc){}
                     
-                    System.out.println("position: " + this.position);
                     boolean isStop = actualizePosition();
                     if (isStop){
                         String stopTime = InternalClock.getStopTime().substring(0,5);
                         while(!InternalClock.isTime(stopTime)){
                             try{
-                                Thread.sleep(10);
+                                Thread.sleep(100);
                             } catch (InterruptedException exc){}
                         }
                     }
