@@ -44,7 +44,7 @@ public class ViewVehicle extends Circle {
         } else if (vehicle instanceof  Autobus) {
             setFill(new ImagePattern(new Image("bus.png")));
         }
-        setStyle("-fx-stroke: " + vehicle.getLine().getColor());
+        setStyle("-fx-opacity: 0.8; -fx-stroke: " + vehicle.getLine().getColor());
     }        
 
     public void UpdatePosition() {

@@ -3,6 +3,7 @@ package gui;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Group;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
@@ -49,6 +50,8 @@ public class SceneController implements Initializable {
     private List<ViewLine> viewLines;
     private List<ViewStop> viewStops;
     private List<ViewVehicle> viewVehicles;
+
+    private Group vehiclesGroup;
 
     private Timeline updatePos;
 
@@ -185,19 +188,23 @@ public class SceneController implements Initializable {
 
             }
 
-            List<Line> lines = Parser.getLines();
-            this.viewLines = new ArrayList<>();
-            for (int i = 0; i < lines.size(); i++) {
-                this.viewLines.add(new ViewLine(lines.get(i), work_area));
-                work_area.getChildren().add(this.viewLines.get(i));
-            }
+            vehiclesGroup = new Group();
 
             List<Vehicle> vehicles = Parser.getVehicles();
             this.viewVehicles = new ArrayList<>();
             for (int i = 0; i < vehicles.size(); i++) {
                 this.viewVehicles.add(new ViewVehicle(vehicles.get(i)));
-                work_area.getChildren().add(this.viewVehicles.get(i));
+                vehiclesGroup.getChildren().add(this.viewVehicles.get(i));
             }
+
+            List<Line> lines = Parser.getLines();
+            this.viewLines = new ArrayList<>();
+            for (int i = 0; i < lines.size(); i++) {
+                this.viewLines.add(new ViewLine(lines.get(i), work_area, vehiclesGroup));
+                //work_area.getChildren().add(this.viewLines.get(i));
+            }
+
+            work_area.getChildren().add(this.vehiclesGroup);
 
 
 

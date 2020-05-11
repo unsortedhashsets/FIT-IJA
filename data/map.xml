@@ -44,13 +44,16 @@
             <stop_line>Bozetechova</stop_line>
             <stop_line>Manesky</stop_line>
             <departure_time>
-                <time>10:10</time>
-                <time>10:50</time>
-                <time>11:35</time>
-                <time>12:20</time>
-                <time>13:20</time>
-                <time>14:35</time>
-                <time>15:00</time>
+                <time from="10:00" to="20:00"></time>
+                <time from="10:30" to="20:00"></time>
+                <time from="11:00" to="21:00"></time>
+                <time from="11:30" to="21:00"></time>
+                <time from="12:00" to="22:00"></time>
+                <time from="13:00" to="22:00"></time>
+                <time from="13:30" to="23:00"></time>
+                <time from="14:00" to="23:00"></time>
+                <time from="14:30" to="23:00"></time>
+                <time from="15:00" to="23:00"></time>
             </departure_time>
         </line>
         <line id="2" color="#228B22" type="trolley">
@@ -59,15 +62,16 @@
             <street_line>Manesky</street_line>
             <stop_line>Namesti Svobody</stop_line>
             <departure_time>
-                <time>10:00</time>
-                <time>10:50</time>
-                <time>11:20</time>
-                <time>12:00</time>
-                <time>13:10</time>
-                <time>13:35</time>
-                <time>14:00</time>
-                <time>14:30</time>
-                <time>15:00</time>
+                <time from="10:00" to="20:00"></time>
+                <time from="10:30" to="20:00"></time>
+                <time from="11:00" to="21:00"></time>
+                <time from="11:30" to="21:00"></time>
+                <time from="12:00" to="22:00"></time>
+                <time from="13:00" to="22:00"></time>
+                <time from="13:30" to="23:00"></time>
+                <time from="14:00" to="23:00"></time>
+                <time from="14:30" to="23:00"></time>
+                <time from="15:00" to="23:00"></time>
             </departure_time>
         </line>
         <line id="3" color="#6A5ACD" type="autobus">
@@ -76,15 +80,16 @@
             <stop_line>Bozetechova</stop_line>
             <stop_line>Manesky</stop_line>
             <departure_time>
-                <time>10:00</time>
-                <time>10:30</time>
-                <time>11:00</time>
-                <time>12:00</time>
-                <time>13:00</time>
-                <time>13:30</time>
-                <time>14:00</time>
-                <time>14:30</time>
-                <time>15:00</time>
+                <time from="10:00" to="20:00"></time>
+                <time from="10:30" to="20:00"></time>
+                <time from="11:00" to="21:00"></time>
+                <time from="11:30" to="21:00"></time>
+                <time from="12:00" to="22:00"></time>
+                <time from="13:00" to="22:00"></time>
+                <time from="13:30" to="23:00"></time>
+                <time from="14:00" to="23:00"></time>
+                <time from="14:30" to="23:00"></time>
+                <time from="15:00" to="23:00"></time>
             </departure_time>
         </line>
     </lines>

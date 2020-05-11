@@ -5,8 +5,10 @@ import java.util.List;
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.stream.Collectors;
 import javafx.event.EventHandler;
+import javafx.scene.Group;
 import javafx.scene.control.Tooltip;
 import javafx.scene.effect.Glow;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Circle;
@@ -21,18 +23,23 @@ import maps.Street;
 public class ViewLine extends Polyline {
     AnchorPane work_pane;
     Line line;
-
+    Group stopGroup = new Group();
+    Group f_group = new Group();
     private Glow glow = new Glow();
 
-    public ViewLine(Line in_line, AnchorPane in_work_pane) {
+    public ViewLine(Line in_line, AnchorPane in_work_pane, Group Front_Group) {
         this.work_pane = in_work_pane;
         this.line = in_line;
+        this.f_group = Front_Group;
         setId(line.getID());
         glow.setLevel(1.0);
-        setOnMouseEntered(mouseEntered);
-        setOnMouseExited(mouseExited);
+        this.stopGroup.setOnMouseEntered(mouseEntered);
+        this.stopGroup.setOnMouseExited(mouseExited);
+        this.stopGroup.setOnMouseClicked(mouseClicked);
         setupToolTip();
         drawLine();
+        this.stopGroup.getChildren().add(this);
+        this.work_pane.getChildren().add(this.stopGroup);
     }
 
     private void setupToolTip() {
@@ -195,7 +202,7 @@ public class ViewLine extends Polyline {
             }
 
         }
-        setStyle("-fx-stroke:" + line.getColor());
+        setStyle("-fx-opacity: 0.8; -fx-stroke:" + line.getColor());
         setStrokeLineCap(StrokeLineCap.ROUND);
         setStrokeLineJoin(StrokeLineJoin.ROUND);
         setStrokeWidth(4);
@@ -206,9 +213,9 @@ public class ViewLine extends Polyline {
         circle.setCenterX(coor.getX());
         circle.setCenterY(coor.getY());
         circle.setRadius(6);
-        circle.setStyle("-fx-fill: " + line.getColor());
-        this.work_pane.getChildren().add(circle);
-    }
+        circle.setStyle("-fx-opacity: 0.8; -fx-fill: " + line.getColor());
+        this.stopGroup.getChildren().add(circle);
+    } 
 
     private Boolean checkIfStopIsBetweenCoords(Stop s, Coordinate first, Coordinate second) {
         // test point in x-range
@@ -229,7 +236,7 @@ public class ViewLine extends Polyline {
     EventHandler<MouseEvent> mouseEntered = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent e) {
-            setEffect(glow);
+            stopGroup.setEffect(glow);
             System.out.println("Mouse entered on Line: " + line.getID());
         }
     };
@@ -237,9 +244,27 @@ public class ViewLine extends Polyline {
     EventHandler<MouseEvent> mouseExited = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent e) {
-            setEffect(null);
+            stopGroup.setEffect(null);
             System.out.println("Mouse exited from Line: " + line.getID());
         }
     };
+
+    EventHandler<MouseEvent> mouseClicked = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent e) {
+            if (e.getButton() == MouseButton.PRIMARY)
+            {   
+                stopGroup.toFront();
+                f_group.toFront();
+                System.out.println("Mouse LEFT clicked on street: " + line.getID());
+            } else if (e.getButton() == MouseButton.SECONDARY)
+            {                
+                stopGroup.toFront();
+                f_group.toFront();
+                System.out.println("Mouse RIGHT clicked on street " + line.getID());
+            }
+        }
+    };
+    
 
 }
