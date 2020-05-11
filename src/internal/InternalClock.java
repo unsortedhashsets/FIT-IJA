@@ -1,30 +1,19 @@
 package internal;
 
-import java.time.Clock;
-import java.time.Duration;
 import java.time.Instant;
-import java.time.ZoneId;
 import java.time.ZoneOffset;
 
 public class InternalClock {
+    public static final int SECOND = 1;
+    public static final int MINUTE = 60;
+    public static final int HOUR = 3600;
+
     private static float acceleration = 1;
-    private static Clock clock;
+    private static Instant clock;
     private static String localTime;
 
     public static void setDefaultClock() {
-        clock = Clock.fixed(Instant.parse("2020-05-01T10:00:00.00Z"), ZoneId.of("Europe/Prague"));
-    }
-
-    public static String updateClock() {
-        long millis = (long) (acceleration * 100);
-        clock = Clock.offset(clock, Duration.ofMillis(millis));
-
-        localTime = clock.instant().atZone(ZoneOffset.UTC).toLocalTime().toString();
-        if (acceleration == 1) {
-            return localTime.substring(0, Math.min(8, localTime.length())); // get time without millis
-        } else {
-            return localTime.substring(0, Math.min(8, localTime.length())) + " (x" + acceleration + ")";
-        }
+        clock = Instant.parse("2020-05-01T10:00:00.00Z");
     }
 
     public static void defaultAccelerationLevel() {
@@ -46,21 +35,53 @@ public class InternalClock {
         System.out.println("TEST SceneController.speedDecrClick: " + acceleration);
     }
 
+    public static float getAccelerationLevel() {
+        return acceleration;
+    }
+
+    private static String getLocalTime(int accuracy){
+        String localTime = clock.atZone(ZoneOffset.UTC).toLocalTime().toString();
+
+        switch (accuracy){
+            case SECOND:
+                localTime = localTime.substring(0, Math.min(8, localTime.length()));
+                break;
+            case MINUTE:
+                localTime = localTime.substring(0, Math.min(5, localTime.length()));
+                break;
+            case HOUR:
+                localTime = localTime.substring(0, Math.min(2, localTime.length()));
+                break;
+            default:
+                break;
+        }
+
+        return localTime;
+    }
+
     public static String getStopTime(){
-        clock = Clock.offset(clock, Duration.ofMinutes(1));
-        String stopTime = clock.instant().atZone(ZoneOffset.UTC).toLocalTime().toString();
-        clock = Clock.offset(clock, Duration.ofMinutes(-1));
+        clock = clock.plusSeconds(30);
+        String stopTime = getLocalTime(SECOND);
+        clock = clock.minusSeconds(30);
 
         return stopTime;
     }
 
-    public static boolean isTime(String time){
-        String localTime = clock.instant().atZone(ZoneOffset.UTC).toLocalTime()
-                          .toString().substring(0, 5); // get HH:MM
+    public static boolean isTime(String time, int accuracy){
+        String localTime = getLocalTime(accuracy);
+
         return localTime.equals(time);
     }
 
-    public static float getAccelerationLevel() {
-        return acceleration;
+    public static String updateClock() {
+        long millis = (long) (acceleration * 100);
+        clock = clock.plusMillis(millis);
+
+        localTime = getLocalTime(SECOND);
+        if (acceleration != 1) {
+            localTime += " (x" + acceleration + ")";
+        }
+
+        return localTime;
     }
 }
