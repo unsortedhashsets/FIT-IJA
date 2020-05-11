@@ -78,7 +78,6 @@
             <stop_line>Namesti Svobody</stop_line>
             <street_line>Manesky</street_line>
             <stop_line>Bozetechova</stop_line>
-            <stop_line>Manesky</stop_line>
             <departure_time>
                 <time from="10:00" to="20:00"></time>
                 <time from="10:30" to="20:00"></time>

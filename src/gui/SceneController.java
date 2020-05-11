@@ -60,6 +60,9 @@ public class SceneController implements Initializable {
 
     @FXML
     private MenuItem Start;
+    
+    @FXML
+    private MenuItem Stop;
 
     @FXML
     private MenuItem SpeedIn;
@@ -146,6 +149,7 @@ public class SceneController implements Initializable {
         newButton.setAccelerator(new KeyCodeCombination(KeyCode.N, KeyCombination.CONTROL_DOWN));
         cleanButton.setAccelerator(new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_DOWN));
         Start.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN));
+        Stop.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN, KeyCodeCombination.SHIFT_DOWN));
         SpeedIn.setAccelerator(new KeyCodeCombination(KeyCode.A));
         SpeedDe.setAccelerator(new KeyCodeCombination(KeyCode.D));
         DefTime.setAccelerator(new KeyCodeCombination(KeyCode.T));
@@ -160,7 +164,6 @@ public class SceneController implements Initializable {
      */
     @FXML
     private void cleanClick() {
-        stopClick();
         work_area.getChildren().clear();
         System.out.println("TEST SceneController.cleanClick");
         // work_area.getChildren().add(new ImageView(new Image("pngwing.com.png")));
@@ -246,6 +249,7 @@ public class SceneController implements Initializable {
 
     @FXML
     private void setTimeClick() {
+        new SetTimeWindow();
         System.out.println("TEST SceneController.setTimeClick");
     }
 
@@ -296,7 +300,7 @@ public class SceneController implements Initializable {
             Coordinates.setText("");
         }
     };
-
+    
     EventHandler<MouseEvent> mouseEnteredAndMove = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent e) {

@@ -6,8 +6,6 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tooltip;
 import javafx.scene.effect.Glow;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -24,8 +22,8 @@ public class ViewStreet extends Polyline {
     private Node node;
     Tooltip tooltip = new Tooltip();
     ContextMenu contextMenu = new ContextMenu();
-    MenuItem open = new MenuItem("Open street");
-    MenuItem close = new MenuItem("Close street");
+    MenuItem open_close = new MenuItem("Close/Open Street");
+    MenuItem changeTraffic = new MenuItem("Set up traffic situation");
     AnchorPane work_pane;
 
     public ViewStreet(Street in_street, Node in_node, AnchorPane work_pane) {
@@ -86,27 +84,30 @@ public class ViewStreet extends Polyline {
         public void handle(MouseEvent e) {
             if (e.getButton() == MouseButton.PRIMARY)
             {   
-                contextMenu.getItems().add(close);
-                contextMenu.getItems().add(open);
-                close.setOnAction(event1 -> {
-                    System.out.println("SIGNAL on close click " + street.getId());
-                    System.out.println("STREET: " + street.getId() + " was closed on coords: " + street.getCoordinates().get(0).getX() + " - " + street.getCoordinates().get(0).getX() + " | " + street.getCoordinates().get(street.getCoordinates().size()-1).getX() + " - " + street.getCoordinates().get(street.getCoordinates().size()-1).getX());
-                    setStroke(Color.RED);
-                    getStrokeDashArray().addAll(20d,20d);
-                    street.SetStatus(false);
-                });
-                open.setOnAction(event1 -> {
-                    System.out.println("SIGNAL on open click " + street.getId());
-                    System.out.println("STREET: " + street.getId() + " was opened on coords: " + street.getCoordinates().get(0).getX() + " - " + street.getCoordinates().get(0).getX() + " | " + street.getCoordinates().get(street.getCoordinates().size()-1).getX() + " - " + street.getCoordinates().get(street.getCoordinates().size()-1).getX());
-                    setStroke(Color.BLACK);
-                    getStrokeDashArray().clear();
-                    street.SetStatus(true);     
-                });
-                contextMenu.show(node, e.getScreenX(), e.getScreenY());
                 System.out.println("Mouse LEFT clicked on street: " + street.getId());
             } else if (e.getButton() == MouseButton.SECONDARY)
             {
-                UserInputWindow window = new UserInputWindow(street);
+                contextMenu.getItems().add(open_close);
+                contextMenu.getItems().add(changeTraffic);
+                open_close.setOnAction(event1 -> {
+                    if (street.GetStatus()) {
+                        System.out.println("SIGNAL on close click " + street.getId());
+                        System.out.println("STREET: " + street.getId() + " was closed on coords: " + street.getCoordinates().get(0).getX() + " - " + street.getCoordinates().get(0).getX() + " | " + street.getCoordinates().get(street.getCoordinates().size()-1).getX() + " - " + street.getCoordinates().get(street.getCoordinates().size()-1).getX());
+                        setStroke(Color.RED);
+                        getStrokeDashArray().addAll(20d,20d);
+                        street.SetStatus(false);
+                    } else {
+                        System.out.println("SIGNAL on open click " + street.getId());
+                        System.out.println("STREET: " + street.getId() + " was opened on coords: " + street.getCoordinates().get(0).getX() + " - " + street.getCoordinates().get(0).getX() + " | " + street.getCoordinates().get(street.getCoordinates().size()-1).getX() + " - " + street.getCoordinates().get(street.getCoordinates().size()-1).getX());
+                        setStroke(Color.BLACK);
+                        getStrokeDashArray().clear();
+                        street.SetStatus(true);     
+                    }
+                });
+                changeTraffic.setOnAction(event1 -> {
+                    new SetTrafficWindow(street);
+                });
+                contextMenu.show(node, e.getScreenX(), e.getScreenY());
                 System.out.println("Mouse RIGHT clicked on street " + street.getId());
             }
         }

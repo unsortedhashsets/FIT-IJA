@@ -49,6 +49,7 @@
             <Menu mnemonicParsing="false" text="Visualization">
               <items>
                 <MenuItem fx:id="Start" mnemonicParsing="false" onAction="#startClick" text="Start" />
+                <MenuItem fx:id="Stop" mnemonicParsing="false" onAction="#stopClick" text="Stop" />
                 <MenuItem fx:id="SetTime" mnemonicParsing="false" onAction="#setTimeClick" text="Set Time" />
                 <MenuItem fx:id="DefTime" mnemonicParsing="false" onAction="#speedDefaClick" text="Set normal speed" />
                 <MenuItem fx:id="SpeedIn" mnemonicParsing="false" onAction="#speedIncrClick" text="Speed increase" />

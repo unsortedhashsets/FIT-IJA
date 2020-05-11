@@ -13,7 +13,11 @@ public class InternalClock {
     private static String localTime;
 
     public static void setDefaultClock() {
-        clock = Instant.parse("2020-05-01T10:00:00.00Z");
+        clock = Instant.parse("2020-05-01T09:57:00.00Z");
+    }
+
+    public static void setTime(String time) {
+        clock = Instant.parse("2020-05-01T" + time + ".00Z");
     }
 
     public static void defaultAccelerationLevel() {

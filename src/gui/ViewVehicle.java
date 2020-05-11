@@ -5,10 +5,8 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
-import maps.Stop;
 import vehicles.Autobus;
 import vehicles.Tram;
 import vehicles.Trolley;
@@ -62,7 +60,7 @@ public class ViewVehicle extends Circle {
         @Override
         public void handle(MouseEvent e) {
             setEffect(glow);  
-            System.out.println("Mouse entered on stop: " + vehicle.getId());
+            System.out.println("Mouse entered on auto: " + vehicle.getId());
         }
     };
 
@@ -70,7 +68,7 @@ public class ViewVehicle extends Circle {
         @Override
         public void handle(MouseEvent e) {
             setEffect(null);
-            System.out.println("Mouse exited from stop: " + vehicle.getId());
+            System.out.println("Mouse exited from auto: " + vehicle.getId());
         }
     };
 

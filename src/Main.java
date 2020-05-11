@@ -1,5 +1,6 @@
 import internal.InternalClock;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -20,14 +21,23 @@ public class Main extends Application {
     }
 
     public void start(Stage primaryStage) throws Exception {
+        Platform.setImplicitExit(true);
 
         Parent root = FXMLLoader.load(getClass().getResource("gui/Scene.fxml"));
+        
+
         
         Scene scene = new Scene(root, 800, 600);
 
         primaryStage.setScene(scene);
         primaryStage.setTitle("I");
         scene.getStylesheets().add("gui/Scene.css");
+
+        primaryStage.setOnCloseRequest((ae) -> {
+            Platform.exit();
+            System.exit(0);
+        });
+
         primaryStage.show();
     }
 

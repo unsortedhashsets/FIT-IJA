@@ -155,6 +155,7 @@ public class ViewLine extends Polyline {
                                     getPoints().addAll(new Double[] { (double) tmp.get(i-1).getKey().getCoordinates().get(c).getX(), (double) tmp.get(i-1).getKey().getCoordinates().get(c).getY() });
                                     line.addCoordinate(tmp.get(i-1).getKey().getCoordinates().get(c), tmp.get(i-1).getKey());
                                 }
+                                
                                 break;
                             }
                         }
@@ -169,7 +170,7 @@ public class ViewLine extends Polyline {
                         getPoints().addAll(new Double[] { (double) tmp.get(i).getValue().getCoordinate().getX(), (double) tmp.get(i).getValue().getCoordinate().getY() });
                     } else {
                         if (tmp.get(i-1).getKey().end().equals(tmp.get(i).getKey().begin()) || tmp.get(i-1).getKey().begin().equals(tmp.get(i).getKey().begin())) {
-                            for (c = 1; c < tmp.get(i).getKey().getCoordinates().size() - 1; c++) {
+                            for (c = 0; c < tmp.get(i).getKey().getCoordinates().size() - 1; c++) {
                                 System.out.println(i + " 7 CORNER: " + tmp.get(i).getKey().getCoordinates().get(c).getX() + " - " + tmp.get(i).getKey().getCoordinates().get(c).getY());              
                                 getPoints().addAll(new Double[] { (double) tmp.get(i).getKey().getCoordinates().get(c).getX(), (double) tmp.get(i).getKey().getCoordinates().get(c).getY() });
                                 line.addCoordinate(tmp.get(i).getKey().getCoordinates().get(c), tmp.get(i).getKey());
