@@ -95,7 +95,7 @@
             <coordinate_street X="2025" Y="1050"></coordinate_street>
         </street>
         <street id="Malátova">
-            <coordinate_street X="1805" Y="535"></coordinate_street>
+            <coordinate_street X="1805" Y="880"></coordinate_street>
             <coordinate_street X="1805" Y="1010"></coordinate_street>
             <coordinate_street X="2025" Y="1050"></coordinate_street>
         </street>
@@ -167,9 +167,8 @@
         <line id="53" color="#6A5ACD" type="autobus">
             <stop_line>Záhřebská</stop_line>
             <stop_line>Skácelova</stop_line>
-            <stop_line>Slovanské náměstí</stop_line>
-            <stop_line>Husitská</stop_line>
-            <stop_line>Semilasso</stop_line>
+            <street_line>Purkyňova II</street_line>
+            <stop_line>Berkova</stop_line>
             <departure_time>
                 <time from="10:00" to="20:00"></time>
             </departure_time>
