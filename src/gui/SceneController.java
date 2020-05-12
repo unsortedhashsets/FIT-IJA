@@ -7,6 +7,7 @@ import javafx.scene.Group;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
@@ -174,8 +175,23 @@ public class SceneController implements Initializable {
         FileChooser fileChooser = new FileChooser();
         File file = fileChooser.showOpenDialog(null);
         if (file != null) {
+
+            
             Parser.parse(file);
             work_area.getChildren().clear();
+
+            // FIX!
+            if (false) {                       // <---------------------------- !
+                String backImage = "test.png"; // <---------------------------- !
+                int backImageSizeX = 500;      // <---------------------------- !
+                int backImageSizeY = 500;      // <---------------------------- !
+                work_area.getChildren().add(new ImageView(new Image(backImage, backImageSizeX, backImageSizeY, false, true)));
+            } else {
+                work_area.setBackground(new Background(new BackgroundImage(new Image("ground.png", 375, 216, false, true),
+                BackgroundRepeat.REPEAT,BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,BackgroundSize.DEFAULT))); 
+            }
+            // FIX!
+
             List<Street> streets = Parser.getStreets();
             this.viewStreets = new ArrayList<>();
             for (int i = 0; i < streets.size(); i++) {
@@ -209,13 +225,6 @@ public class SceneController implements Initializable {
 
             work_area.getChildren().add(this.vehiclesGroup);
 
-
-
-            BackgroundImage myBI = new BackgroundImage(new Image("ground.png", 375, 216, false, true),
-                    BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
-                    BackgroundSize.DEFAULT);
-            // then you set to your node
-            work_area.setBackground(new Background(myBI));
         } else {
             System.out.println("No file choosed");
         }

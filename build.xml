@@ -42,6 +42,7 @@
             <fileset dir="src" includes="**/*.fxml"></fileset>
             <fileset dir="src" includes="**/*.css"></fileset>
             <fileset dir="lib" includes="**/*.png"></fileset>
+            <fileset dir="lib" includes="**/*.jpg"></fileset>
         </copy>
         <mkdir dir="dest"/>
         <jar destfile="dest/ija-app.jar" basedir="build">
