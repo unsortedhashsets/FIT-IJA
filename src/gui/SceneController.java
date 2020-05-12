@@ -180,12 +180,12 @@ public class SceneController implements Initializable {
             Parser.parse(file);
             work_area.getChildren().clear();
 
-            String background = Parser.getBackgroundPath();
-            if (background != null) {
+            try {
+                String background = Parser.getBackgroundPath();
                 int width = Parser.getWidth();
                 int height = Parser.getHeight();
                 work_area.getChildren().add(new ImageView(new Image(background, width, height, false, true)));
-            } else {
+            } catch (java.lang.IllegalArgumentException err) {
                 work_area.setBackground(new Background(new BackgroundImage(new Image("ground.png", 375, 216, false, true),
                 BackgroundRepeat.REPEAT,BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,BackgroundSize.DEFAULT))); 
             }
