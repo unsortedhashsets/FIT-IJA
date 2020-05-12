@@ -21,24 +21,6 @@ public class Street {
     }
 
     public static Street create(String id, Coordinate... coordinates) {
-        int length = coordinates.length;
-
-        if (length > 2) {
-            for (int i = 1; i < length - 1; i++) {
-                int vector1_X = coordinates[i].diffX(coordinates[i - 1]);
-                int vector1_Y = coordinates[i].diffY(coordinates[i - 1]);
-
-                int vector2_X = coordinates[i].diffX(coordinates[i + 1]);
-                int vector2_Y = coordinates[i].diffY(coordinates[i + 1]);
-
-                int scalar = vector1_X * vector2_X + vector1_Y * vector2_Y;
-
-                if (scalar != 0) {
-                    return null;
-                }
-            }
-        }
-
         return new Street(id, coordinates);
     }
 

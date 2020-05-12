@@ -22,20 +22,41 @@ public class Parser {
     private static List<Line> lines;
     private static List<Vehicle> vehicles;
 
+    private static String backgroundPath;
+    private static int width;
+    private static int height;
+
     public static void parse(File XML) {
         streets = new ArrayList<>();
         stops = new ArrayList<>();
         lines = new ArrayList<>();
         vehicles = new ArrayList<>();
 
-        parseStreets(XML);
-        parseStops(XML);
-        parseLines(XML);
+        
+        try {
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(XML);
+
+            doc.getDocumentElement().normalize();
+
+            Element mainNode = (Element) doc.getDocumentElement();
+            
+            backgroundPath = mainNode.getAttribute("background");
+            if (backgroundPath != null){
+                width = Integer.parseInt(mainNode.getAttribute("width"));
+                height = Integer.parseInt(mainNode.getAttribute("height"));
+            }
+    
+            parseStreets(doc.getElementsByTagName("street"));
+            parseStops(doc.getElementsByTagName("stop"));
+            parseLines(doc.getElementsByTagName("line"));
+        } catch (Exception e) {
+            System.err.println("Got an error");
+        }
     }
 
-    private static void parseStreets(File file) {
-        NodeList list = getListOfNodes(file, "street");
-
+    private static void parseStreets(NodeList list) {
         for (int index = 0; index < list.getLength(); index++) {
             Element streetElement = (Element) list.item(index);
             ;
@@ -58,9 +79,7 @@ public class Parser {
         }
     }
 
-    private static void parseStops(File file) {
-        NodeList list = getListOfNodes(file, "stop");
-
+    private static void parseStops(NodeList list) {
         for (int index = 0; index < list.getLength(); index++) {
             Element stopElement = (Element) list.item(index);
             ;
@@ -79,16 +98,19 @@ public class Parser {
             for (Street street : streets) {
                 if (street.getId().equals(streetId)) {
                     stop.setStreet(street);
+                    break;
                 }
+            }
+
+            if (stop.getStreet() == null){
+                System.out.println("stop" + stop + "isn't on street");
             }
 
             stops.add(stop);
         }
     }
 
-    private static void parseLines(File file) {
-        NodeList list = getListOfNodes(file, "line");
-
+    private static void parseLines(NodeList list) {
         for (int index = 0; index < list.getLength(); index++) {
             Element lineElement = (Element) list.item(index);
 
@@ -108,6 +130,7 @@ public class Parser {
                     for (Stop stop : stops) {
                         if (stop.getId().equals(stopId)) {
                             line.addStop(stop);
+                            break;
                         }
                     }
                 } else if (nodeName.equals("street_line")) {
@@ -116,6 +139,7 @@ public class Parser {
                     for (Street street : streets) {
                         if (street.getId().equals(streetId)) {
                             line.addStreet(street);
+                            break;
                         }
                     }
                 }
@@ -136,21 +160,6 @@ public class Parser {
         }
     }
 
-    private static NodeList getListOfNodes(File file, String node) {
-        try {
-            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(file);
-
-            doc.getDocumentElement().normalize();
-
-            return doc.getElementsByTagName(node);
-        } catch (Exception e) {
-            System.err.println("Got an error");
-            return null;
-        }
-    }
-
     public static List<Street> getStreets() {
         return streets;
     }
@@ -165,5 +174,17 @@ public class Parser {
 
     public static List<Vehicle> getVehicles() {
         return vehicles;
+    }
+
+    public static String getBackgroundPath() {
+        return backgroundPath;
+    }
+    
+    public static int getWidth() {
+        return width;
+    }
+
+    public static int getHeight() {
+        return height;
     }
 }

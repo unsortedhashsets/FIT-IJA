@@ -1,0 +1,178 @@
+<?xml version="1.0"?>
+<map background="aerial.jpg" width="2520" height="1724">
+    <streets>
+        <street id="Technická">
+            <coordinate_street X="440" Y="495"></coordinate_street>
+            <coordinate_street X="465" Y="570"></coordinate_street>
+            <coordinate_street X="435" Y="650"></coordinate_street>
+            <coordinate_street X="360" Y="705"></coordinate_street>
+            <coordinate_street X="280" Y="730"></coordinate_street>
+            <coordinate_street X="280" Y="965"></coordinate_street>
+        </street>
+        <street id="Královopolská">
+            <coordinate_street X="280" Y="965"></coordinate_street>
+            <coordinate_street X="865" Y="915"></coordinate_street>
+        </street>
+        <street id="Purkyňova I">
+            <coordinate_street X="840" Y="380"></coordinate_street>
+            <coordinate_street X="850" Y="560"></coordinate_street>
+        </street>
+        <street id="Purkyňova II">
+            <coordinate_street X="850" Y="560"></coordinate_street>
+            <coordinate_street X="865" Y="915"></coordinate_street>
+        </street>
+        <street id="Purkyňova III">
+            <coordinate_street X="865" Y="915"></coordinate_street>
+            <coordinate_street X="875" Y="1100"></coordinate_street>
+        </street>
+        <street id="Purkyňova IV">
+            <coordinate_street X="875" Y="1100"></coordinate_street>
+            <coordinate_street X="890" Y="1440"></coordinate_street>
+        </street>
+        <street id="Skácelova">
+            <coordinate_street X="865" Y="915"></coordinate_street>
+            <coordinate_street X="1520" Y="885"></coordinate_street>
+        </street>
+        <street id="Husitská">
+            <coordinate_street X="1520" Y="885"></coordinate_street>
+            <coordinate_street X="1805" Y="880"></coordinate_street>
+        </street>
+        <street id="Berkova I">
+            <coordinate_street X="850" Y="560"></coordinate_street>
+            <coordinate_street X="1415" Y="545"></coordinate_street>
+        </street>
+        <street id="Berkova II">
+            <coordinate_street X="1415" Y="545"></coordinate_street>
+            <coordinate_street X="1805" Y="535"></coordinate_street>
+        </street>
+        <street id="Srbská">
+            <coordinate_street X="1415" Y="545"></coordinate_street>
+            <coordinate_street X="1520" Y="885"></coordinate_street>
+        </street>
+        <street id="Dobrovského I">
+            <coordinate_street X="890" Y="1440"></coordinate_street>
+            <coordinate_street X="1360" Y="1435"></coordinate_street>
+        </street>
+        <street id="Dobrovského II">
+            <coordinate_street X="1360" Y="1435"></coordinate_street>
+            <coordinate_street X="1800" Y="1450"></coordinate_street>
+        </street>
+        <street id="Svatopluka Čecha">
+            <coordinate_street X="875" Y="1100"></coordinate_street>
+            <coordinate_street X="1435" Y="1080"></coordinate_street>
+        </street>
+        <street id="Charvatská I">
+            <coordinate_street X="1360" Y="1435"></coordinate_street>
+            <coordinate_street X="1360" Y="1255"></coordinate_street>
+            <coordinate_street X="1435" Y="1080"></coordinate_street>
+        </street>
+        <street id="Charvatská II">
+            <coordinate_street X="1435" Y="1080"></coordinate_street>
+            <coordinate_street X="1520" Y="885"></coordinate_street>
+        </street>
+        <street id="Palackého tř. I">
+            <coordinate_street X="1805" Y="335"></coordinate_street>
+            <coordinate_street X="1805" Y="535"></coordinate_street>
+        </street>
+        <street id="Palackého tř. II">
+            <coordinate_street X="1805" Y="535"></coordinate_street>
+            <coordinate_street X="1805" Y="880"></coordinate_street>
+        </street>
+        <street id="Palackého tř. III">
+            <coordinate_street X="1805" Y="880"></coordinate_street>
+            <coordinate_street X="1800" Y="1450"></coordinate_street>
+        </street>
+        <street id="Kosmova">
+            <coordinate_street X="1805" Y="335"></coordinate_street>
+            <coordinate_street X="2060" Y="260"></coordinate_street>
+        </street>
+        <street id="Božetěchova">
+            <coordinate_street X="2060" Y="260"></coordinate_street>
+            <coordinate_street X="2055" Y="730"></coordinate_street>
+        </street>
+        <street id="Mojmírovo náměstí">
+            <coordinate_street X="2055" Y="730"></coordinate_street>
+            <coordinate_street X="2025" Y="1050"></coordinate_street>
+        </street>
+        <street id="Malátova">
+            <coordinate_street X="1805" Y="535"></coordinate_street>
+            <coordinate_street X="1805" Y="1010"></coordinate_street>
+            <coordinate_street X="2025" Y="1050"></coordinate_street>
+        </street>
+        <street id="Rostislavovo náměstí">
+            <coordinate_street X="2025" Y="1050"></coordinate_street>
+            <coordinate_street X="1995" Y="1290"></coordinate_street>
+            <coordinate_street X="1960" Y="1455"></coordinate_street>
+        </street>
+        <street id="Šafaříkova">
+            <coordinate_street X="1800" Y="1450"></coordinate_street>
+            <coordinate_street X="1960" Y="1455"></coordinate_street>
+        </street>
+    </streets>
+    <stops>
+        <stop id="Technická">
+            <coordinate_stop X="440" Y="495"></coordinate_stop>
+            <street_stop>Technická</street_stop>
+        </stop>
+        <stop id="Horská">
+            <coordinate_stop X="360" Y="705"></coordinate_stop>
+            <street_stop>Technická</street_stop>
+        </stop>
+        <stop id="Záhřebská">
+            <coordinate_stop X="350" Y="960"></coordinate_stop>
+            <street_stop>Královopolská</street_stop>
+        </stop>
+        <stop id="Skácelova">
+            <coordinate_stop X="865" Y="915"></coordinate_stop>
+            <street_stop>Skácelova</street_stop>
+        </stop>
+        <stop id="Slovanské náměstí">
+            <coordinate_stop X="1520" Y="885"></coordinate_stop>
+            <street_stop>Skácelova</street_stop>
+        </stop>
+        <stop id="Husitská">
+            <coordinate_stop X="1805" Y="880"></coordinate_stop>
+            <street_stop>Husitská</street_stop>
+        </stop>
+        <stop id="Červínkova">
+            <coordinate_stop X="842" Y="425"></coordinate_stop>
+            <street_stop>Purkyňova I</street_stop>
+        </stop>
+        <stop id="Berkova">
+            <coordinate_stop X="1260" Y="550"></coordinate_stop>
+            <street_stop>Berkova I</street_stop>
+        </stop>
+        <stop id="Dobrovského">
+            <coordinate_stop X="890" Y="1440"></coordinate_stop>
+            <street_stop>Dobrovského I</street_stop>
+        </stop>
+        <stop id="Charvatská">
+            <coordinate_stop X="1360" Y="1435"></coordinate_stop>
+            <street_stop>Charvatská I</street_stop>
+        </stop>
+        <stop id="Semilasso">
+            <coordinate_stop X="1805" Y="385"></coordinate_stop>
+            <street_stop>Palackého tř. I</street_stop>
+        </stop>
+        <stop id="Jungmannová">
+            <coordinate_stop X="1800" Y="1360"></coordinate_stop>
+            <street_stop>Palackého tř. III</street_stop>
+        </stop>
+        <stop id="Mojmírovo náměstí">
+            <coordinate_stop X="2055" Y="730"></coordinate_stop>
+            <street_stop>Mojmírovo náměstí</street_stop>
+        </stop>
+    </stops>
+    <lines>
+        <line id="53" color="#6A5ACD" type="autobus">
+            <stop_line>Záhřebská</stop_line>
+            <stop_line>Skácelova</stop_line>
+            <stop_line>Slovanské náměstí</stop_line>
+            <stop_line>Husitská</stop_line>
+            <stop_line>Semilasso</stop_line>
+            <departure_time>
+                <time from="10:00" to="20:00"></time>
+            </departure_time>
+        </line>
+    </lines>
+</map> 
