@@ -43,7 +43,7 @@ public class Parser {
             Element mainNode = (Element) doc.getDocumentElement();
             
             backgroundPath = mainNode.getAttribute("background");
-            if (backgroundPath != null){
+            if (!backgroundPath.equals("")){
                 width = Integer.parseInt(mainNode.getAttribute("width"));
                 height = Integer.parseInt(mainNode.getAttribute("height"));
             }
@@ -51,8 +51,8 @@ public class Parser {
             parseStreets(doc.getElementsByTagName("street"));
             parseStops(doc.getElementsByTagName("stop"));
             parseLines(doc.getElementsByTagName("line"));
-        } catch (Exception e) {
-            System.err.println("Got an error");
+        } catch (Exception err) {
+            System.err.println("Got an error: " + err.getMessage());
         }
     }
 
