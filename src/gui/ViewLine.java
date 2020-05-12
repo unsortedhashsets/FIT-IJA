@@ -11,6 +11,7 @@ import javafx.scene.effect.Glow;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polyline;
 import javafx.scene.shape.StrokeLineCap;
@@ -22,13 +23,15 @@ import maps.Street;
 
 public class ViewLine extends Polyline {
     AnchorPane work_pane;
+    VBox infoBox;
     Line line;
     Group stopGroup = new Group();
     Group f_group = new Group();
     private Glow glow = new Glow();
 
-    public ViewLine(Line in_line, AnchorPane in_work_pane, Group Front_Group) {
+    public ViewLine(Line in_line,Group Front_Group, AnchorPane in_work_pane, VBox in_infoBox) {
         this.work_pane = in_work_pane;
+        this.infoBox = in_infoBox;
         this.line = in_line;
         this.f_group = Front_Group;
         setId(line.getID());
@@ -175,15 +178,14 @@ public class ViewLine extends Polyline {
             if (tmp.get(i).getValue() == null) {
                 break;
             }
-
             getPoints().addAll(new Double[] { (double) tmp.get(i).getKey().getCoordinates().get(c).getX(), (double) tmp.get(i).getKey().getCoordinates().get(c).getY() });
-            System.out.println(i + " CORNER: " + tmp.get(i).getKey().getCoordinates().get(c).getX() + " - " + tmp.get(i).getKey().getCoordinates().get(c).getY() + " - " + tmp.get(i).getKey().getId());
+            System.out.println(i + " CORNER: 4" + tmp.get(i).getKey().getCoordinates().get(c).getX() + " - " + tmp.get(i).getKey().getCoordinates().get(c).getY() + " - " + tmp.get(i).getKey().getId());
             line.addCoordinate(tmp.get(i).getKey().getCoordinates().get(c), tmp.get(i).getKey());
-                                
+            System.out.println(checkIfStopIsBetweenCoords(tmp.get(i).getValue(), tmp.get(i).getKey().getCoordinates().get(c), tmp.get(i).getKey().getCoordinates().get(c+1)));               
             if (checkIfStopIsBetweenCoords(tmp.get(i).getValue(), tmp.get(i).getKey().getCoordinates().get(c), tmp.get(i).getKey().getCoordinates().get(c+1))) { 
                 drawStop(tmp.get(i).getValue().getCoordinate());
                 getPoints().addAll(new Double[] { (double) tmp.get(i).getValue().getCoordinate().getX(), (double) tmp.get(i).getValue().getCoordinate().getY() });
-                System.out.println(i + " POINT: " + tmp.get(i).getValue().getCoordinate().getX() + " - " + tmp.get(i).getValue().getCoordinate().getY() + " - " + tmp.get(i).getKey().getId() + " - " + tmp.get(i).getValue().getId());
+                System.out.println(i + " POINT: 5" + tmp.get(i).getValue().getCoordinate().getX() + " - " + tmp.get(i).getValue().getCoordinate().getY() + " - " + tmp.get(i).getKey().getId() + " - " + tmp.get(i).getValue().getId());
                 line.addCoordinate(tmp.get(i).getValue().getCoordinate(), tmp.get(i).getValue());
                 break;
             }
@@ -297,8 +299,7 @@ public class ViewLine extends Polyline {
         public void handle(MouseEvent e) {
             if (e.getButton() == MouseButton.PRIMARY)
             {   
-                stopGroup.toFront();
-                f_group.toFront();
+                InfoBoxController.InfoBoxController(infoBox, line);
                 System.out.println("Mouse LEFT clicked on street: " + line.getID());
             } else if (e.getButton() == MouseButton.SECONDARY)
             {                

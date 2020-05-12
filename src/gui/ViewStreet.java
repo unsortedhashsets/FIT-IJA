@@ -9,6 +9,7 @@ import javafx.scene.effect.Glow;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polyline;
 import javafx.scene.shape.StrokeLineCap;
@@ -25,11 +26,12 @@ public class ViewStreet extends Polyline {
     MenuItem open_close = new MenuItem("Close/Open Street");
     MenuItem changeTraffic = new MenuItem("Set up traffic situation");
     AnchorPane work_pane;
+    VBox infoBox;
 
-    public ViewStreet(Street in_street, Node in_node, AnchorPane work_pane) {
-        this.node = in_node;
+    public ViewStreet(Street in_street, AnchorPane in_work_pane, VBox in_infoBox) {
+        this.work_pane = in_work_pane;
+        this.infoBox = in_infoBox;
         this.street = in_street;
-        this.work_pane = work_pane;
         setId(street.getId());
         glow.setLevel(0.9);
         setOnMouseEntered(mouseEntered);
@@ -37,6 +39,7 @@ public class ViewStreet extends Polyline {
         setOnMouseClicked(mouseClicked);
         setupToolTip();
         drawStreet();
+        this.work_pane.getChildren().add(this);
     }
 
     private void setupToolTip() {
@@ -84,6 +87,7 @@ public class ViewStreet extends Polyline {
         public void handle(MouseEvent e) {
             if (e.getButton() == MouseButton.PRIMARY)
             {   
+                InfoBoxController.InfoBoxController(infoBox, street);
                 System.out.println("Mouse LEFT clicked on street: " + street.getId());
             } else if (e.getButton() == MouseButton.SECONDARY)
             {

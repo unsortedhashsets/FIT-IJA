@@ -20,6 +20,7 @@ import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
 import maps.Line;
@@ -103,6 +104,9 @@ public class SceneController implements Initializable {
 
     @FXML
     private BorderPane main;
+    
+    @FXML
+    private VBox infoBox;
 
     private AnchorPane work_area;
 
@@ -194,16 +198,13 @@ public class SceneController implements Initializable {
             List<Street> streets = Parser.getStreets();
             this.viewStreets = new ArrayList<>();
             for (int i = 0; i < streets.size(); i++) {
-                this.viewStreets.add(new ViewStreet(streets.get(i), work_area, work_area));
-                work_area.getChildren().add(this.viewStreets.get(i));
+                this.viewStreets.add(new ViewStreet(streets.get(i), work_area, infoBox));
             }
 
             List<Stop> stops = Parser.getStops();
             this.viewStops = new ArrayList<>();
             for (int i = 0; i < stops.size(); i++) {
-                this.viewStops.add(new ViewStop(stops.get(i)));
-                work_area.getChildren().add(this.viewStops.get(i));
-
+                this.viewStops.add(new ViewStop(stops.get(i), work_area, infoBox));
             }
 
             vehiclesGroup = new Group();
@@ -211,15 +212,13 @@ public class SceneController implements Initializable {
             List<Vehicle> vehicles = Parser.getVehicles();
             this.viewVehicles = new ArrayList<>();
             for (int i = 0; i < vehicles.size(); i++) {
-                this.viewVehicles.add(new ViewVehicle(vehicles.get(i)));
-                vehiclesGroup.getChildren().add(this.viewVehicles.get(i));
+                this.viewVehicles.add(new ViewVehicle(vehicles.get(i),vehiclesGroup , infoBox));
             }
 
             List<Line> lines = Parser.getLines();
             this.viewLines = new ArrayList<>();
             for (int i = 0; i < lines.size(); i++) {
-                this.viewLines.add(new ViewLine(lines.get(i), work_area, vehiclesGroup));
-                //work_area.getChildren().add(this.viewLines.get(i));
+                this.viewLines.add(new ViewLine(lines.get(i),vehiclesGroup , work_area, infoBox));
             }
 
             work_area.getChildren().add(this.vehiclesGroup);
@@ -248,10 +247,10 @@ public class SceneController implements Initializable {
 
     @FXML
     private void stopClick() {
+        updatePos.stop();
         for (ViewVehicle tmp : viewVehicles) {
             tmp.GetVehicle().stop();
         }
-        updatePos.stop();
         System.out.println("TEST SceneController.stopClick");
     }
 

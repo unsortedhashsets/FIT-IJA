@@ -1,10 +1,14 @@
 package gui;
 
 import javafx.event.EventHandler;
+import javafx.scene.Group;
 import javafx.scene.control.Tooltip;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import vehicles.Autobus;
@@ -15,15 +19,21 @@ import vehicles.Vehicle;
 public class ViewVehicle extends Circle {
     private Vehicle vehicle;
     private Glow glow = new Glow();
+    VBox infoBox;
+    Group f_group = new Group();
 
-    public ViewVehicle(Vehicle in_vehicle) {
+    public ViewVehicle(Vehicle in_vehicle,Group Front_Group, VBox in_infoBox) {
+        this.infoBox = in_infoBox;
         this.vehicle = in_vehicle;
+        this.f_group = Front_Group;
         setId(in_vehicle.getId());
         glow.setLevel(0.9);
         setOnMouseEntered(mouseEntered);
         setOnMouseExited(mouseExited);
+        setOnMouseClicked(mouseClicked);
         setupToolTip();
         drawStop();
+        this.f_group.getChildren().add(this);
     }
 
     private void setupToolTip() {
@@ -69,6 +79,21 @@ public class ViewVehicle extends Circle {
         public void handle(MouseEvent e) {
             setEffect(null);
             System.out.println("Mouse exited from auto: " + vehicle.getId());
+        }
+    };
+
+    EventHandler<MouseEvent> mouseClicked = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent e) {
+            if (e.getButton() == MouseButton.PRIMARY)
+            {   
+                System.out.println("Mouse LEFT clicked on vehicle: " + vehicle.getId());
+                InfoBoxController.InfoBoxController(infoBox, vehicle);
+                
+            } else if (e.getButton() == MouseButton.SECONDARY)
+            {                
+                System.out.println("Mouse RIGHT clicked on vehicle: " + vehicle.getId());
+            }
         }
     };
 

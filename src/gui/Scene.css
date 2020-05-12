@@ -9,3 +9,8 @@
     background-color: linear-gradient(#000000  , rgb(255, 255, 255));
     -fx-background-color: linear-gradient(#000000  , rgb(255, 255, 255));
 }
+
+.info-box {
+    -fx-background-color: #d0d0d0;
+    -fx-padding: 10;
+}

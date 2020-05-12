@@ -24,12 +24,19 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.image.*?>
 
-<BorderPane fx:id="main" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="800.0" prefWidth="600.0" style="-fx-background-color: #FFFFFF;" 
+<BorderPane fx:id="main" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="800.0" minWidth="600.0" prefHeight="800.0" prefWidth="600.0" style="-fx-background-color: #FFFFFF;" 
   xmlns="http://javafx.com/javafx/8" 
   xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SceneController">
   <center>
     <AnchorPane fx:id="Default_work_area"/>
   </center>
+  <right>
+    <VBox fx:id="infoBox" maxWidth="200.0" minWidth="200.0" styleClass="info-box">
+      <padding>
+        <Insets left="20.0" top="20.0" />
+      </padding>
+    </VBox>
+  </right>
   <top>
       <AnchorPane xmlns:fx="http://javafx.com/fxml/1" styleClass="menu-bar">
         <BorderPane AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.leftAnchor="0">
