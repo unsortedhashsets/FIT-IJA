@@ -22,6 +22,7 @@ public class Vehicle implements Runnable{
     private LinkedHashMap<Coordinate, Object> coordinates;
     private ArrayList<Coordinate> listOfCoors;
     private Iterator<Coordinate> iter;
+    private boolean isReversed;
 
     private Coordinate position;
     private Coordinate departure;
@@ -61,6 +62,7 @@ public class Vehicle implements Runnable{
         this.coordinates = this.line.getCoordinates();
         this.listOfCoors = new ArrayList<Coordinate>(coordinates.keySet());
         this.iter = listOfCoors.iterator();
+        this.isReversed = false;
 
         this.position = this.departure = (Coordinate) iter.next();
         this.arrival = (Coordinate) iter.next();
@@ -77,7 +79,7 @@ public class Vehicle implements Runnable{
         float time = 0.04f;
 
         while (time != 0){
-            Object delayObject = coordinates.get(this.departure);
+            Object delayObject = coordinates.get((isReversed) ? this.arrival : this.departure);
             float delay = 1.0f;
             if (delayObject.getClass().getName().equals("maps.Street")){
                 Street street = (Street) delayObject;
@@ -104,7 +106,10 @@ public class Vehicle implements Runnable{
                     Collections.reverse(listOfCoors);
                     iter = listOfCoors.iterator();
                     iter.next();
+
+                    this.isReversed = !this.isReversed;
                 }
+
                 this.arrival = (Coordinate) iter.next();
                 setAxisVelocities();
 
@@ -137,9 +142,12 @@ public class Vehicle implements Runnable{
     public void run() {
         setMovingParameters();
 
+        boolean afterToTime = false;
+        boolean hasReversed = this.isReversed;
+
         while (true){
             if (InternalClock.isTime(from, InternalClock.MINUTE)){
-                while (!InternalClock.isTime(to, InternalClock.MINUTE)){
+                while (true){
                     try{
                         Thread.sleep(40);
                     } catch (InterruptedException exc){}
@@ -147,12 +155,24 @@ public class Vehicle implements Runnable{
                     boolean isStop = actualizePosition();
                     if (isStop){
                         String stopTime = InternalClock.getStopTime();
-                        while(!InternalClock.isTime(stopTime, InternalClock.SECOND)){
+                        int accuracy = InternalClock.SECOND; 
+                        while(!InternalClock.isTime(stopTime, accuracy)){
                             try{
                                 Thread.sleep(40);
                             } catch (InterruptedException exc){}
                         }
                     }
+
+                    if (InternalClock.isTime(to, InternalClock.MINUTE)){
+                        afterToTime = true;
+                    }
+
+                    if (hasReversed != this.isReversed && afterToTime){
+                        afterToTime = true;
+                        break;
+                    }
+
+                    hasReversed = this.isReversed;
                 }
             }
         }
