@@ -115,11 +115,11 @@
             <street_stop>Technická</street_stop>
         </stop>
         <stop id="Horská">
-            <coordinate_stop X="360" Y="705"></coordinate_stop>
+            <coordinate_stop X="280" Y="730"></coordinate_stop>
             <street_stop>Technická</street_stop>
         </stop>
         <stop id="Záhřebská">
-            <coordinate_stop X="350" Y="960"></coordinate_stop>
+            <coordinate_stop X="280" Y="965"></coordinate_stop>
             <street_stop>Královopolská</street_stop>
         </stop>
         <stop id="Skácelova">
@@ -135,11 +135,11 @@
             <street_stop>Husitská</street_stop>
         </stop>
         <stop id="Červínkova">
-            <coordinate_stop X="842" Y="425"></coordinate_stop>
+            <coordinate_stop X="845" Y="470"></coordinate_stop>
             <street_stop>Purkyňova I</street_stop>
         </stop>
         <stop id="Berkova">
-            <coordinate_stop X="1260" Y="550"></coordinate_stop>
+            <coordinate_stop X="1302" Y="548"></coordinate_stop>
             <street_stop>Berkova I</street_stop>
         </stop>
         <stop id="Dobrovského">
@@ -155,8 +155,12 @@
             <street_stop>Palackého tř. I</street_stop>
         </stop>
         <stop id="Jungmannová">
-            <coordinate_stop X="1800" Y="1360"></coordinate_stop>
+            <coordinate_stop X="1800" Y="1450"></coordinate_stop>
             <street_stop>Palackého tř. III</street_stop>
+        </stop>
+        <stop id="Královo pole, Nádraží">
+            <coordinate_stop X="2060" Y="260"></coordinate_stop>
+            <street_stop>Kosmova</street_stop>
         </stop>
         <stop id="Mojmírovo náměstí">
             <coordinate_stop X="2055" Y="730"></coordinate_stop>
@@ -164,13 +168,76 @@
         </stop>
     </stops>
     <lines>
-        <line id="53" color="#6A5ACD" type="autobus">
-            <stop_line>Záhřebská</stop_line>
-            <stop_line>Skácelova</stop_line>
+        <line id="1" color="#A52A2A" type="tram">
+            <stop_line>Červínkova</stop_line>
             <street_line>Purkyňova II</street_line>
-            <stop_line>Berkova</stop_line>
+            <stop_line>Skácelova</stop_line>
+            <street_line>Purkyňova III</street_line>
+            <street_line>Purkyňova IV</street_line>
+            <stop_line>Dobrovského</stop_line>
+            <stop_line>Charvatská</stop_line>
+            <street_line>Dobrovského II</street_line>
+            <stop_line>Jungmannová</stop_line>
+            <stop_line>Husitská</stop_line>
+            <street_line>Palackého tř. II</street_line>
+            <stop_line>Semilasso</stop_line>
             <departure_time>
                 <time from="10:00" to="20:00"></time>
+                <time from="10:03" to="20:03"></time>
+                <time from="10:06" to="20:06"></time>
+                <time from="10:39" to="20:39"></time>
+                <time from="10:12" to="20:12"></time>
+                <time from="10:15" to="20:15"></time>
+                <time from="10:18" to="20:18"></time>
+                <time from="10:21" to="20:21"></time>
+                <time from="10:24" to="20:24"></time>
+                <time from="10:27" to="20:27"></time>
+            </departure_time>
+        </line>
+        <line id="43" color="#228B22" type="trolley">
+            <stop_line>Královo pole, Nádraží</stop_line>
+            <street_line>Božetěchova</street_line>
+            <stop_line>Mojmírovo náměstí</stop_line>
+            <street_line>Malátova</street_line>
+            <stop_line>Husitská</stop_line>
+            <stop_line>Slovanské náměstí</stop_line>
+            <street_line>Srbská</street_line>
+            <stop_line>Berkova</stop_line>
+            <stop_line>Červínkova</stop_line>
+            <departure_time>
+                <time from="10:00" to="20:00"></time>
+                <time from="10:03" to="20:03"></time>
+                <time from="10:06" to="20:06"></time>
+                <time from="10:39" to="20:39"></time>
+                <time from="10:12" to="20:12"></time>
+                <time from="10:15" to="20:15"></time>
+                <time from="10:18" to="20:18"></time>
+                <time from="10:21" to="20:21"></time>
+                <time from="10:24" to="20:24"></time>
+                <time from="10:27" to="20:27"></time>
+            </departure_time>
+        </line>
+        <line id="53" color="#6A5ACD" type="autobus">
+            <stop_line>Technická</stop_line>
+            <stop_line>Horská</stop_line>
+            <stop_line>Záhřebská</stop_line>
+            <stop_line>Skácelova</stop_line>
+            <stop_line>Slovanské náměstí</stop_line>
+            <stop_line>Husitská</stop_line>
+            <street_line>Palackého tř. II</street_line>
+            <stop_line>Semilasso</stop_line>
+            <stop_line>Královo pole, Nádraží</stop_line>
+            <departure_time>
+                <time from="10:00" to="20:00"></time>
+                <time from="10:03" to="20:03"></time>
+                <time from="10:06" to="20:06"></time>
+                <time from="10:39" to="20:39"></time>
+                <time from="10:12" to="20:12"></time>
+                <time from="10:15" to="20:15"></time>
+                <time from="10:18" to="20:18"></time>
+                <time from="10:21" to="20:21"></time>
+                <time from="10:24" to="20:24"></time>
+                <time from="10:27" to="20:27"></time>
             </departure_time>
         </line>
     </lines>
