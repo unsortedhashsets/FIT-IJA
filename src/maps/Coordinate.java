@@ -31,8 +31,8 @@ public class Coordinate {
         return this.Y - c.getY();
     }
 
-    public float length(Coordinate c) {
-        return (float) Math.sqrt(Math.pow(this.diffX(c), 2) + Math.pow(this.diffY(c), 2));
+    public double length(Coordinate c) {
+        return Math.sqrt(Math.pow(this.diffX(c), 2) + Math.pow(this.diffY(c), 2));
     }
 
     public boolean equals(Object obj) {

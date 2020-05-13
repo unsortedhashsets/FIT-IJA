@@ -1,14 +1,16 @@
 package internal;
 
 import java.time.Instant;
+import java.time.LocalTime;
 import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 
 public class InternalClock {
     public static final int SECOND = 1;
     public static final int MINUTE = 60;
     public static final int HOUR = 3600;
 
-    private static float acceleration = 1;
+    private static double acceleration = 1;
     private static Instant clock;
     private static String localTime;
 
@@ -26,7 +28,7 @@ public class InternalClock {
     }
 
     public static void increaseAccelerationLevel() {
-        if (acceleration < 256) {
+        if (acceleration < 2048) {
             acceleration *= 2;
         }
         System.out.println("TEST SceneController.speedIncrClick: " + acceleration);
@@ -39,63 +41,36 @@ public class InternalClock {
         System.out.println("TEST SceneController.speedDecrClick: " + acceleration);
     }
 
-    public static float getAccelerationLevel() {
+    public static double getAccelerationLevel() {
         return acceleration;
     }
 
-    private static String getLocalTime(int accuracy){
-        localTime = clock.atZone(ZoneOffset.UTC).toLocalTime().toString();
-
-        switch (accuracy){
-            case SECOND:
-                localTime = localTime.substring(0, Math.min(8, localTime.length()));
-                break;
-            case MINUTE:
-                localTime = localTime.substring(0, Math.min(5, localTime.length()));
-                break;
-            case HOUR:
-                localTime = localTime.substring(0, Math.min(2, localTime.length()));
-                break;
-            default:
-                break;
-        }
-
-        return localTime;
+    private static LocalTime getLocalTime(){
+        return clock.atZone(ZoneOffset.UTC).toLocalTime();
     }
 
-    public static String getStopTime(){
-        clock = clock.plusSeconds(30);
-        String stopTime = getLocalTime(SECOND);
-        clock = clock.minusSeconds(30);
+    public static LocalTime getStopTime(){
+        clock = clock.plusSeconds(10);
+        LocalTime stopTime = getLocalTime();
+        clock = clock.minusSeconds(10);
 
         return stopTime;
     }
 
-    public static boolean isTime(String time, int accuracy){
-        String localTime = getLocalTime(accuracy);
+    public static boolean afterTime(LocalTime time){
+        return getLocalTime().isAfter(time);
+    }
 
-        switch (accuracy){
-            case SECOND:
-                time = time.substring(0, Math.min(8, time.length()));
-                break;
-            case MINUTE:
-                time = time.substring(0, Math.min(5, time.length()));
-                break;
-            case HOUR:
-                time = time.substring(0, Math.min(2, time.length()));
-                break;
-            default:
-                break;
-        }
-
-        return localTime.equals(time);
+    public static boolean beforeTime(LocalTime time){
+        return getLocalTime().isBefore(time);
     }
 
     public static String updateClock() {
-        long millis = (long) (acceleration * 2);
-        clock = clock.plusMillis(millis);
+        long nanos = (long) acceleration * 1000000;
+        clock = clock.plusNanos(nanos);
 
-        localTime = getLocalTime(SECOND);
+        localTime = getLocalTime().toString();
+        localTime = localTime.substring(0, Math.min(8, localTime.length()));
         if (acceleration != 1) {
             localTime += " (x" + acceleration + ")";
         }

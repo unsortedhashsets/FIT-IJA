@@ -1,5 +1,6 @@
 package vehicles;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.AbstractMap.SimpleImmutableEntry;
@@ -14,8 +15,8 @@ import maps.Street;
 public class Vehicle implements Runnable{
     private String id;
     private Line line;
-    private String from;
-    private String to;
+    private LocalTime from;
+    private LocalTime to;
 
     private Thread thread;
     private boolean isStopped;
@@ -28,31 +29,31 @@ public class Vehicle implements Runnable{
     private SimpleImmutableEntry<Coordinate, Object> departure;
     private SimpleImmutableEntry<Coordinate, Object> arrival;
 
-    private float velocity;
-    private float velocity_X;
-    private float velocity_Y;
+    private double velocity;
+    private double velocity_X;
+    private double velocity_Y;
 
-    private float float_X;
-    private float float_Y;
+    private double double_X;
+    private double double_Y;
 
-    protected Vehicle(String id, Line line, String from, String to, float velocity){
+    protected Vehicle(String id, Line line, LocalTime from, LocalTime to, double velocity){
         this.id = id;
         this.line = line;
 
         this.from = from;
         this.to = to;
 
-        this.velocity = (velocity * 1000)/3600; // transform from km/h to m/s
+        this.velocity = velocity;
     }
 
-    public void setVelocity(float velocity){
+    public void setVelocity(double velocity){
         this.velocity = velocity;
     }
 
     private void setAxisVelocities() {
         int length_X = arrival.getKey().diffX(departure.getKey());
         int length_Y = arrival.getKey().diffY(departure.getKey());
-        float length = arrival.getKey().length(departure.getKey());
+        double length = arrival.getKey().length(departure.getKey());
 
         this.velocity_X = (length != 0) ? (this.velocity * length_X) / length : 0;
         this.velocity_Y = (length != 0) ? (this.velocity * length_Y) / length : 0;
@@ -68,38 +69,39 @@ public class Vehicle implements Runnable{
         this.arrival = iter.next();
         this.position = this.departure.getKey();
 
-        this.float_X = this.position.getX();
-        this.float_Y = this.position.getY();
+        this.double_X = this.position.getX();
+        this.double_Y = this.position.getY();
 
         setAxisVelocities();
     }
 
     public boolean actualizePosition(){
-        float time = 0.04f;
+        double time = 0.001;
 
-        while (!(0 <= Math.abs(time) && Math.abs(time) <= 1.0E-7)){  // float accuracy
-            float acceleration = InternalClock.getAccelerationLevel();
+        while (!(0 <= Math.abs(time) && Math.abs(time) <= 1.0E-7)){  // double accuracy
+            double acceleration = InternalClock.getAccelerationLevel();
+            
+            double delay = 1.0;
             Object delayObject = (isReversed) ? this.arrival.getValue() : this.departure.getValue();
-            float delay = 1.0f;
             if (delayObject.getClass().getName().equals("maps.Street")){
                 Street street = (Street) delayObject;
-                delay = 1 - (street.GetdrivingDifficulties() * 0.01f);
+                delay = 1 - (street.GetdrivingDifficulties() * 0.01);
             } else if (delayObject.getClass().getName().equals("maps.Stop")){
                 Stop stop = (Stop) delayObject;
-                delay = 1 - (stop.getStreet().GetdrivingDifficulties() * 0.01f);
+                delay = 1 - (stop.getStreet().GetdrivingDifficulties() * 0.01);
             }
 
-            float distance_X = delay * acceleration * velocity_X * 0.002f; // 1.0f = 1 second
-            float distance_Y = delay * acceleration * velocity_Y * 0.002f; // 1.0f = 1 second
+            double distance_X = delay * acceleration * velocity_X * 0.001; // 1.0 = 1 second
+            double distance_Y = delay * acceleration * velocity_Y * 0.001; // 1.0 = 1 second
 
-            this.float_X += (velocity_X > 0) 
+            this.double_X += (velocity_X > 0) 
                           ? Math.min(distance_X, arrival.getKey().diffX(this.position))
                           : Math.max(distance_X, arrival.getKey().diffX(this.position));
-            this.float_Y += (velocity_Y > 0) 
+            this.double_Y += (velocity_Y > 0) 
                           ? Math.min(distance_Y, arrival.getKey().diffY(this.position))
                           : Math.max(distance_Y, arrival.getKey().diffY(this.position));
 
-            this.position = Coordinate.create(Math.round(float_X), Math.round(float_Y));
+            this.position = Coordinate.create((int)Math.round(double_X), (int)Math.round(double_Y));
             if (this.position.equals(this.arrival.getKey())){
                 this.departure = this.arrival;
                 if (!iter.hasNext()){
@@ -118,7 +120,7 @@ public class Vehicle implements Runnable{
                     return true;
                 }
             }
-            float length = (float) Math.sqrt(Math.pow(distance_X, 2) + Math.pow(distance_Y, 2));
+            double length = Math.sqrt(Math.pow(distance_X, 2) + Math.pow(distance_Y, 2));
             if (delay != 0){
                 time -= length / (acceleration * this.velocity * delay);
             }
@@ -131,7 +133,7 @@ public class Vehicle implements Runnable{
         return this.id;
     }
 
-    public float getVelocity(){
+    public double getVelocity(){
         return this.velocity;
     }
 
@@ -142,40 +144,32 @@ public class Vehicle implements Runnable{
     @Override
     public void run() {
         setMovingParameters();
-
-        boolean afterToTime = false;
-        boolean hasReversed = this.isReversed;
+        boolean hasReversed = !this.isReversed;
 
         while (!isStopped){
-            if (InternalClock.isTime(from, InternalClock.MINUTE)){
-                while (!isStopped){
-                    try{
-                        Thread.sleep(2);
-                    } catch (InterruptedException exc){}
-                    
-                    boolean isStop = actualizePosition();
-                    if (isStop){
-                        String stopTime = InternalClock.getStopTime();
-                        int accuracy = (InternalClock.getAccelerationLevel() < 64)
-                                     ?  InternalClock.SECOND
-                                     :  InternalClock.MINUTE; 
-                        while(!InternalClock.isTime(stopTime, accuracy)){
-                            try{
-                                Thread.sleep(2);
-                            } catch (InterruptedException exc){}
-                        }
-                    }
+            try{
+                Thread.sleep(1);
+            } catch (InterruptedException exc){}
 
-                    if (InternalClock.isTime(to, InternalClock.MINUTE)){
-                        afterToTime = true;
-                    }
+            while ((InternalClock.afterTime(from) && InternalClock.beforeTime(to)) || (hasReversed == this.isReversed)){
+                hasReversed = this.isReversed;
 
-                    if (hasReversed != this.isReversed && afterToTime){
-                        afterToTime = true;
-                        break;
+                try{
+                    Thread.sleep(1);
+                } catch (InterruptedException exc){}
+                
+                boolean isStop = actualizePosition();
+                if (isStop){
+                    LocalTime stopTime = InternalClock.getStopTime();
+                    while(!InternalClock.afterTime(stopTime)){
+                        try{
+                            Thread.sleep(1);
+                        } catch (InterruptedException exc){}
                     }
-
-                    hasReversed = this.isReversed;
+                }
+                
+                if (isStopped){
+                    break;
                 }
             }
         }

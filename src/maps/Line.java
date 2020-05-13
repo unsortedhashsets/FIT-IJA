@@ -1,7 +1,7 @@
 package maps;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.AbstractMap.SimpleImmutableEntry;
 
 import vehicles.Autobus;
@@ -60,7 +60,7 @@ public class Line {
         return new ArrayList<>(this.route);
     }
 
-    public Vehicle createVehicle(String from, String to) {
+    public Vehicle createVehicle(LocalTime from, LocalTime to) {
         String vehicleID = "(" + this.id + ")_" + (++counterID);
 
         switch (this.type) {

@@ -1,6 +1,8 @@
 package internal;
 
 import java.io.File;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -146,8 +148,10 @@ public class Parser {
             for (int i = 0; i < listOfTimes.getLength(); i++) {
                 Element timeElement = (Element) listOfTimes.item(i);
 
-                String from = timeElement.getAttribute("from");
-                String to = timeElement.getAttribute("to");
+                LocalTime from = LocalTime.parse(timeElement.getAttribute("from"),
+                                                 DateTimeFormatter.ofPattern("HH:mm"));
+                LocalTime to = LocalTime.parse(timeElement.getAttribute("to"), 
+                                               DateTimeFormatter.ofPattern("HH:mm"));
 
                 Vehicle vehicle = line.createVehicle(from, to);
                 vehicles.add(vehicle);
