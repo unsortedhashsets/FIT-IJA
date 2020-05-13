@@ -57,7 +57,6 @@ public class Vehicle implements Runnable{
 
         this.velocity_X = (length != 0) ? (this.velocity * length_X) / length : 0;
         this.velocity_Y = (length != 0) ? (this.velocity * length_Y) / length : 0;
-
     }
 
     private void setMovingParameters(){
@@ -75,21 +74,28 @@ public class Vehicle implements Runnable{
         setAxisVelocities();
     }
 
+    private double getDelay(Object delayObject){
+        double delay = 1.0;
+        
+        if (delayObject.getClass().getName().equals("maps.Street")){
+            Street street = (Street) delayObject;
+            delay = 1 - (street.GetdrivingDifficulties() * 0.01);
+        } else if (delayObject.getClass().getName().equals("maps.Stop")){
+            Stop stop = (Stop) delayObject;
+            delay = 1 - (stop.getStreet().GetdrivingDifficulties() * 0.01);
+        }
+
+        return delay;
+    }
+
     public boolean actualizePosition(){
         double time = 0.001;
 
         while (!(0 <= Math.abs(time) && Math.abs(time) <= 1.0E-7)){  // double accuracy
             double acceleration = InternalClock.getAccelerationLevel();
-            
-            double delay = 1.0;
+
             Object delayObject = (isReversed) ? this.arrival.getValue() : this.departure.getValue();
-            if (delayObject.getClass().getName().equals("maps.Street")){
-                Street street = (Street) delayObject;
-                delay = 1 - (street.GetdrivingDifficulties() * 0.01);
-            } else if (delayObject.getClass().getName().equals("maps.Stop")){
-                Stop stop = (Stop) delayObject;
-                delay = 1 - (stop.getStreet().GetdrivingDifficulties() * 0.01);
-            }
+            double delay = getDelay(delayObject);
 
             double distance_X = delay * acceleration * velocity_X * 0.001; // 1.0 = 1 second
             double distance_Y = delay * acceleration * velocity_Y * 0.001; // 1.0 = 1 second
@@ -140,6 +146,41 @@ public class Vehicle implements Runnable{
     public Coordinate getPosition(){
         return this.position;
     }   
+
+    public ArrayList<SimpleImmutableEntry<Stop, Integer>> getSchedule(){
+        ArrayList<SimpleImmutableEntry<Stop, Integer>> schedule = new ArrayList<>();
+        
+        Iterator<SimpleImmutableEntry<Coordinate, Object>> iterator = listOfCoors.iterator();
+        SimpleImmutableEntry<Coordinate, Object> pair;
+        
+        boolean inCurrentLine = false;
+
+        Coordinate previous;
+        Coordinate next = this.position;
+        double time = 0;
+
+        while (iterator.hasNext()){
+            pair = iterator.next();
+
+            if (inCurrentLine){
+                previous = next;
+                next = pair.getKey();
+
+                Object object = pair.getValue();
+                double delay = getDelay(object);
+                time += next.length(previous) / (delay * velocity);
+                
+                if (object.getClass().getName().equals("maps.Stop")){
+                    time += 10;
+                    schedule.add(new SimpleImmutableEntry<>((Stop) object, (int) time));
+                } 
+            } else if (pair.equals(this.departure)){
+                inCurrentLine = true;
+            }
+        }
+
+        return schedule;
+    }
 
     @Override
     public void run() {
