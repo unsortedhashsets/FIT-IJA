@@ -26,7 +26,7 @@ public class InternalClock {
     }
 
     public static void increaseAccelerationLevel() {
-        if (acceleration < 64) {
+        if (acceleration < 256) {
             acceleration *= 2;
         }
         System.out.println("TEST SceneController.speedIncrClick: " + acceleration);
@@ -44,7 +44,7 @@ public class InternalClock {
     }
 
     private static String getLocalTime(int accuracy){
-        String localTime = clock.atZone(ZoneOffset.UTC).toLocalTime().toString();
+        localTime = clock.atZone(ZoneOffset.UTC).toLocalTime().toString();
 
         switch (accuracy){
             case SECOND:
@@ -74,11 +74,25 @@ public class InternalClock {
     public static boolean isTime(String time, int accuracy){
         String localTime = getLocalTime(accuracy);
 
+        switch (accuracy){
+            case SECOND:
+                time = time.substring(0, Math.min(8, time.length()));
+                break;
+            case MINUTE:
+                time = time.substring(0, Math.min(5, time.length()));
+                break;
+            case HOUR:
+                time = time.substring(0, Math.min(2, time.length()));
+                break;
+            default:
+                break;
+        }
+
         return localTime.equals(time);
     }
 
     public static String updateClock() {
-        long millis = (long) (acceleration * 100);
+        long millis = (long) (acceleration * 2);
         clock = clock.plusMillis(millis);
 
         localTime = getLocalTime(SECOND);

@@ -136,7 +136,7 @@ public class SceneController implements Initializable {
     }
 
     private void setClockTimeLine() {
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100), (ActionEvent event) -> {
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(2), (ActionEvent event) -> {
             Clocks.textProperty().set(InternalClock.updateClock());
         }));
         timeline.setCycleCount(Timeline.INDEFINITE);
@@ -234,7 +234,7 @@ public class SceneController implements Initializable {
         for (ViewVehicle tmp : viewVehicles) {
             tmp.GetVehicle().start();
         }
-        updatePos = new Timeline(new KeyFrame(Duration.millis(40), (ActionEvent event) -> {
+        updatePos = new Timeline(new KeyFrame(Duration.millis(2), (ActionEvent event) -> {
             for (ViewVehicle tmp : viewVehicles) {
                 tmp.UpdatePosition();
             }

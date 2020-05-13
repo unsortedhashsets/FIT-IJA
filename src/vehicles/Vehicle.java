@@ -89,8 +89,8 @@ public class Vehicle implements Runnable{
                 delay = 1 - (stop.getStreet().GetdrivingDifficulties() * 0.01f);
             }
 
-            float distance_X = delay * acceleration * velocity_X * 0.04f; // 1.0f = 1 second
-            float distance_Y = delay * acceleration * velocity_Y * 0.04f; // 1.0f = 1 second
+            float distance_X = delay * acceleration * velocity_X * 0.002f; // 1.0f = 1 second
+            float distance_Y = delay * acceleration * velocity_Y * 0.002f; // 1.0f = 1 second
 
             this.float_X += (velocity_X > 0) 
                           ? Math.min(distance_X, arrival.getKey().diffX(this.position))
@@ -150,16 +150,18 @@ public class Vehicle implements Runnable{
             if (InternalClock.isTime(from, InternalClock.MINUTE)){
                 while (!isStopped){
                     try{
-                        Thread.sleep(40);
+                        Thread.sleep(2);
                     } catch (InterruptedException exc){}
                     
                     boolean isStop = actualizePosition();
                     if (isStop){
                         String stopTime = InternalClock.getStopTime();
-                        int accuracy = InternalClock.SECOND; 
+                        int accuracy = (InternalClock.getAccelerationLevel() < 64)
+                                     ?  InternalClock.SECOND
+                                     :  InternalClock.MINUTE; 
                         while(!InternalClock.isTime(stopTime, accuracy)){
                             try{
-                                Thread.sleep(40);
+                                Thread.sleep(2);
                             } catch (InterruptedException exc){}
                         }
                     }
