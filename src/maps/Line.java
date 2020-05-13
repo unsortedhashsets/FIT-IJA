@@ -17,7 +17,7 @@ public class Line {
     private int counterID;
 
     private ArrayList<SimpleImmutableEntry<Street, Stop>> route;
-    private LinkedHashMap<Coordinate, Object> coordinates;
+    private ArrayList<SimpleImmutableEntry<Coordinate, Object>> coordinates;
 
     public Line(String id, String color, String type) {
         this.id = id;
@@ -27,7 +27,7 @@ public class Line {
         this.counterID = 0;
 
         this.route = new ArrayList<SimpleImmutableEntry<Street, Stop>>();
-        this.coordinates = new LinkedHashMap<Coordinate, Object>();
+        this.coordinates = new ArrayList<SimpleImmutableEntry<Coordinate, Object>>();
     }
 
     public boolean addStop(Stop stop) {
@@ -53,7 +53,7 @@ public class Line {
     }
 
     public void addCoordinate(Coordinate coordinate, Object object){
-        this.coordinates.put(coordinate, object);
+        this.coordinates.add(new SimpleImmutableEntry<>(coordinate, object));
     }
 
     public java.util.List<java.util.AbstractMap.SimpleImmutableEntry<Street, Stop>> getRoute() {
@@ -83,7 +83,7 @@ public class Line {
         return this.id;
     }
 
-    public LinkedHashMap<Coordinate, Object> getCoordinates(){
+    public ArrayList<SimpleImmutableEntry<Coordinate, Object>> getCoordinates(){
         return this.coordinates;
     }
 }

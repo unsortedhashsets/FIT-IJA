@@ -2,7 +2,7 @@ package vehicles;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedHashMap;
+import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.Iterator;
 
 import internal.InternalClock;
@@ -19,14 +19,13 @@ public class Vehicle implements Runnable{
 
     private Thread thread;
 
-    private LinkedHashMap<Coordinate, Object> coordinates;
-    private ArrayList<Coordinate> listOfCoors;
-    private Iterator<Coordinate> iter;
+    private ArrayList<SimpleImmutableEntry<Coordinate, Object>> listOfCoors;
+    private Iterator<SimpleImmutableEntry<Coordinate, Object>> iter;
     private boolean isReversed;
 
     private Coordinate position;
-    private Coordinate departure;
-    private Coordinate arrival;
+    private SimpleImmutableEntry<Coordinate, Object> departure;
+    private SimpleImmutableEntry<Coordinate, Object> arrival;
 
     private float velocity;
     private float velocity_X;
@@ -50,22 +49,23 @@ public class Vehicle implements Runnable{
     }
 
     private void setAxisVelocities() {
-        int length_X = arrival.diffX(departure);
-        int length_Y = arrival.diffY(departure);
-        float length = arrival.length(departure);
+        int length_X = arrival.getKey().diffX(departure.getKey());
+        int length_Y = arrival.getKey().diffY(departure.getKey());
+        float length = arrival.getKey().length(departure.getKey());
 
-        this.velocity_X = (this.velocity * length_X) / length;
-        this.velocity_Y = (this.velocity * length_Y) / length;
+        this.velocity_X = (length != 0) ? (this.velocity * length_X) / length : 0;
+        this.velocity_Y = (length != 0) ? (this.velocity * length_Y) / length : 0;
+
     }
 
     private void setMovingParameters(){
-        this.coordinates = this.line.getCoordinates();
-        this.listOfCoors = new ArrayList<Coordinate>(coordinates.keySet());
+        this.listOfCoors = new ArrayList<SimpleImmutableEntry<Coordinate, Object>>(this.line.getCoordinates());
         this.iter = listOfCoors.iterator();
         this.isReversed = false;
 
-        this.position = this.departure = (Coordinate) iter.next();
-        this.arrival = (Coordinate) iter.next();
+        this.departure = iter.next();
+        this.arrival = iter.next();
+        this.position = this.departure.getKey();
 
         this.float_X = this.position.getX();
         this.float_Y = this.position.getY();
@@ -78,29 +78,29 @@ public class Vehicle implements Runnable{
 
         float time = 0.04f;
 
-        while (time != 0){
-            Object delayObject = coordinates.get((isReversed) ? this.arrival : this.departure);
+        while (!(0 <= time && time <= 1.0E-7)){  // float accuracy
+            Object delayObject = (isReversed) ? this.arrival.getValue() : this.departure.getValue();
             float delay = 1.0f;
             if (delayObject.getClass().getName().equals("maps.Street")){
                 Street street = (Street) delayObject;
-                delay = 1 - street.GetdrivingDifficulties() * 0.01f;
+                delay = 1 - (street.GetdrivingDifficulties() * 0.01f);
             } else if (delayObject.getClass().getName().equals("maps.Stop")){
                 Stop stop = (Stop) delayObject;
-                delay = 1 - stop.getStreet().GetdrivingDifficulties() * 0.01f;
+                delay = 1 - (stop.getStreet().GetdrivingDifficulties() * 0.01f);
             }
 
             float distance_X = delay * acceleration * velocity_X * 0.04f; // 1.0f = 1 second
             float distance_Y = delay * acceleration * velocity_Y * 0.04f; // 1.0f = 1 second
 
             this.float_X += (velocity_X > 0) 
-                          ? Math.min(distance_X, this.arrival.diffX(this.position))
-                          : Math.max(distance_X, this.arrival.diffX(this.position));
+                          ? Math.min(distance_X, arrival.getKey().diffX(this.position))
+                          : Math.max(distance_X, arrival.getKey().diffX(this.position));
             this.float_Y += (velocity_Y > 0) 
-                          ? Math.min(distance_Y, this.arrival.diffY(this.position))
-                          : Math.max(distance_Y, this.arrival.diffY(this.position));
- 
+                          ? Math.min(distance_Y, arrival.getKey().diffY(this.position))
+                          : Math.max(distance_Y, arrival.getKey().diffY(this.position));
+
             this.position = Coordinate.create(Math.round(float_X), Math.round(float_Y));
-            if (this.position.equals(this.arrival)){
+            if (this.position.equals(this.arrival.getKey())){
                 this.departure = this.arrival;
                 if (!iter.hasNext()){
                     Collections.reverse(listOfCoors);
@@ -110,19 +110,17 @@ public class Vehicle implements Runnable{
                     this.isReversed = !this.isReversed;
                 }
 
-                this.arrival = (Coordinate) iter.next();
+                this.arrival = iter.next();
                 setAxisVelocities();
 
-                Object object = coordinates.get(this.departure);
+                Object object = this.departure.getValue();
                 if (object.getClass().getName().equals("maps.Stop")){
                     return true;
                 }
             }
-
             float length = (float) Math.sqrt(Math.pow(distance_X, 2) + Math.pow(distance_Y, 2));
             time -= length / (acceleration * this.velocity * delay);
         } 
-
         return false;
     }
 
