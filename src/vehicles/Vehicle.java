@@ -18,6 +18,7 @@ public class Vehicle implements Runnable{
     private String to;
 
     private Thread thread;
+    private boolean isStopped;
 
     private ArrayList<SimpleImmutableEntry<Coordinate, Object>> listOfCoors;
     private Iterator<SimpleImmutableEntry<Coordinate, Object>> iter;
@@ -145,9 +146,9 @@ public class Vehicle implements Runnable{
         boolean afterToTime = false;
         boolean hasReversed = this.isReversed;
 
-        while (true){
+        while (!isStopped){
             if (InternalClock.isTime(from, InternalClock.MINUTE)){
-                while (true){
+                while (!isStopped){
                     try{
                         Thread.sleep(40);
                     } catch (InterruptedException exc){}
@@ -179,6 +180,7 @@ public class Vehicle implements Runnable{
     }
 
     public void start() {
+        this.isStopped = false;
         if (this.thread == null) {
             this.thread = new Thread(this, id);
             this.thread.start();
@@ -186,6 +188,7 @@ public class Vehicle implements Runnable{
     }
 
     public void stop() {
+        this.isStopped = true;
         if (this.thread != null) {
             this.thread.interrupt();
         }
