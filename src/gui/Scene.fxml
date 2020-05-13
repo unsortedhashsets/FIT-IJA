@@ -31,9 +31,9 @@
     <AnchorPane fx:id="Default_work_area"/>
   </center>
   <right>
-    <VBox fx:id="infoBox" maxWidth="200.0" minWidth="200.0" styleClass="info-box">
+    <VBox fx:id="infoBox" spacing="10" maxWidth="280.0" minWidth="200.0" styleClass="info-box">
       <padding>
-        <Insets left="20.0" top="20.0" />
+        <Insets left="20.0" top="20.0" bottom="20.0" right="20.0"  />
       </padding>
     </VBox>
   </right>

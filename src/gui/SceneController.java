@@ -136,7 +136,7 @@ public class SceneController implements Initializable {
     }
 
     private void setClockTimeLine() {
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(2), (ActionEvent event) -> {
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(1), (ActionEvent event) -> {
             Clocks.textProperty().set(InternalClock.updateClock());
         }));
         timeline.setCycleCount(Timeline.INDEFINITE);
@@ -234,11 +234,17 @@ public class SceneController implements Initializable {
         for (ViewVehicle tmp : viewVehicles) {
             tmp.GetVehicle().start();
         }
-        updatePos = new Timeline(new KeyFrame(Duration.millis(2), (ActionEvent event) -> {
+        updatePos = new Timeline(new KeyFrame(Duration.millis(40), (ActionEvent event) -> {
             for (ViewVehicle tmp : viewVehicles) {
                 tmp.UpdatePosition();
             }
         }));
+        Timeline timeline = new Timeline();
+
+        timeline.setCycleCount(1);
+        timeline.getKeyFrames().add(new KeyFrame(Duration.seconds(1)));
+        timeline.play();
+
         updatePos.setCycleCount(Timeline.INDEFINITE);
         updatePos.play();
 
@@ -298,6 +304,7 @@ public class SceneController implements Initializable {
 
     @FXML
     private void aboutClick() {
+        new AboutController();
         System.out.println("TEST SceneController.aboutClick");
     }
 

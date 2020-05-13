@@ -1,7 +1,6 @@
 package gui;
 
 import javafx.event.EventHandler;
-import javafx.scene.Node;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tooltip;
@@ -20,7 +19,6 @@ import maps.Street;
 public class ViewStreet extends Polyline {
     private Street street;
     private Glow glow = new Glow();
-    private Node node;
     Tooltip tooltip = new Tooltip();
     ContextMenu contextMenu = new ContextMenu();
     MenuItem open_close = new MenuItem("Close/Open Street");
@@ -99,19 +97,21 @@ public class ViewStreet extends Polyline {
                         System.out.println("STREET: " + street.getId() + " was closed on coords: " + street.getCoordinates().get(0).getX() + " - " + street.getCoordinates().get(0).getX() + " | " + street.getCoordinates().get(street.getCoordinates().size()-1).getX() + " - " + street.getCoordinates().get(street.getCoordinates().size()-1).getX());
                         setStroke(Color.RED);
                         getStrokeDashArray().addAll(20d,20d);
+                        street.SetdrivingDifficulties(100);
                         street.SetStatus(false);
                     } else {
                         System.out.println("SIGNAL on open click " + street.getId());
                         System.out.println("STREET: " + street.getId() + " was opened on coords: " + street.getCoordinates().get(0).getX() + " - " + street.getCoordinates().get(0).getX() + " | " + street.getCoordinates().get(street.getCoordinates().size()-1).getX() + " - " + street.getCoordinates().get(street.getCoordinates().size()-1).getX());
                         setStroke(Color.BLACK);
                         getStrokeDashArray().clear();
+                        street.SetdrivingDifficulties(0);
                         street.SetStatus(true);     
                     }
                 });
                 changeTraffic.setOnAction(event1 -> {
                     new SetTrafficWindow(street);
                 });
-                contextMenu.show(node, e.getScreenX(), e.getScreenY());
+                contextMenu.show(work_pane, e.getScreenX(), e.getScreenY());
                 System.out.println("Mouse RIGHT clicked on street " + street.getId());
             }
         }
