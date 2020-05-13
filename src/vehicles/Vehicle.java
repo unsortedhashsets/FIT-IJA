@@ -74,11 +74,10 @@ public class Vehicle implements Runnable{
     }
 
     public boolean actualizePosition(){
-        float acceleration = InternalClock.getAccelerationLevel();
-
         float time = 0.04f;
 
-        while (!(0 <= time && time <= 1.0E-7)){  // float accuracy
+        while (!(0 <= Math.abs(time) && Math.abs(time) <= 1.0E-7)){  // float accuracy
+            float acceleration = InternalClock.getAccelerationLevel();
             Object delayObject = (isReversed) ? this.arrival.getValue() : this.departure.getValue();
             float delay = 1.0f;
             if (delayObject.getClass().getName().equals("maps.Street")){
@@ -119,8 +118,11 @@ public class Vehicle implements Runnable{
                 }
             }
             float length = (float) Math.sqrt(Math.pow(distance_X, 2) + Math.pow(distance_Y, 2));
-            time -= length / (acceleration * this.velocity * delay);
+            if (delay != 0){
+                time -= length / (acceleration * this.velocity * delay);
+            }
         } 
+
         return false;
     }
 
