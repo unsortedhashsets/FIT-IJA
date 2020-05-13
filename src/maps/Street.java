@@ -37,21 +37,8 @@ public class Street {
     }
 
     public boolean addStop(Stop stop) {
-        int dot_stop_X = stop.getCoordinate().getX();
-        int dot_stop_Y = stop.getCoordinate().getY();
-
-        for (int i = 0; i < this.coordinates.size() - 1; i++) {
-            int dot1_X = coordinates.get(i).getX();
-            int dot1_Y = coordinates.get(i).getY();
-
-            int dot2_X = coordinates.get(i + 1).getX();
-            int dot2_Y = coordinates.get(i + 1).getY();
-
-            float x = (dot_stop_X - dot1_X) * (dot2_Y - dot1_Y);
-            float y = (dot_stop_Y - dot1_Y) * (dot2_X - dot1_X);
-
-            if (x == y && (dot1_X <= dot_stop_X && dot_stop_X <= dot2_X && dot1_Y <= dot_stop_Y && dot_stop_Y <= dot2_Y)
-                    || (dot2_X <= dot_stop_X && dot_stop_X <= dot1_X && dot2_Y <= dot_stop_Y && dot_stop_Y <= dot1_Y)) {
+        for (int i = this.coordinates.size() - 1; i > 0; i--) {
+            if (isInStreet(this.coordinates.get(i), stop.getCoordinate(), this.coordinates.get(i-1))) {
                 this.stops.add(stop);
                 stop.setStreet(this);
                 return true;
@@ -59,6 +46,28 @@ public class Street {
         }
 
         return false;
+    }
+
+    private boolean isInStreet(Coordinate previous, Coordinate stop, Coordinate next){
+        int diff_X = stop.diffX(previous);
+        int diff_Y = stop.diffY(previous);
+
+        int length_X = next.diffX(previous);
+        int length_Y = next.diffY(previous);
+
+        int cross = (diff_X * length_Y) - (diff_Y * length_X);
+
+        if (cross != 0){
+            return false;
+        }
+        if (Math.abs(length_X) >= Math.abs(length_Y))
+            return length_X > 0 ? 
+                previous.getX() <= stop.getX() && stop.getX() <= next.getX() :
+                next.getX() <= stop.getX() && stop.getX() <= previous.getX();
+        else
+            return length_Y > 0 ? 
+                previous.getY() <= stop.getY() && stop.getY() <= next.getY() :
+                next.getY() <= stop.getY() && stop.getY() <= previous.getY();
     }
 
     public Coordinate begin() {

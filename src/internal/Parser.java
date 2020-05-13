@@ -97,13 +97,10 @@ public class Parser {
             Stop stop = new Stop(id, coordinate);
             for (Street street : streets) {
                 if (street.getId().equals(streetId)) {
-                    stop.setStreet(street);
-                    break;
+                    if (!street.addStop(stop)){
+                        System.out.println(streetId + ": " + stop);
+                    }
                 }
-            }
-
-            if (stop.getStreet() == null){
-                System.out.println("stop" + stop + "isn't on street");
             }
 
             stops.add(stop);
