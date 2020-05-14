@@ -12,14 +12,16 @@ public class InternalClock {
 
     private static double acceleration = 1;
     private static Instant clock;
+    private static LocalTime setTime;
     private static String localTime;
 
     public static void setDefaultClock() {
         clock = Instant.parse("2020-05-01T09:57:00.00Z");
+        setTime = null;
     }
 
     public static void setTime(String time) {
-        clock = Instant.parse("2020-05-01T" + time + ".00Z");
+        setTime = LocalTime.parse(time, DateTimeFormatter.ofPattern("HH:mm:ss"));
     }
 
     public static void defaultAccelerationLevel() {
@@ -66,6 +68,22 @@ public class InternalClock {
     }
 
     public static String updateClock() {
+        if (setTime != null){
+            LocalTime localSetTime = setTime.minusHours(getLocalTime().getHour())
+                                            .minusMinutes(getLocalTime().getMinute())
+                                            .minusSeconds(getLocalTime().getSecond());
+            if (localSetTime.getHour() != 0){
+                acceleration = 16384;
+            } else if (localSetTime.getMinute() != 0){
+                acceleration = 2048;
+            } else if (localSetTime.getSecond() != 0){
+                acceleration = 32;
+            } else{
+                setTime = null;
+                acceleration = 1;
+            }
+        }
+
         long nanos = (long) acceleration * 1000000;
         clock = clock.plusNanos(nanos);
 
