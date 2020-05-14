@@ -237,9 +237,8 @@ public class Vehicle implements Runnable{
 
     @Override
     public String toString(){
-        return "Vehicle " + this.id + ": " +
-               "is running from " + this.from +
-               " to " + this.to;
+        return "\nis running from : " + this.from +
+               "\n                     to : " + this.to;
 
     }
 }

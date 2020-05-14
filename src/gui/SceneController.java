@@ -48,6 +48,8 @@ import internal.Parser;
  */
 public class SceneController implements Initializable {
 
+    private Boolean NewPushed = false;
+
     private List<ViewStreet> viewStreets;
     private List<ViewLine> viewLines;
     private List<ViewStop> viewStops;
@@ -171,6 +173,7 @@ public class SceneController implements Initializable {
     private void cleanClick() {
         work_area.getChildren().clear();
         System.out.println("TEST SceneController.cleanClick");
+        this.NewPushed = false;
         // work_area.getChildren().add(new ImageView(new Image("pngwing.com.png")));
     }
 
@@ -211,7 +214,7 @@ public class SceneController implements Initializable {
 
             List<Vehicle> vehicles = Parser.getVehicles();
             this.viewVehicles = new ArrayList<>();
-            for (int i = 0; i < vehicles.size(); i++) {
+            for (int i = vehicles.size() -1; i >= 0; i--) {
                 this.viewVehicles.add(new ViewVehicle(vehicles.get(i),vehiclesGroup , infoBox));
             }
 
@@ -223,6 +226,9 @@ public class SceneController implements Initializable {
 
             work_area.getChildren().add(this.vehiclesGroup);
 
+
+            this.NewPushed = true;
+
         } else {
             System.out.println("No file choosed");
         }
@@ -231,33 +237,37 @@ public class SceneController implements Initializable {
 
     @FXML
     private void startClick() {
-        for (ViewVehicle tmp : viewVehicles) {
-            tmp.GetVehicle().start();
-        }
-        updatePos = new Timeline(new KeyFrame(Duration.millis(40), (ActionEvent event) -> {
+        if (this.NewPushed) {
             for (ViewVehicle tmp : viewVehicles) {
-                tmp.UpdatePosition();
+                tmp.GetVehicle().start();
             }
-        }));
-        Timeline timeline = new Timeline();
+            updatePos = new Timeline(new KeyFrame(Duration.millis(40), (ActionEvent event) -> {
+                for (ViewVehicle tmp : viewVehicles) {
+                    tmp.UpdatePosition();
+                }
+            }));
+            Timeline timeline = new Timeline();
 
-        timeline.setCycleCount(1);
-        timeline.getKeyFrames().add(new KeyFrame(Duration.seconds(1)));
-        timeline.play();
+            timeline.setCycleCount(1);
+            timeline.getKeyFrames().add(new KeyFrame(Duration.seconds(1)));
+            timeline.play();
 
-        updatePos.setCycleCount(Timeline.INDEFINITE);
-        updatePos.play();
+            updatePos.setCycleCount(Timeline.INDEFINITE);
+            updatePos.play();
 
-        System.out.println("TEST SceneController.startClick");
+            System.out.println("TEST SceneController.startClick");
+        }
     }
 
     @FXML
     private void stopClick() {
-        updatePos.stop();
-        for (ViewVehicle tmp : viewVehicles) {
-            tmp.GetVehicle().stop();
+        if (this.NewPushed) {
+            updatePos.stop();
+            for (ViewVehicle tmp : viewVehicles) {
+                tmp.GetVehicle().stop();
+            }
+            System.out.println("TEST SceneController.stopClick");
         }
-        System.out.println("TEST SceneController.stopClick");
     }
 
     @FXML

@@ -84,7 +84,7 @@ public class InternalClock {
             }
         }
 
-        long nanos = (long) acceleration * 1000000;
+        long nanos = (long) (acceleration * 1000000);
         clock = clock.plusNanos(nanos);
 
         localTime = getLocalTime().toString();
