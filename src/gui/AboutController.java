@@ -3,9 +3,18 @@ package gui;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+/**
+ * Graphic representation of the about window in the scene
+ * @author Mikhail Abramov (xabram00)
+ * @author Serhii Salatskyi (xsalat00)
+ *
+ */
 public class AboutController {
     private Stage about;
 
+    /**
+    * About Window constructor
+    */
     public AboutController() {
 
         this.about = new Stage();
@@ -20,6 +29,9 @@ public class AboutController {
 
     }
 
+    /**
+    * Initialization of the About window
+    */
     private void layout() {
         
     }

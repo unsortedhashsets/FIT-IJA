@@ -16,6 +16,12 @@ import javafx.scene.shape.StrokeLineJoin;
 import maps.Coordinate;
 import maps.Street;
 
+/**
+ * Graphic representation of the Street the scene
+ * @author Mikhail Abramov (xabram00)
+ * @author Serhii Salatskyi (xsalat00)
+ *
+ */
 public class ViewStreet extends Polyline {
     private Street street;
     private Glow glow = new Glow();
@@ -26,6 +32,12 @@ public class ViewStreet extends Polyline {
     AnchorPane work_pane;
     VBox infoBox;
 
+    /**
+    * Constructor of the graphic Street representation 
+    * @param in_street  input street object 
+    * @param in_work_pane parent pane
+    * @param in_infoBox  input infoBox object 
+    */
     public ViewStreet(Street in_street, AnchorPane in_work_pane, VBox in_infoBox) {
         this.work_pane = in_work_pane;
         this.infoBox = in_infoBox;
@@ -40,6 +52,9 @@ public class ViewStreet extends Polyline {
         this.work_pane.getChildren().add(this);
     }
 
+    /**
+    * Set base settings of toolTip box 
+    */
     private void setupToolTip() {
         tooltip.setText(
             "street: " + street.getId() +
@@ -49,6 +64,9 @@ public class ViewStreet extends Polyline {
         tooltip.getStyleClass().add("street-tip");
     }
 
+    /**
+    * Draw the street object  
+    */
     private void drawStreet() {
         for (Coordinate tmp : street.getCoordinates()) {
             getPoints().addAll(new Double[] { (double) tmp.getX(), (double) tmp.getY() });
@@ -59,6 +77,9 @@ public class ViewStreet extends Polyline {
         setStrokeWidth(16);
     }
 
+    /**
+    * EventHandler - mouse entered the street graphic representation
+    */
     EventHandler<MouseEvent> mouseEntered = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent e) {
@@ -72,6 +93,9 @@ public class ViewStreet extends Polyline {
         }
     };
 
+    /**
+    * EventHandler - mouse exited the street graphic representation
+    */
     EventHandler<MouseEvent> mouseExited = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent e) {
@@ -80,6 +104,9 @@ public class ViewStreet extends Polyline {
         }
     };
 
+    /**
+    * EventHandler - mouse clicked on the street graphic representation
+    */
     EventHandler<MouseEvent> mouseClicked = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent e) {

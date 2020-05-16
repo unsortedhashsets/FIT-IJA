@@ -15,7 +15,9 @@ import javafx.stage.Stage;
 import maps.Street;
 
 /**
- * Okno pro nastavovani hodnot atributu portu
+ * Graphic representation of the set-traffic situation window in the scene
+ * @author Mikhail Abramov (xabram00)
+ * @author Serhii Salatskyi (xsalat00)
  *
  */
 public class SetTrafficWindow {
@@ -27,17 +29,16 @@ public class SetTrafficWindow {
     private Street street;
 
     /**
-     * Konstruktor okna pro uživatelský vstup na port
-     * 
-     * @param Street Street, na který se zadávají hodnoty
-     */
+    * Window constructor for traffic input
+    * @param Street Street to set traffic situation
+    */
     public SetTrafficWindow(Street Street) {
         this.street = Street;
 
         this.userInput = new Stage();
 
         this.userInput.setTitle("Set Traffic Situation");
-        this.userInput.setWidth(220);
+        this.userInput.setWidth(250);
         this.userInput.setHeight(80);
         this.userInput.initModality(Modality.APPLICATION_MODAL);
 
@@ -48,7 +49,7 @@ public class SetTrafficWindow {
     }
 
     /**
-     * Inicializace okna pro uživatelský vstup
+     * Initialization of the user input window
      */
     public void Layout() {
         this.layout = new VBox();
@@ -67,8 +68,6 @@ public class SetTrafficWindow {
         valueInput.setId("Traffic level");
         valueInput.setText(Integer.toString(street.GetdrivingDifficulties()));
         box.getChildren().add(valueInput);
-
-        /** Nastavení eventu - po stisknutí ENTERU se nataví hodnoty **/
 
         this.layout.getChildren().add(box);
         confirmButton.setPrefWidth(50);
@@ -94,8 +93,7 @@ public class SetTrafficWindow {
     }
 
     /**
-     * Nastavení za daných hodnot na porty
-     * 
+     * Setting of the given values on street
      * @param valueInput value from tbox
      */
     public void setTrafficSituation(TextField valueInput) {

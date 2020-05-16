@@ -16,26 +16,15 @@
     <target name="clean">
         <delete dir="build"/>
         <delete dir="dest"/>
+    </target>
+
+    <!-- ant clean-doc command -->
+    <target name="clean-doc">
         <delete dir="doc"/>
     </target>
 
     <!-- ant compile command -->
     <target name="compile" depends="clean">
-        <mkdir dir="doc"/>
-        <javadoc locale="cs_CZ" 
-            packagenames="gui" 
-            sourcepath="src" 
-            excludepackagenames="" 
-            defaultexcludes="yes" 
-            destdir="doc" 
-            author="true" 
-            version="true" 
-            use="true" 
-            windowtitle="IJA_PROJECT_2020" 
-            charset="UTF-8">
-                <doctitle><![CDATA[<h1>Project Implementation IJA 2019/2020</h1>]]></doctitle>
-                <bottom><![CDATA[<i>Autors: Mikhail Abramov, Serhii Salatskyi</i>]]></bottom>
-        </javadoc>
         <mkdir dir="build"/>
         <javac srcdir="src" destdir="build" debug="true" includeantruntime="false"></javac>
         <copy todir="build">
@@ -52,8 +41,27 @@
         </jar>
     </target>
 
+    <!-- ant doc command -->
+    <target name="doc" depends="clean-doc">
+        <mkdir dir="doc"/>  
+        <javadoc locale="cs_CZ" 
+            packagenames="gui,internal,maps,vehicles" 
+            sourcepath="src" 
+            excludepackagenames="" 
+            defaultexcludes="yes" 
+            destdir="doc" 
+            author="true" 
+            version="true" 
+            use="true" 
+            windowtitle="IJA_PROJECT_2020" 
+            charset="UTF-8">
+                <doctitle><![CDATA[<h1>Project Implementation IJA 2019/2020</h1>]]></doctitle>
+                <bottom><![CDATA[<i>Autors: Mikhail Abramov, Serhii Salatskyi</i>]]></bottom>
+        </javadoc>
+    </target>
+
     <!-- ant run command -->
-    <target name="run" depends="compile">
+    <target name="run" >
         <java jar="dest/ija-app.jar" fork="true"/>
     </target>
 

@@ -16,7 +16,9 @@ import javafx.stage.Stage;
 import internal.InternalClock;
 
 /**
- * Okno pro nastavovani hodnot atributu portu
+ * Graphic representation of the set-time window in the scene
+ * @author Mikhail Abramov (xabram00)
+ * @author Serhii Salatskyi (xsalat00)
  *
  */
 public class SetTimeWindow {
@@ -25,7 +27,9 @@ public class SetTimeWindow {
     private Scene uiScene;
     private Button confirmButton;
 
- 
+    /**
+    * Window constructor for time input
+    */
     public SetTimeWindow() {
 
         this.userInput = new Stage();
@@ -41,7 +45,7 @@ public class SetTimeWindow {
     }
 
     /**
-     * Inicializace okna pro uživatelský vstup
+     * Initialization of the user input window
      */
     public void Layout() {
         this.layout = new VBox();
@@ -83,8 +87,6 @@ public class SetTimeWindow {
         SSInput.setId("SS");
         SSInput.setText("00");
         box.getChildren().add(SSInput);
-
-        /** Nastavení eventu - po stisknutí ENTERU se nataví hodnoty **/
 
         this.layout.getChildren().add(box);
         confirmButton.setPrefWidth(50);
@@ -128,7 +130,12 @@ public class SetTimeWindow {
         });
     }
 
-
+    /**
+     * Setting of the given values
+     * @param HHInput HH value from tbox
+     * @param MMInput MM value from tbox
+     * @param SSInput SS value from tbox
+     */
     public void setTimeValues(TextField HHInput, TextField MMInput, TextField SSInput) {
        
         String s = HHInput.getText().trim() + ":" + MMInput.getText().trim() + ":" + SSInput.getText().trim();

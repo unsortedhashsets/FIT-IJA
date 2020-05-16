@@ -115,10 +115,10 @@ public class SceneController implements Initializable {
     private ZoomableScrollPane scroll_work_area;
 
     /**
-     * Inicializace sceny
+     * Scene initialization
      * 
-     * @param location  lokace
-     * @param resources zdroj
+     * @param location  location
+     * @param resources resources
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -128,6 +128,9 @@ public class SceneController implements Initializable {
         setClockTimeLine();
     }
 
+    /**
+     * Set initial scen settings
+     */
     private void setInitialScen() {
         this.work_area = new AnchorPane();
         // work_area.getChildren().add(new ImageView(new Image("Paris_Revisited_preview.png")));
@@ -137,6 +140,9 @@ public class SceneController implements Initializable {
         main.setCenter(scroll_work_area);
     }
 
+    /**
+    * Set clocks
+    */
     private void setClockTimeLine() {
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(1), (ActionEvent event) -> {
             Clocks.textProperty().set(InternalClock.updateClock());
@@ -145,6 +151,9 @@ public class SceneController implements Initializable {
         timeline.play();
     }
 
+    /**
+    * Set event handlers
+    */
     private void setHandlers() {
         work_area.setOnMouseEntered(mouseEnteredAndMove);
         work_area.setOnMouseMoved(mouseEnteredAndMove);
@@ -152,6 +161,9 @@ public class SceneController implements Initializable {
         work_area.setOnScroll(mouseScroll);
     }
 
+    /**
+    * Set event hot keys
+    */
     private void setHotKeys() {
         newButton.setAccelerator(new KeyCodeCombination(KeyCode.N, KeyCombination.CONTROL_DOWN));
         cleanButton.setAccelerator(new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_DOWN));
@@ -167,7 +179,7 @@ public class SceneController implements Initializable {
     }
 
     /**
-     * closeClick
+     * CLEAN click 
      */
     @FXML
     private void cleanClick() {
@@ -177,6 +189,9 @@ public class SceneController implements Initializable {
         // work_area.getChildren().add(new ImageView(new Image("pngwing.com.png")));
     }
 
+    /**
+    * NEW click 
+    */
     @FXML
     private void newClick() {
         FileChooser fileChooser = new FileChooser();
@@ -235,6 +250,9 @@ public class SceneController implements Initializable {
 
     }
 
+    /**
+    * START click 
+    */
     @FXML
     private void startClick() {
         if (this.NewPushed) {
@@ -259,6 +277,9 @@ public class SceneController implements Initializable {
         }
     }
 
+    /**
+    * STOP click 
+    */
     @FXML
     private void stopClick() {
         if (this.NewPushed) {
@@ -270,61 +291,91 @@ public class SceneController implements Initializable {
         }
     }
 
+    /**
+    * SET TIME click 
+    */
     @FXML
     private void setTimeClick() {
         new SetTimeWindow();
         System.out.println("TEST SceneController.setTimeClick");
     }
 
+    /**
+    * SPEED INCREASE click 
+    */
     @FXML
     private void speedIncrClick() {
         InternalClock.increaseAccelerationLevel();
         System.out.println("TEST SceneController.speedIncrClick");
     }
 
+    /**
+    * SPEED DECREASE click 
+    */
     @FXML
     private void speedDecrClick() {
         InternalClock.decreaseAccelerationLevel();
         System.out.println("TEST SceneController.speedDecrClick");
     }
 
+    /**
+    * SPEED DEFAULT click 
+    */
     @FXML
     private void speedDefaClick() {
         InternalClock.defaultAccelerationLevel();
         System.out.println("TEST SceneController.speedDefaClick");
     }
 
+    /**
+    * ZOOM IN click 
+    */
     @FXML
     private void zoomInClick() {
         scroll_work_area.zoomIn();
         System.out.println("TEST SceneController.zoomInClick");
     }
 
+    /**
+    * ZOOM DEFAULT click 
+    */
     @FXML
     private void zoomDefClick() {
         scroll_work_area.zoomToDefault();
         System.out.println("TEST SceneController.zoomDefClick");
     }
 
+    /**
+    * ZOOM OUT click 
+    */
     @FXML
     private void zoomOutClick() {
         scroll_work_area.zoomOut();
         System.out.println("TEST SceneController.zoomOutClick");
     }
 
+    /**
+    * ABOUT click 
+    */
     @FXML
     private void aboutClick() {
         new AboutController();
         System.out.println("TEST SceneController.aboutClick");
     }
 
+    /**
+    * EventHandler - mouse exited from work area
+    */
     EventHandler<MouseEvent> mouseExited = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent e) {
             Coordinates.setText("");
         }
     };
-    
+
+    /**
+    * EventHandler - mouse entered and move in work area
+    */
     EventHandler<MouseEvent> mouseEnteredAndMove = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent e) {
@@ -334,6 +385,9 @@ public class SceneController implements Initializable {
         }
     };
 
+    /**
+    * EventHandler - mouse scroll in work area with cntrl down
+    */
     EventHandler<ScrollEvent> mouseScroll = new EventHandler<ScrollEvent>() {
         @Override
         public void handle(ScrollEvent scrollEvent) {

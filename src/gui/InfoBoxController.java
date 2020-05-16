@@ -27,8 +27,19 @@ import vehicles.Tram;
 import vehicles.Trolley;
 import vehicles.Vehicle;
 
+/**
+ * Graphic representation of the info block in the scene
+ * @author Mikhail Abramov (xabram00)
+ * @author Serhii Salatskyi (xsalat00)
+ *
+ */
 public class InfoBoxController {
 
+    /**
+    * Infobox constructor
+    * @param infoBox parent infoBox object
+    * @param line line to provide information about
+    */
     public static void InfoBoxController(VBox infoBox, Line line) {
 
         // Clear VBox
@@ -65,6 +76,11 @@ public class InfoBoxController {
         infoBox.getChildren().add(text);
     }
 
+    /**
+    * Infobox constructor
+    * @param infoBox parent infoBox object
+    * @param street street to provide information about
+    */
     public static void InfoBoxController(VBox infoBox, Street street) {
 
         // Clear VBox
@@ -87,6 +103,11 @@ public class InfoBoxController {
         infoBox.getChildren().add(new Text("Traffic difficulties: " + street.GetdrivingDifficulties()));
     }
 
+    /**
+    * Infobox constructor
+    * @param infoBox parent infoBox object
+    * @param stop stop to provide information about
+    */
     public static void InfoBoxController(VBox infoBox, Stop stop) {
 
         // Clear VBox
@@ -106,6 +127,11 @@ public class InfoBoxController {
 
     }
 
+    /**
+    * Infobox constructor
+    * @param infoBox parent infoBox object
+    * @param vehicle vehicle to provide information about
+    */
     public static void InfoBoxController(VBox infoBox, Vehicle vehicle) {
 
         // Clear VBox
@@ -147,7 +173,7 @@ public class InfoBoxController {
 
         infoBox.getChildren().addAll(textC, textS);
 
-        Timeline updatePos = new Timeline(new KeyFrame(Duration.millis(40), (ActionEvent event) -> {
+        Timeline updatePos = new Timeline(new KeyFrame(Duration.millis(100), (ActionEvent event) -> {
             textC.textProperty().set("Actual location: \n" + vehicle.getPosition().toString());
             textS.textProperty().set(vehicle.toString());
         }));
@@ -157,59 +183,62 @@ public class InfoBoxController {
         // Set next STOPS
         Group group2 = new Group();
 
-        Timeline updatePos2 = new Timeline(new KeyFrame(Duration.millis(40), (ActionEvent event) -> {
+        Timeline updatePos2 = new Timeline(new KeyFrame(Duration.millis(1), (ActionEvent event) -> {
 
             group2.getChildren().clear();
 
             Text text2 = new Text("");
             text2.setText("Arrival time   (Stop - Arrival time in):\n\n   ");
-
             group2.getChildren().add(text2);
-            
+
             Polyline polyline2 = new Polyline();
+            polyline2.setStyle("-fx-stroke:" + vehicle.getLine().getColor());
+            polyline2.setStrokeLineCap(StrokeLineCap.ROUND);
+            polyline2.setStrokeLineJoin(StrokeLineJoin.ROUND);
+            polyline2.setStrokeWidth(3);
 
             group2.getChildren().add(polyline2);
-
+            
             ArrayList<SimpleImmutableEntry<Stop, Integer>> list = vehicle.getSchedule();
             Collections.reverse(list);
-            for (SimpleImmutableEntry<Stop, Integer> tmp : list) {
 
-                int pointY = 25 + vehicle.getSchedule().indexOf(tmp) * 15;
+            if (list.size() >= 1) {
+            
+                for (SimpleImmutableEntry<Stop, Integer> tmp : list) {
 
-                polyline2.getPoints().addAll(new Double[] { (double) 0, (double) pointY });
-                polyline2.setStyle("-fx-stroke:" + vehicle.getLine().getColor());
-                polyline2.setStrokeLineCap(StrokeLineCap.ROUND);
-                polyline2.setStrokeLineJoin(StrokeLineJoin.ROUND);
-                polyline2.setStrokeWidth(3);
+                    int pointY = 25 + vehicle.getSchedule().indexOf(tmp) * 15;
 
-                Circle circle2 = new Circle();
-                circle2.setCenterX(0);
-                circle2.setCenterY(pointY);
-                circle2.setRadius(6);
+                    polyline2.getPoints().addAll(new Double[] { (double) 0, (double) pointY });
 
-                if (vehicle.getSchedule().indexOf(tmp) == list.size()-1){
-                    circle2.setStyle("-fx-fill: RED");
-                    Circle circle3 = new Circle();
-                    circle3.setCenterX(0);
-                    circle3.setCenterY(pointY);
-                    circle3.setStyle("-fx-fill: YELLOW");
-                    circle3.setRadius(3);
-                    circle3.setCenterX(0);
-                    group2.getChildren().add(circle2);
-                    group2.getChildren().add(circle3);
-                } else {
-                    circle2.setStyle("-fx-fill: " + vehicle.getLine().getColor());
-                    group2.getChildren().add(circle2);
+
+                    Circle circle2 = new Circle();
+                    circle2.setCenterX(0);
+                    circle2.setCenterY(pointY);
+                    circle2.setRadius(6);
+
+                    if (vehicle.getSchedule().indexOf(tmp) == list.size()-1){
+                        circle2.setStyle("-fx-fill: RED");
+                        Circle circle3 = new Circle();
+                        circle3.setCenterX(0);
+                        circle3.setCenterY(pointY);
+                        circle3.setStyle("-fx-fill: YELLOW");
+                        circle3.setRadius(3);
+                        circle3.setCenterX(0);
+                        group2.getChildren().add(circle2);
+                        group2.getChildren().add(circle3);
+                    } else {
+                        circle2.setStyle("-fx-fill: " + vehicle.getLine().getColor());
+                        group2.getChildren().add(circle2);
+                    }
+                    int mins = (tmp.getValue() % 3600) / 60;
+                    int secs = tmp.getValue() % 60;
+                    
+                    if (mins ==0) {
+                        text2.setText(text2.getText() + tmp.getKey().getId() + " - in : " + secs + "s\n   ");
+                    } else {
+                        text2.setText(text2.getText() + tmp.getKey().getId() + " - in : " + mins + "m " + secs + "s\n   ");
+                    }
                 }
-                int mins = (tmp.getValue() % 3600) / 60;
-                int secs = tmp.getValue() % 60;
-                
-                if (mins ==0) {
-                    text2.setText(text2.getText() + tmp.getKey().getId() + " - in : " + secs + "s\n   ");
-                } else {
-                    text2.setText(text2.getText() + tmp.getKey().getId() + " - in : " + mins + "m " + secs + "s\n   ");
-                }
-                
             }
         }));
 

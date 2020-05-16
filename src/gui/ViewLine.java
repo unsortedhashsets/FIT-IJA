@@ -21,6 +21,12 @@ import maps.Line;
 import maps.Stop;
 import maps.Street;
 
+/**
+ * Graphic representation of Line the scene
+ * @author Mikhail Abramov (xabram00)
+ * @author Serhii Salatskyi (xsalat00)
+ *
+ */
 public class ViewLine extends Polyline {
     AnchorPane work_pane;
     VBox infoBox;
@@ -29,6 +35,13 @@ public class ViewLine extends Polyline {
     Group f_group = new Group();
     private Glow glow = new Glow();
 
+    /**
+    * Constructor of the graphic Stop representation
+    * @param in_line input line object
+    * @param Front_Group  front objects group
+    * @param in_work_pane parent pane
+    * @param in_infoBox  input infoBox object
+    */
     public ViewLine(Line in_line,Group Front_Group, AnchorPane in_work_pane, VBox in_infoBox) {
         this.work_pane = in_work_pane;
         this.infoBox = in_infoBox;
@@ -45,6 +58,9 @@ public class ViewLine extends Polyline {
         this.work_pane.getChildren().add(this.stopGroup);
     }
 
+    /**
+    * Set base settings of toolTip box 
+    */
     private void setupToolTip() {
         Tooltip tooltip = new Tooltip();
         tooltip.setText("line: " + line.getID() + "\n\nRoute:\n" + (line.getRoute().stream().map(entry -> entry.getKey().getId() + ":" + entry.getValue() + ";\n").collect(Collectors.joining())));
@@ -53,6 +69,9 @@ public class ViewLine extends Polyline {
 
     }
 
+    /**
+    * General Draw the line object  
+    */
     private void drawLine() {
 
         List<SimpleImmutableEntry<Street, Stop>> tmp = line.getRoute();
@@ -146,6 +165,11 @@ public class ViewLine extends Polyline {
         setStrokeWidth(4);
     }
 
+    /**
+    * Draw the line object if connection ...-END exists
+    * @param tmp street-stop SimpleImmutableEntry
+    * @param i number in route
+    */
     private void something_END(List<SimpleImmutableEntry<Street, Stop>> tmp, int i){
         // ... - END
         for (int c = tmp.get(i).getKey().getCoordinates().size() - 1; c >= 0; c--) {
@@ -171,6 +195,11 @@ public class ViewLine extends Polyline {
         // ... - END
     }
 
+    /**
+    * Draw the line object if connection ...-BEGIN exists
+    * @param tmp street-stop SimpleImmutableEntry
+    * @param i number in route
+    */
     private void something_BEGIN(List<SimpleImmutableEntry<Street, Stop>> tmp, int i){
         // ... - BEGIN
         for (int c = 0; c < tmp.get(i).getKey().getCoordinates().size() - 1; c++) {
@@ -193,6 +222,11 @@ public class ViewLine extends Polyline {
         // ... - BEGIN
     }
 
+    /**
+    * Draw the line object if connection BEGIN-.. exists
+    * @param tmp street-stop SimpleImmutableEntry
+    * @param i number in route
+    */
     private void BEGIN_something(List<SimpleImmutableEntry<Street, Stop>> tmp, int i){
         // BEGIN - ... 
         for (int c = tmp.get(i-1).getKey().getCoordinates().size() - 1; c > 0; c--) {
@@ -223,6 +257,11 @@ public class ViewLine extends Polyline {
         // BEGIN - ... 
     }
 
+    /**
+    * Draw the line object if connection END-.. exists
+    * @param tmp street-stop SimpleImmutableEntry
+    * @param i number in route
+    */
     private void END_something(List<SimpleImmutableEntry<Street, Stop>> tmp, int i){
         // END - ...
         for (int c = 0; c < tmp.get(i).getKey().getCoordinates().size() - 1; c++) {
@@ -253,6 +292,9 @@ public class ViewLine extends Polyline {
         // END - ...
     }
 
+    /**
+    * Draw the stop  
+    */
     private void drawStop(Coordinate coor) {
         Circle circle = new Circle();
         circle.setCenterX(coor.getX());
@@ -262,6 +304,12 @@ public class ViewLine extends Polyline {
         this.stopGroup.getChildren().add(circle);
     } 
 
+    /**
+    * Control if between two coordinates exists stop
+    * @param s Stop
+    * @param first first coordinate
+    * @param second second coordinate
+    */
     private Boolean checkIfStopIsBetweenCoords(Stop s, Coordinate first, Coordinate second) {
         // test point in x-range
         if ((first.getX() <= s.getCoordinate().getX() && s.getCoordinate().getX() <= second.getX())
@@ -278,6 +326,9 @@ public class ViewLine extends Polyline {
         return false;
     }
 
+    /**
+    * EventHandler - mouse entered the line graphic representation
+    */
     EventHandler<MouseEvent> mouseEntered = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent e) {
@@ -286,6 +337,9 @@ public class ViewLine extends Polyline {
         }
     };
 
+    /**
+    * EventHandler - mouse exited the line graphic representation
+    */
     EventHandler<MouseEvent> mouseExited = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent e) {
@@ -294,6 +348,9 @@ public class ViewLine extends Polyline {
         }
     };
 
+    /**
+    * EventHandler - mouse clicked the line graphic representation
+    */
     EventHandler<MouseEvent> mouseClicked = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent e) {

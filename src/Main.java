@@ -30,7 +30,7 @@ public class Main extends Application {
         Scene scene = new Scene(root, 800, 600);
 
         primaryStage.setScene(scene);
-        primaryStage.setTitle("I");
+        primaryStage.setTitle("IJA PROJECT 2020");
         scene.getStylesheets().add("gui/Scene.css");
 
         primaryStage.setOnCloseRequest((ae) -> {
