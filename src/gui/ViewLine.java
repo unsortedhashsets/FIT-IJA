@@ -77,9 +77,6 @@ public class ViewLine extends Polyline {
         List<SimpleImmutableEntry<Street, Stop>> tmp = line.getRoute();
         
         for (int i = 0; i < tmp.size(); i++) {
-            Street previousStreet = tmp.get(i-1).getKey();
-            Stop previousStop = tmp.get(i-1).getValue();
-
             Street currentStreet = tmp.get(i).getKey();
             Stop currentStop = tmp.get(i).getValue();
             
@@ -92,6 +89,9 @@ public class ViewLine extends Polyline {
                 line.addCoordinate(currentStop.getCoordinate(), currentStop);
                 
             } else {
+                Street previousStreet = tmp.get(i-1).getKey();
+                Stop previousStop = tmp.get(i-1).getValue();
+
                 boolean setJ = false;
                 int j = 0;
                 // N STOPS ON ONE LINE 
