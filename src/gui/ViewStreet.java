@@ -58,7 +58,7 @@ public class ViewStreet extends Polyline {
     private void setupToolTip() {
         tooltip.setText(
             "street: " + street.getId() +
-            "\ntraffic situation: " + street.GetdrivingDifficulties()
+            "\ntraffic situation: " + street.getDrivingDifficulties()
         );
         Tooltip.install(this, tooltip);
         tooltip.getStyleClass().add("street-tip");
@@ -85,11 +85,10 @@ public class ViewStreet extends Polyline {
         public void handle(MouseEvent e) {
             tooltip.setText(
                 "street: " + street.getId() +
-                "\n\nTraffic situation: " + street.GetdrivingDifficulties() +
+                "\n\nTraffic situation: " + street.getDrivingDifficulties() +
                 "\nStatus: " + street.GetStatusString()
             );
             setEffect(glow);
-            System.out.println("Mouse entered on street: " + street.getId());
         }
     };
 
@@ -100,7 +99,6 @@ public class ViewStreet extends Polyline {
         @Override
         public void handle(MouseEvent e) {
             setEffect(null);
-            System.out.println("Mouse exited from street: " + street.getId());
         }
     };
 
@@ -113,33 +111,27 @@ public class ViewStreet extends Polyline {
             if (e.getButton() == MouseButton.PRIMARY)
             {   
                 InfoBoxController.InfoBoxController(infoBox, street);
-                System.out.println("Mouse LEFT clicked on street: " + street.getId());
             } else if (e.getButton() == MouseButton.SECONDARY)
             {
                 contextMenu.getItems().add(open_close);
                 contextMenu.getItems().add(changeTraffic);
                 open_close.setOnAction(event1 -> {
-                    if (street.GetStatus()) {
-                        System.out.println("SIGNAL on close click " + street.getId());
-                        System.out.println("STREET: " + street.getId() + " was closed on coords: " + street.getCoordinates().get(0).getX() + " - " + street.getCoordinates().get(0).getX() + " | " + street.getCoordinates().get(street.getCoordinates().size()-1).getX() + " - " + street.getCoordinates().get(street.getCoordinates().size()-1).getX());
+                    if (street.getStatus()) {
                         setStroke(Color.RED);
                         getStrokeDashArray().addAll(20d,20d);
-                        street.SetdrivingDifficulties(100);
-                        street.SetStatus(false);
+                        street.setDrivingDifficulties(100);
+                        street.setStatus(false);
                     } else {
-                        System.out.println("SIGNAL on open click " + street.getId());
-                        System.out.println("STREET: " + street.getId() + " was opened on coords: " + street.getCoordinates().get(0).getX() + " - " + street.getCoordinates().get(0).getX() + " | " + street.getCoordinates().get(street.getCoordinates().size()-1).getX() + " - " + street.getCoordinates().get(street.getCoordinates().size()-1).getX());
                         setStroke(Color.BLACK);
                         getStrokeDashArray().clear();
-                        street.SetdrivingDifficulties(0);
-                        street.SetStatus(true);     
+                        street.setDrivingDifficulties(0);
+                        street.setStatus(true);     
                     }
                 });
                 changeTraffic.setOnAction(event1 -> {
                     new SetTrafficWindow(street);
                 });
                 contextMenu.show(work_pane, e.getScreenX(), e.getScreenY());
-                System.out.println("Mouse RIGHT clicked on street " + street.getId());
             }
         }
     };

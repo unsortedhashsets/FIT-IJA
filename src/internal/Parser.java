@@ -28,7 +28,7 @@ public class Parser {
     private static int width;
     private static int height;
 
-    public static void parse(File XML) {
+    public static String parse(File XML) {
         streets = new ArrayList<>();
         stops = new ArrayList<>();
         lines = new ArrayList<>();
@@ -54,53 +54,56 @@ public class Parser {
             parseStops(doc.getElementsByTagName("stop"));
             parseLines(doc.getElementsByTagName("line"));
         } catch (Exception err) {
-            System.err.println("Got an error: " + err.getMessage());
+            return err.getMessage();
         }
+
+        return null;
     }
 
-    private static void parseStreets(NodeList list) {
-        for (int index = 0; index < list.getLength(); index++) {
+    private static void parseStreets(NodeList list) throws Exception {
+        int listLength = list.getLength();
+        for (int index = 0; index < listLength; index++) {
             Element streetElement = (Element) list.item(index);
-            ;
-            String id = streetElement.getAttribute("id");
-            List<Coordinate> coors = new ArrayList<>();
-
             NodeList listOfCoors = streetElement.getElementsByTagName("coordinate_street");
-            for (int j = 0; j < listOfCoors.getLength(); j++) {
-                Element coor = (Element) listOfCoors.item(j);
-                int X = Integer.parseInt(coor.getAttribute("X"));
-                int Y = Integer.parseInt(coor.getAttribute("Y"));
+            int countOfCoors = listOfCoors.getLength();
 
-                coors.add(Coordinate.create(X, Y));
+            String id = streetElement.getAttribute("id");
+            Coordinate[] coordinates = new Coordinate[countOfCoors]; 
+
+            for (int coorIndex = 0; coorIndex < countOfCoors; coorIndex++) {
+                Element coordinate = (Element) listOfCoors.item(coorIndex);
+                int X = Integer.parseInt(coordinate.getAttribute("X"));
+                int Y = Integer.parseInt(coordinate.getAttribute("Y"));
+
+                coordinates[coorIndex] = (Coordinate.create(X, Y));
+                if (coordinates[coorIndex] == null)
+                    throw new Exception("Coordinate must not have negative axis");
             }
 
-            Coordinate[] coordinates = new Coordinate[coors.size()];
-            coors.toArray(coordinates);
-
-            streets.add(Street.create(id, coordinates));
+            streets.add(new Street(id, coordinates));
         }
     }
 
-    private static void parseStops(NodeList list) {
-        for (int index = 0; index < list.getLength(); index++) {
+    private static void parseStops(NodeList list) throws Exception {
+        int listLength = list.getLength();
+        for (int index = 0; index < listLength; index++) {
             Element stopElement = (Element) list.item(index);
-            ;
+
             Element coordinateElement = (Element) stopElement.getElementsByTagName("coordinate_stop").item(0);
             Element streetElement = (Element) stopElement.getElementsByTagName("street_stop").item(0);
 
             String id = stopElement.getAttribute("id");
+            String streetId = streetElement.getTextContent();
 
             int X = Integer.parseInt(coordinateElement.getAttribute("X"));
             int Y = Integer.parseInt(coordinateElement.getAttribute("Y"));
             Coordinate coordinate = Coordinate.create(X, Y);
 
-            String streetId = streetElement.getTextContent();
-
             Stop stop = new Stop(id, coordinate);
             for (Street street : streets) {
                 if (street.getId().equals(streetId)) {
                     if (!street.addStop(stop)){
-                        System.out.println(streetId + ": " + stop);
+                        throw new Exception("Stop " + stop + " isn't on street " + streetId);
                     }
                 }
             }
@@ -109,8 +112,9 @@ public class Parser {
         }
     }
 
-    private static void parseLines(NodeList list) {
-        for (int index = 0; index < list.getLength(); index++) {
+    private static void parseLines(NodeList list) throws Exception {
+        int listLength = list.getLength();
+        for (int index = 0; index < listLength; index++) {
             Element lineElement = (Element) list.item(index);
 
             String id = lineElement.getAttribute("id");
@@ -119,34 +123,50 @@ public class Parser {
             Line line = new Line(id, color, type);
 
             NodeList listOfStops = lineElement.getChildNodes();
-            for (int j = 0; j < listOfStops.getLength(); j++) {
-                Node stopNode = listOfStops.item(j);
+            int stopsLength = listOfStops.getLength();
+            for (int stopIndex = 0; stopIndex < stopsLength; stopIndex++) {
+                Node stopNode = listOfStops.item(stopIndex);
                 String nodeName = stopNode.getNodeName();
 
-                if (nodeName.equals("stop_line")) {
-                    String stopId = stopNode.getTextContent();
+                switch (nodeName){
+                    case "stop_line":
+                        String stopId = stopNode.getTextContent();
 
-                    for (Stop stop : stops) {
-                        if (stop.getId().equals(stopId)) {
-                            line.addStop(stop);
-                            break;
+                        for (Stop stop : stops) {
+                            if (stop.getId().equals(stopId)) {
+                                if (!line.addStop(stop)){
+                                    throw new Exception("Stop " + stopId + 
+                                                        " wasn't added to the route:" + 
+                                                        "stop isn'n in a street, " +
+                                                        "which must follow last street");
+                                }
+                                break;
+                            }
                         }
-                    }
-                } else if (nodeName.equals("street_line")) {
-                    String streetId = stopNode.getTextContent();
+                        break;
 
-                    for (Street street : streets) {
-                        if (street.getId().equals(streetId)) {
-                            line.addStreet(street);
-                            break;
+                    case "street_line":
+                        String streetId = stopNode.getTextContent();
+
+                        for (Street street : streets) {
+                            if (street.getId().equals(streetId)) {
+                                if (!line.addStreet(street)){
+                                    throw new Exception("Street " + streetId + 
+                                                        " wasn't added to the route:" + 
+                                                        "route is empty or " +
+                                                        "street doesn't follow last street"); 
+                                }
+                                break;
+                            }
                         }
-                    }
+                        break;
                 }
             }
 
             NodeList listOfTimes = lineElement.getElementsByTagName("time");
-            for (int i = 0; i < listOfTimes.getLength(); i++) {
-                Element timeElement = (Element) listOfTimes.item(i);
+            int timesLength = listOfTimes.getLength();
+            for (int timeIndex = 0; timeIndex < timesLength; timeIndex++) {
+                Element timeElement = (Element) listOfTimes.item(timeIndex);
 
                 LocalTime from = LocalTime.parse(timeElement.getAttribute("from"),
                                                  DateTimeFormatter.ofPattern("HH:mm"));

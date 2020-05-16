@@ -73,7 +73,6 @@ public class ViewStop extends Circle {
         @Override
         public void handle(MouseEvent e) {
             setEffect(glow);  
-            System.out.println("Mouse entered on stop: " + stop.getId());
         }
     };
 
@@ -84,7 +83,6 @@ public class ViewStop extends Circle {
         @Override
         public void handle(MouseEvent e) {
             setEffect(null);
-            System.out.println("Mouse exited from stop: " + stop.getId());
         }
     };
 
@@ -96,11 +94,7 @@ public class ViewStop extends Circle {
         public void handle(MouseEvent e) {
             if (e.getButton() == MouseButton.PRIMARY)
             {   
-                System.out.println("Mouse LEFT clicked on stop: " + stop.getId());
                 InfoBoxController.InfoBoxController(infoBox, stop);
-            } else if (e.getButton() == MouseButton.SECONDARY)
-            {                
-                System.out.println("Mouse RIGHT clicked on stop " + stop.getId());
             }
         }
     };

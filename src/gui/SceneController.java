@@ -184,7 +184,6 @@ public class SceneController implements Initializable {
     @FXML
     private void cleanClick() {
         work_area.getChildren().clear();
-        System.out.println("TEST SceneController.cleanClick");
         this.NewPushed = false;
         // work_area.getChildren().add(new ImageView(new Image("pngwing.com.png")));
     }
@@ -197,8 +196,6 @@ public class SceneController implements Initializable {
         FileChooser fileChooser = new FileChooser();
         File file = fileChooser.showOpenDialog(null);
         if (file != null) {
-
-            
             Parser.parse(file);
             work_area.getChildren().clear();
 
@@ -272,8 +269,6 @@ public class SceneController implements Initializable {
 
             updatePos.setCycleCount(Timeline.INDEFINITE);
             updatePos.play();
-
-            System.out.println("TEST SceneController.startClick");
         }
     }
 
@@ -287,7 +282,6 @@ public class SceneController implements Initializable {
             for (ViewVehicle tmp : viewVehicles) {
                 tmp.GetVehicle().stop();
             }
-            System.out.println("TEST SceneController.stopClick");
         }
     }
 
@@ -297,7 +291,6 @@ public class SceneController implements Initializable {
     @FXML
     private void setTimeClick() {
         new SetTimeWindow();
-        System.out.println("TEST SceneController.setTimeClick");
     }
 
     /**
@@ -306,7 +299,6 @@ public class SceneController implements Initializable {
     @FXML
     private void speedIncrClick() {
         InternalClock.increaseAccelerationLevel();
-        System.out.println("TEST SceneController.speedIncrClick");
     }
 
     /**
@@ -315,7 +307,6 @@ public class SceneController implements Initializable {
     @FXML
     private void speedDecrClick() {
         InternalClock.decreaseAccelerationLevel();
-        System.out.println("TEST SceneController.speedDecrClick");
     }
 
     /**
@@ -324,7 +315,6 @@ public class SceneController implements Initializable {
     @FXML
     private void speedDefaClick() {
         InternalClock.defaultAccelerationLevel();
-        System.out.println("TEST SceneController.speedDefaClick");
     }
 
     /**
@@ -333,7 +323,6 @@ public class SceneController implements Initializable {
     @FXML
     private void zoomInClick() {
         scroll_work_area.zoomIn();
-        System.out.println("TEST SceneController.zoomInClick");
     }
 
     /**
@@ -342,7 +331,6 @@ public class SceneController implements Initializable {
     @FXML
     private void zoomDefClick() {
         scroll_work_area.zoomToDefault();
-        System.out.println("TEST SceneController.zoomDefClick");
     }
 
     /**
@@ -351,7 +339,6 @@ public class SceneController implements Initializable {
     @FXML
     private void zoomOutClick() {
         scroll_work_area.zoomOut();
-        System.out.println("TEST SceneController.zoomOutClick");
     }
 
     /**
@@ -360,7 +347,6 @@ public class SceneController implements Initializable {
     @FXML
     private void aboutClick() {
         new AboutController();
-        System.out.println("TEST SceneController.aboutClick");
     }
 
     /**

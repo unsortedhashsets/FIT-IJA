@@ -26,21 +26,18 @@ public class InternalClock {
 
     public static void defaultAccelerationLevel() {
         acceleration = 1;
-        System.out.println("TEST SceneController.speedIncrClick: " + acceleration);
     }
 
     public static void increaseAccelerationLevel() {
         if (acceleration < 2048) {
             acceleration *= 2;
         }
-        System.out.println("TEST SceneController.speedIncrClick: " + acceleration);
     }
 
     public static void decreaseAccelerationLevel() {
         if (acceleration > 0.0625) {
             acceleration *= 0.5;
         }
-        System.out.println("TEST SceneController.speedDecrClick: " + acceleration);
     }
 
     public static double getAccelerationLevel() {
@@ -78,9 +75,9 @@ public class InternalClock {
                 acceleration = 2048;
             } else if (localSetTime.getSecond() != 0){
                 acceleration = 32;
-            } else{
-                setTime = null;
+            } else {
                 acceleration = 1;
+                setTime = null;
             }
         }
 

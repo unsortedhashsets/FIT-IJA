@@ -75,28 +75,31 @@ public class ViewLine extends Polyline {
     private void drawLine() {
 
         List<SimpleImmutableEntry<Street, Stop>> tmp = line.getRoute();
-
-        System.out.println(line.getID());
-        System.out.println(line.getRoute().stream().map(entry -> entry.getKey().getId() + ":" + entry.getValue() + ";").collect(Collectors.joining()));
         
         for (int i = 0; i < tmp.size(); i++) {
+            Street previousStreet = tmp.get(i-1).getKey();
+            Stop previousStop = tmp.get(i-1).getValue();
+
+            Street currentStreet = tmp.get(i).getKey();
+            Stop currentStop = tmp.get(i).getValue();
+            
             // ZERO STOP
             if (i == 0) {
-                drawStop(tmp.get(i).getValue().getCoordinate());
-                getPoints().addAll(new Double[] { (double) tmp.get(i).getValue().getCoordinate().getX(), (double) tmp.get(i).getValue().getCoordinate().getY() });
+                drawStop(currentStop.getCoordinate());
+                getPoints().addAll(new Double[] { (double) currentStop.getCoordinate().getX(), 
+                                                  (double) currentStop.getCoordinate().getY() });
 
-                System.out.println("0 POINT: " + tmp.get(i).getValue().getCoordinate().getX() + " - " + tmp.get(i).getValue().getCoordinate().getY() + " - " + tmp.get(i).getKey().getId() + " - " + tmp.get(i).getValue().getId());               
-                line.addCoordinate(tmp.get(i).getValue().getCoordinate(), tmp.get(i).getValue());
+                line.addCoordinate(currentStop.getCoordinate(), currentStop);
                 
             } else {
                 boolean setJ = false;
                 int j = 0;
                 // N STOPS ON ONE LINE 
-                if (tmp.get(i-1).getKey().getId() == tmp.get(i).getKey().getId()){
+                if (previousStreet.getId() == currentStreet.getId()){
                     // FIND J next street index of the previous stop
                     if (!(setJ)) {
-                        for (int t = 0; t < tmp.get(i).getKey().getCoordinates().size(); t++){
-                            if (checkIfStopIsBetweenCoords(tmp.get(i-1).getValue(), tmp.get(i-1).getKey().getCoordinates().get(t), tmp.get(i-1).getKey().getCoordinates().get(t + 1))) {
+                        for (int t = 0; t < currentStreet.getCoordinates().size(); t++){
+                            if (checkIfStopIsBetweenCoords(previousStop, previousStreet.getCoordinates().get(t), previousStreet.getCoordinates().get(t + 1))) {
                                 j = t+1;
                                 break;
                             }
@@ -104,53 +107,52 @@ public class ViewLine extends Polyline {
                         setJ = true;
                     }
                     // N STOPS IF ON ONE STRAIGHT LINE
-                    if (tmp.get(i).getKey().getCoordinates().size() == 2){
-                        drawStop(tmp.get(i).getValue().getCoordinate());
-                        getPoints().addAll(new Double[] { (double) tmp.get(i).getValue().getCoordinate().getX(), (double) tmp.get(i).getValue().getCoordinate().getY() });
+                    if (currentStreet.getCoordinates().size() == 2){
+                        drawStop(currentStop.getCoordinate());
+                        getPoints().addAll(new Double[] { (double) currentStop.getCoordinate().getX(), 
+                                                          (double) currentStop.getCoordinate().getY() });
 
-                        System.out.println(i + " POINT: " + tmp.get(i).getValue().getCoordinate().getX() + " - " + tmp.get(i).getValue().getCoordinate().getY() + " - " + tmp.get(i).getKey().getId() + " - " + tmp.get(i).getValue().getId());    
-                        line.addCoordinate(tmp.get(i).getValue().getCoordinate(), tmp.get(i).getValue());
+                        line.addCoordinate(currentStop.getCoordinate(), currentStop);
                         
                     // N STOPS IF ON ONE not STRAIGHT LINE
                     } else {
-                        for (; j < tmp.get(i).getKey().getCoordinates().size() - 1; j++) {
-                            if (checkIfStopIsBetweenCoords(tmp.get(i).getValue(), tmp.get(i).getKey().getCoordinates().get(j), tmp.get(i).getKey().getCoordinates().get(j + 1))) {
+                        for (; j < currentStreet.getCoordinates().size() - 1; j++) {
+                            if (checkIfStopIsBetweenCoords(currentStop, currentStreet.getCoordinates().get(j), currentStreet.getCoordinates().get(j + 1))) {
+                                drawStop(currentStop.getCoordinate());
 
-                                getPoints().addAll(new Double[] { (double) tmp.get(i).getKey().getCoordinates().get(j).getX(), (double) tmp.get(i).getKey().getCoordinates().get(j).getY() }); 
-                                drawStop(tmp.get(i).getValue().getCoordinate());
-                                getPoints().addAll(new Double[] { (double) tmp.get(i).getValue().getCoordinate().getX(), (double) tmp.get(i).getValue().getCoordinate().getY() });
+                                getPoints().addAll(new Double[] { (double) currentStreet.getCoordinates().get(j).getX(), 
+                                                                  (double) currentStreet.getCoordinates().get(j).getY() }); 
+                                line.addCoordinate(currentStreet.getCoordinates().get(j), currentStreet);
 
-                                System.out.println(i + " CORNER: " + tmp.get(i).getKey().getCoordinates().get(j).getX() + " - " + tmp.get(i).getKey().getCoordinates().get(j).getY() + " - " + tmp.get(i).getKey().getId());    
-                                line.addCoordinate(tmp.get(i).getKey().getCoordinates().get(j), tmp.get(i).getKey());
-                                
-                                System.out.println(i + " POINT: " + tmp.get(i).getValue().getCoordinate().getX() + " - " + tmp.get(i).getValue().getCoordinate().getY() + " - " + tmp.get(i).getKey().getId() + " - " + tmp.get(i).getValue().getId());    
-                                line.addCoordinate(tmp.get(i).getValue().getCoordinate(), tmp.get(i).getValue());
+                                getPoints().addAll(new Double[] { (double) currentStop.getCoordinate().getX(), 
+                                                                  (double) currentStop.getCoordinate().getY() });
+                                line.addCoordinate(currentStop.getCoordinate(), currentStop);
 
                                 break;
                             } else {
-                                getPoints().addAll(new Double[] { (double) tmp.get(i).getKey().getCoordinates().get(j).getX(), (double) tmp.get(i).getKey().getCoordinates().get(j).getY() });
+                                getPoints().addAll(new Double[] { (double) currentStreet.getCoordinates().get(j).getX(), 
+                                                                  (double) currentStreet.getCoordinates().get(j).getY()});
                                 
-                                System.out.println(i + " CORNER: " + tmp.get(i).getKey().getCoordinates().get(j).getX() + " - " + tmp.get(i).getKey().getCoordinates().get(j).getY() + " - " + tmp.get(i).getKey().getId());
-                                line.addCoordinate(tmp.get(i).getKey().getCoordinates().get(j), tmp.get(i).getKey());
+                                line.addCoordinate(currentStreet.getCoordinates().get(j), currentStreet);
                             }
                         }
                     }
                 // ONE STOP ON ONE LINE
                 } else {
                     // BEGIN - BEGIN 
-                    if (tmp.get(i-1).getKey().begin().equals(tmp.get(i).getKey().begin())){
+                    if (previousStreet.begin().equals(currentStreet.begin())){
                         BEGIN_something(tmp, i);
                         something_BEGIN(tmp, i);
                     // BEGIN - END
-                    } else if (tmp.get(i-1).getKey().begin().equals(tmp.get(i).getKey().end())){
+                    } else if (previousStreet.begin().equals(currentStreet.end())){
                         BEGIN_something(tmp, i);
                         something_END(tmp, i);
                     // END - BEGIN
-                    } else if (tmp.get(i-1).getKey().end().equals(tmp.get(i).getKey().begin())){
+                    } else if (previousStreet.end().equals(currentStreet.begin())){
                         END_something(tmp, i);
                         something_BEGIN(tmp, i);
                     // END - END
-                    } else if (tmp.get(i-1).getKey().end().equals(tmp.get(i).getKey().end())){
+                    } else if (previousStreet.end().equals(currentStreet.end())){
                         END_something(tmp, i);
                         something_END(tmp, i);
                     }
@@ -172,21 +174,23 @@ public class ViewLine extends Polyline {
     */
     private void something_END(List<SimpleImmutableEntry<Street, Stop>> tmp, int i){
         // ... - END
-        for (int c = tmp.get(i).getKey().getCoordinates().size() - 1; c >= 0; c--) {
+        Street currentStreet = tmp.get(i).getKey();
+        Stop currentStop = tmp.get(i).getValue();
 
-            if (tmp.get(i).getValue() == null) {
+        for (int c = currentStreet.getCoordinates().size() - 1; c >= 0; c--) {
+            if (currentStop == null) {
                 break;
             }
 
-            getPoints().addAll(new Double[] { (double) tmp.get(i).getKey().getCoordinates().get(c).getX(), (double) tmp.get(i).getKey().getCoordinates().get(c).getY() });
-            System.out.println(i + " CORNER: " + tmp.get(i).getKey().getCoordinates().get(c).getX() + " - " + tmp.get(i).getKey().getCoordinates().get(c).getY() + " - " + tmp.get(i).getKey().getId());
-            line.addCoordinate(tmp.get(i).getKey().getCoordinates().get(c), tmp.get(i).getKey());
+            getPoints().addAll(new Double[] { (double) currentStreet.getCoordinates().get(c).getX(), 
+                                              (double) currentStreet.getCoordinates().get(c).getY() });
+            line.addCoordinate(currentStreet.getCoordinates().get(c), currentStreet);
                 
-            if (checkIfStopIsBetweenCoords(tmp.get(i).getValue(), tmp.get(i).getKey().getCoordinates().get(c), tmp.get(i).getKey().getCoordinates().get(c-1))) { 
-                drawStop(tmp.get(i).getValue().getCoordinate());
-                getPoints().addAll(new Double[] { (double) tmp.get(i).getValue().getCoordinate().getX(), (double) tmp.get(i).getValue().getCoordinate().getY() });
-                System.out.println(i + " POINT: " + tmp.get(i).getValue().getCoordinate().getX() + " - " + tmp.get(i).getValue().getCoordinate().getY() + " - " + tmp.get(i).getKey().getId() + " - " + tmp.get(i).getValue().getId());
-                line.addCoordinate(tmp.get(i).getValue().getCoordinate(), tmp.get(i).getValue());
+            if (checkIfStopIsBetweenCoords(currentStop, currentStreet.getCoordinates().get(c), currentStreet.getCoordinates().get(c-1))) { 
+                drawStop(currentStop.getCoordinate());
+                getPoints().addAll(new Double[] { (double) currentStop.getCoordinate().getX(), 
+                                                  (double) currentStop.getCoordinate().getY() });
+                line.addCoordinate(currentStop.getCoordinate(), currentStop);
 
                 break;
             }
@@ -202,20 +206,23 @@ public class ViewLine extends Polyline {
     */
     private void something_BEGIN(List<SimpleImmutableEntry<Street, Stop>> tmp, int i){
         // ... - BEGIN
-        for (int c = 0; c < tmp.get(i).getKey().getCoordinates().size() - 1; c++) {
+        Street currentStreet = tmp.get(i).getKey();
+        Stop currentStop = tmp.get(i).getValue();
 
-            if (tmp.get(i).getValue() == null) {
+        for (int c = 0; c < currentStreet.getCoordinates().size() - 1; c++) {
+            if (currentStop == null) {
                 break;
             }
-            getPoints().addAll(new Double[] { (double) tmp.get(i).getKey().getCoordinates().get(c).getX(), (double) tmp.get(i).getKey().getCoordinates().get(c).getY() });
-            System.out.println(i + " CORNER: 4" + tmp.get(i).getKey().getCoordinates().get(c).getX() + " - " + tmp.get(i).getKey().getCoordinates().get(c).getY() + " - " + tmp.get(i).getKey().getId());
-            line.addCoordinate(tmp.get(i).getKey().getCoordinates().get(c), tmp.get(i).getKey());
-            System.out.println(checkIfStopIsBetweenCoords(tmp.get(i).getValue(), tmp.get(i).getKey().getCoordinates().get(c), tmp.get(i).getKey().getCoordinates().get(c+1)));               
-            if (checkIfStopIsBetweenCoords(tmp.get(i).getValue(), tmp.get(i).getKey().getCoordinates().get(c), tmp.get(i).getKey().getCoordinates().get(c+1))) { 
-                drawStop(tmp.get(i).getValue().getCoordinate());
-                getPoints().addAll(new Double[] { (double) tmp.get(i).getValue().getCoordinate().getX(), (double) tmp.get(i).getValue().getCoordinate().getY() });
-                System.out.println(i + " POINT: 5" + tmp.get(i).getValue().getCoordinate().getX() + " - " + tmp.get(i).getValue().getCoordinate().getY() + " - " + tmp.get(i).getKey().getId() + " - " + tmp.get(i).getValue().getId());
-                line.addCoordinate(tmp.get(i).getValue().getCoordinate(), tmp.get(i).getValue());
+
+            getPoints().addAll(new Double[] { (double) currentStreet.getCoordinates().get(c).getX(), 
+                                              (double) currentStreet.getCoordinates().get(c).getY() });
+            line.addCoordinate(currentStreet.getCoordinates().get(c), currentStreet); 
+
+            if (checkIfStopIsBetweenCoords(currentStop, currentStreet.getCoordinates().get(c), currentStreet.getCoordinates().get(c+1))) { 
+                drawStop(currentStop.getCoordinate());
+                getPoints().addAll(new Double[] { (double) currentStop.getCoordinate().getX(), 
+                                                  (double) currentStop.getCoordinate().getY() });
+                line.addCoordinate(currentStop.getCoordinate(), currentStop);
                 break;
             }
         }
@@ -229,31 +236,30 @@ public class ViewLine extends Polyline {
     */
     private void BEGIN_something(List<SimpleImmutableEntry<Street, Stop>> tmp, int i){
         // BEGIN - ... 
-        for (int c = tmp.get(i-1).getKey().getCoordinates().size() - 1; c > 0; c--) {
+        Street previousStreet = tmp.get(i-1).getKey();
+        Stop previousStop = tmp.get(i-1).getValue();
 
-            if (tmp.get(i-1).getValue() == null) {
-
-                getPoints().addAll(new Double[] { (double) tmp.get(i-1).getKey().getCoordinates().get(c).getX(), (double) tmp.get(i-1).getKey().getCoordinates().get(c).getY() });
-                System.out.println(i + " CORNER: " + tmp.get(i-1).getKey().getCoordinates().get(c).getX() + " - " + tmp.get(i-1).getKey().getCoordinates().get(c).getY() + " - " + tmp.get(i-1).getKey().getId());
-                line.addCoordinate(tmp.get(i-1).getKey().getCoordinates().get(c), tmp.get(i-1).getKey());
+        for (int c = previousStreet.getCoordinates().size() - 1; c > 0; c--) {
+            if (previousStop == null) {
+                getPoints().addAll(new Double[] { (double) previousStreet.getCoordinates().get(c).getX(), 
+                                                  (double) previousStreet.getCoordinates().get(c).getY() });
+                line.addCoordinate(previousStreet.getCoordinates().get(c), previousStreet);
 
                 continue;
-
-            } else if (checkIfStopIsBetweenCoords(tmp.get(i-1).getValue(), tmp.get(i-1).getKey().getCoordinates().get(c), tmp.get(i-1).getKey().getCoordinates().get(c-1))) { 
-
+            } else if (checkIfStopIsBetweenCoords(previousStop, previousStreet.getCoordinates().get(c), previousStreet.getCoordinates().get(c-1))) { 
                 for (int j = c - 1; j >= 0; j--) {
-                    getPoints().addAll(new Double[] { (double) tmp.get(i-1).getKey().getCoordinates().get(j).getX(), (double) tmp.get(i-1).getKey().getCoordinates().get(j).getY() });
-                    System.out.println(i + " CORNER: " + tmp.get(i-1).getKey().getCoordinates().get(j).getX() + " - " + tmp.get(i-1).getKey().getCoordinates().get(j).getY() + " - " + tmp.get(i-1).getKey().getId());
-                    line.addCoordinate(tmp.get(i-1).getKey().getCoordinates().get(j), tmp.get(i-1).getKey());
+                    getPoints().addAll(new Double[] { (double) previousStreet.getCoordinates().get(j).getX(), 
+                                                      (double) previousStreet.getCoordinates().get(j).getY() });
+                    line.addCoordinate(previousStreet.getCoordinates().get(j), previousStreet);
                 } 
 
                 break;
             }
         }
 
-        getPoints().addAll(new Double[] { (double) tmp.get(i-1).getKey().getCoordinates().get(0).getX(), (double) tmp.get(i-1).getKey().getCoordinates().get(0).getY() });
-        System.out.println(i + " CORNER: " + tmp.get(i-1).getKey().getCoordinates().get(0).getX() + " - " + tmp.get(i-1).getKey().getCoordinates().get(0).getY() + " - " + tmp.get(i-1).getKey().getId());
-        line.addCoordinate(tmp.get(i-1).getKey().getCoordinates().get(0), tmp.get(i-1).getKey());
+        getPoints().addAll(new Double[] { (double) previousStreet.getCoordinates().get(0).getX(), 
+                                          (double) previousStreet.getCoordinates().get(0).getY() });
+        line.addCoordinate(previousStreet.getCoordinates().get(0), previousStreet);
         // BEGIN - ... 
     }
 
@@ -264,31 +270,33 @@ public class ViewLine extends Polyline {
     */
     private void END_something(List<SimpleImmutableEntry<Street, Stop>> tmp, int i){
         // END - ...
-        for (int c = 0; c < tmp.get(i).getKey().getCoordinates().size() - 1; c++) {
-                            
-            if (tmp.get(i-1).getValue() == null) {
+        Street previousStreet = tmp.get(i-1).getKey();
+        Stop previousStop = tmp.get(i-1).getValue();
 
-                getPoints().addAll(new Double[] { (double) tmp.get(i-1).getKey().getCoordinates().get(c).getX(), (double) tmp.get(i-1).getKey().getCoordinates().get(c).getY() });
-                System.out.println(i + " CORNER: " + tmp.get(i-1).getKey().getCoordinates().get(c).getX() + " - " + tmp.get(i-1).getKey().getCoordinates().get(c).getY() + " - " + tmp.get(i-1).getKey().getId());
-                line.addCoordinate(tmp.get(i-1).getKey().getCoordinates().get(c), tmp.get(i-1).getKey());
+        Street currentStreet = tmp.get(i).getKey();
+
+        for (int c = 0; c < currentStreet.getCoordinates().size() - 1; c++) {        
+            if (previousStop == null) {
+                getPoints().addAll(new Double[] { (double) previousStreet.getCoordinates().get(c).getX(), 
+                                                  (double) previousStreet.getCoordinates().get(c).getY() });
+                line.addCoordinate(previousStreet.getCoordinates().get(c), previousStreet);
 
                 continue;
 
-            } else if (checkIfStopIsBetweenCoords(tmp.get(i-1).getValue(), tmp.get(i-1).getKey().getCoordinates().get(c), tmp.get(i-1).getKey().getCoordinates().get(c+1))) { 
-
-                for (int j = c + 1; j < tmp.get(i).getKey().getCoordinates().size() - 1; j++) {
-                    getPoints().addAll(new Double[] { (double) tmp.get(i-1).getKey().getCoordinates().get(j).getX(), (double) tmp.get(i-1).getKey().getCoordinates().get(j).getY() });
-                    System.out.println(i + " CORNER: " + tmp.get(i-1).getKey().getCoordinates().get(j).getX() + " - " + tmp.get(i-1).getKey().getCoordinates().get(j).getY() + " - " + tmp.get(i-1).getKey().getId());
-                    line.addCoordinate(tmp.get(i-1).getKey().getCoordinates().get(j), tmp.get(i-1).getKey());
+            } else if (checkIfStopIsBetweenCoords(previousStop, previousStreet.getCoordinates().get(c), previousStreet.getCoordinates().get(c+1))) { 
+                for (int j = c + 1; j < currentStreet.getCoordinates().size() - 1; j++) {
+                    getPoints().addAll(new Double[] { (double) previousStreet.getCoordinates().get(j).getX(), 
+                                                      (double) previousStreet.getCoordinates().get(j).getY() });
+                    line.addCoordinate(previousStreet.getCoordinates().get(j), previousStreet);
                 } 
 
                 break;
             }
         }
         
-        getPoints().addAll(new Double[] { (double) tmp.get(i-1).getKey().getCoordinates().get(tmp.get(i-1).getKey().getCoordinates().size()-1).getX(), (double) tmp.get(i-1).getKey().getCoordinates().get(tmp.get(i-1).getKey().getCoordinates().size()-1).getY() });
-        System.out.println(i + " CORNER: " + tmp.get(i-1).getKey().getCoordinates().get(tmp.get(i-1).getKey().getCoordinates().size()-1).getX() + " - " + tmp.get(i-1).getKey().getCoordinates().get(tmp.get(i-1).getKey().getCoordinates().size()-1).getY() + " - " + tmp.get(i-1).getKey().getId());
-        line.addCoordinate(tmp.get(i-1).getKey().getCoordinates().get(tmp.get(i-1).getKey().getCoordinates().size()-1), tmp.get(i-1).getKey());
+        getPoints().addAll(new Double[] { (double) previousStreet.getCoordinates().get(previousStreet.getCoordinates().size()-1).getX(), 
+                                          (double) previousStreet.getCoordinates().get(previousStreet.getCoordinates().size()-1).getY() });
+        line.addCoordinate(previousStreet.getCoordinates().get(previousStreet.getCoordinates().size()-1), previousStreet);
         // END - ...
     }
 
@@ -333,7 +341,6 @@ public class ViewLine extends Polyline {
         @Override
         public void handle(MouseEvent e) {
             stopGroup.setEffect(glow);
-            System.out.println("Mouse entered on Line: " + line.getID());
         }
     };
 
@@ -344,7 +351,6 @@ public class ViewLine extends Polyline {
         @Override
         public void handle(MouseEvent e) {
             stopGroup.setEffect(null);
-            System.out.println("Mouse exited from Line: " + line.getID());
         }
     };
 
@@ -357,12 +363,10 @@ public class ViewLine extends Polyline {
             if (e.getButton() == MouseButton.PRIMARY)
             {   
                 InfoBoxController.InfoBoxController(infoBox, line);
-                System.out.println("Mouse LEFT clicked on street: " + line.getID());
             } else if (e.getButton() == MouseButton.SECONDARY)
             {                
                 stopGroup.toFront();
                 f_group.toFront();
-                System.out.println("Mouse RIGHT clicked on street " + line.getID());
             }
         }
     };

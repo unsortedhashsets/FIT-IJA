@@ -141,10 +141,9 @@ public class SetTimeWindow {
         String s = HHInput.getText().trim() + ":" + MMInput.getText().trim() + ":" + SSInput.getText().trim();
         if (s.matches("(?:[01]\\d|2[0-3]):(?:[0-5]\\d):(?:[0-5]\\d)")) {
             InternalClock.setTime(s);
-            System.out.println("New time is: " + s);
         } else {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setHeaderText("Please, enter the HH value from 0 to 100, MM and SS values from 0 to 59");
+            alert.setHeaderText("Please, enter the HH value from 00 to 24, MM and SS values from 0 to 59");
             alert.setTitle("Wrong input");
             alert.show();
         }

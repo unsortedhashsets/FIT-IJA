@@ -66,7 +66,7 @@ public class SetTrafficWindow {
         TextField valueInput = new TextField();
         valueInput.setPrefWidth(60);
         valueInput.setId("Traffic level");
-        valueInput.setText(Integer.toString(street.GetdrivingDifficulties()));
+        valueInput.setText(Integer.toString(street.getDrivingDifficulties()));
         box.getChildren().add(valueInput);
 
         this.layout.getChildren().add(box);
@@ -99,8 +99,7 @@ public class SetTrafficWindow {
     public void setTrafficSituation(TextField valueInput) {
         int i = Integer.parseInt(valueInput.getText().trim());
         if (i >= 0 && i <= 100){
-            street.SetdrivingDifficulties(i);
-            System.out.println("New traffic level for street: " + street.getId() + " is - " + i);
+            street.setDrivingDifficulties(i);
         } else {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setHeaderText("Please, enter the integer value from 0 to 100");

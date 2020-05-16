@@ -10,7 +10,7 @@ public class Street {
     private int drivingDifficulties = 0;
     private Boolean status = true;
 
-    private Street(String id, Coordinate... coordinates) {
+    public Street(String id, Coordinate... coordinates) {
         this.id = id;
         this.stops = new ArrayList<Stop>();
         this.coordinates = new ArrayList<Coordinate>();
@@ -18,10 +18,6 @@ public class Street {
         for (Coordinate coor : coordinates) {
             this.coordinates.add(coor);
         }
-    }
-
-    public static Street create(String id, Coordinate... coordinates) {
-        return new Street(id, coordinates);
     }
 
     public String getId() {
@@ -83,19 +79,19 @@ public class Street {
                 || this.end().equals(s.end());
     }
 
-    public int GetdrivingDifficulties() {
+    public int getDrivingDifficulties() {
         return this.drivingDifficulties;
     }
 
-    public void SetdrivingDifficulties(int DD) {
+    public void setDrivingDifficulties(int DD) {
         this.drivingDifficulties = DD;
     }
 
-    public void SetStatus(boolean status) {
+    public void setStatus(boolean status) {
         this.status = status;
     }
 
-    public boolean GetStatus() {
+    public boolean getStatus() {
         return this.status;
     }
 

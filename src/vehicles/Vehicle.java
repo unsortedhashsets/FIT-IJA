@@ -39,14 +39,8 @@ public class Vehicle implements Runnable{
     protected Vehicle(String id, Line line, LocalTime from, LocalTime to, double velocity){
         this.id = id;
         this.line = line;
-
         this.from = from;
         this.to = to;
-
-        this.velocity = velocity;
-    }
-
-    public void setVelocity(double velocity){
         this.velocity = velocity;
     }
 
@@ -79,10 +73,10 @@ public class Vehicle implements Runnable{
         
         if (delayObject.getClass().getName().equals("maps.Street")){
             Street street = (Street) delayObject;
-            delay = 1 - (street.GetdrivingDifficulties() * 0.01);
+            delay = 1 - (street.getDrivingDifficulties() * 0.01);
         } else if (delayObject.getClass().getName().equals("maps.Stop")){
             Stop stop = (Stop) delayObject;
-            delay = 1 - (stop.getStreet().GetdrivingDifficulties() * 0.01);
+            delay = 1 - (stop.getStreet().getDrivingDifficulties() * 0.01);
         }
 
         return delay;
@@ -126,8 +120,9 @@ public class Vehicle implements Runnable{
                     return true;
                 }
             }
+
             double length = Math.sqrt(Math.pow(distance_X, 2) + Math.pow(distance_Y, 2));
-            if (delay != 0){
+            if (delay != 0) {
                 time -= length / (acceleration * this.velocity * delay);
             }
         } 
@@ -171,8 +166,8 @@ public class Vehicle implements Runnable{
                 time += next.length(previous) / (delay * velocity);
                 
                 if (object.getClass().getName().equals("maps.Stop")){
-                    time += 10;
                     schedule.add(new SimpleImmutableEntry<>((Stop) object, (int) time));
+                    time += 10;
                 } 
             } else if (pair.equals(this.departure)){
                 inCurrentLine = true;

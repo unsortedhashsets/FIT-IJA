@@ -97,7 +97,6 @@ public class ViewVehicle extends Circle {
         @Override
         public void handle(MouseEvent e) {
             setEffect(glow);  
-            System.out.println("Mouse entered on auto: " + vehicle.getId());
         }
     };
 
@@ -108,7 +107,6 @@ public class ViewVehicle extends Circle {
         @Override
         public void handle(MouseEvent e) {
             setEffect(null);
-            System.out.println("Mouse exited from auto: " + vehicle.getId());
         }
     };
 
@@ -120,12 +118,7 @@ public class ViewVehicle extends Circle {
         public void handle(MouseEvent e) {
             if (e.getButton() == MouseButton.PRIMARY)
             {   
-                System.out.println("Mouse LEFT clicked on vehicle: " + vehicle.getId());
                 InfoBoxController.InfoBoxController(infoBox, vehicle);
-                
-            } else if (e.getButton() == MouseButton.SECONDARY)
-            {                
-                System.out.println("Mouse RIGHT clicked on vehicle: " + vehicle.getId());
             }
         }
     };

@@ -100,7 +100,7 @@ public class InfoBoxController {
         infoBox.getChildren().add(text);
 
         // Set Traffic situation
-        infoBox.getChildren().add(new Text("Traffic difficulties: " + street.GetdrivingDifficulties()));
+        infoBox.getChildren().add(new Text("Traffic difficulties: " + street.getDrivingDifficulties()));
     }
 
     /**
