@@ -141,20 +141,20 @@ public class ViewLine extends Polyline {
                 } else {
                     // BEGIN - BEGIN 
                     if (previousStreet.begin().equals(currentStreet.begin())){
-                        BEGIN_something(tmp, i);
-                        something_BEGIN(tmp, i);
+                        BEGIN_something(previousStreet, previousStop, i);
+                        something_BEGIN(currentStreet, currentStop, i);
                     // BEGIN - END
                     } else if (previousStreet.begin().equals(currentStreet.end())){
-                        BEGIN_something(tmp, i);
-                        something_END(tmp, i);
+                        BEGIN_something(previousStreet, previousStop, i);
+                        something_END(currentStreet, currentStop, i);
                     // END - BEGIN
                     } else if (previousStreet.end().equals(currentStreet.begin())){
-                        END_something(tmp, i);
-                        something_BEGIN(tmp, i);
+                        END_something(previousStreet, previousStop, i);
+                        something_BEGIN(currentStreet, currentStop, i);
                     // END - END
                     } else if (previousStreet.end().equals(currentStreet.end())){
-                        END_something(tmp, i);
-                        something_END(tmp, i);
+                        END_something(previousStreet, previousStop, i);
+                        something_END(currentStreet, currentStop, i);
                     }
                 }
 
@@ -172,10 +172,7 @@ public class ViewLine extends Polyline {
     * @param tmp street-stop SimpleImmutableEntry
     * @param i number in route
     */
-    private void something_END(List<SimpleImmutableEntry<Street, Stop>> tmp, int i){
-        // ... - END
-        Street currentStreet = tmp.get(i).getKey();
-        Stop currentStop = tmp.get(i).getValue();
+    private void something_END(Street currentStreet, Stop currentStop, int i){
 
         for (int c = currentStreet.getCoordinates().size() - 1; c >= 0; c--) {
             if (currentStop == null) {
@@ -196,7 +193,7 @@ public class ViewLine extends Polyline {
             }
 
         }
-        // ... - END
+
     }
 
     /**
@@ -204,10 +201,7 @@ public class ViewLine extends Polyline {
     * @param tmp street-stop SimpleImmutableEntry
     * @param i number in route
     */
-    private void something_BEGIN(List<SimpleImmutableEntry<Street, Stop>> tmp, int i){
-        // ... - BEGIN
-        Street currentStreet = tmp.get(i).getKey();
-        Stop currentStop = tmp.get(i).getValue();
+    private void something_BEGIN(Street currentStreet, Stop currentStop, int i){
 
         for (int c = 0; c < currentStreet.getCoordinates().size() - 1; c++) {
             if (currentStop == null) {
@@ -226,7 +220,6 @@ public class ViewLine extends Polyline {
                 break;
             }
         }
-        // ... - BEGIN
     }
 
     /**
@@ -234,10 +227,7 @@ public class ViewLine extends Polyline {
     * @param tmp street-stop SimpleImmutableEntry
     * @param i number in route
     */
-    private void BEGIN_something(List<SimpleImmutableEntry<Street, Stop>> tmp, int i){
-        // BEGIN - ... 
-        Street previousStreet = tmp.get(i-1).getKey();
-        Stop previousStop = tmp.get(i-1).getValue();
+    private void BEGIN_something(Street previousStreet, Stop previousStop, int i){
 
         for (int c = previousStreet.getCoordinates().size() - 1; c > 0; c--) {
             if (previousStop == null) {
@@ -260,7 +250,7 @@ public class ViewLine extends Polyline {
         getPoints().addAll(new Double[] { (double) previousStreet.getCoordinates().get(0).getX(), 
                                           (double) previousStreet.getCoordinates().get(0).getY() });
         line.addCoordinate(previousStreet.getCoordinates().get(0), previousStreet);
-        // BEGIN - ... 
+
     }
 
     /**
@@ -268,14 +258,9 @@ public class ViewLine extends Polyline {
     * @param tmp street-stop SimpleImmutableEntry
     * @param i number in route
     */
-    private void END_something(List<SimpleImmutableEntry<Street, Stop>> tmp, int i){
-        // END - ...
-        Street previousStreet = tmp.get(i-1).getKey();
-        Stop previousStop = tmp.get(i-1).getValue();
+    private void END_something(Street previousStreet, Stop previousStop, int i){
 
-        Street currentStreet = tmp.get(i).getKey();
-
-        for (int c = 0; c < currentStreet.getCoordinates().size() - 1; c++) {        
+        for (int c = 0; c < previousStreet.getCoordinates().size() - 1; c++) {        
             if (previousStop == null) {
                 getPoints().addAll(new Double[] { (double) previousStreet.getCoordinates().get(c).getX(), 
                                                   (double) previousStreet.getCoordinates().get(c).getY() });
@@ -284,7 +269,7 @@ public class ViewLine extends Polyline {
                 continue;
 
             } else if (checkIfStopIsBetweenCoords(previousStop, previousStreet.getCoordinates().get(c), previousStreet.getCoordinates().get(c+1))) { 
-                for (int j = c + 1; j < currentStreet.getCoordinates().size() - 1; j++) {
+                for (int j = c + 1; j < previousStreet.getCoordinates().size() - 1; j++) {
                     getPoints().addAll(new Double[] { (double) previousStreet.getCoordinates().get(j).getX(), 
                                                       (double) previousStreet.getCoordinates().get(j).getY() });
                     line.addCoordinate(previousStreet.getCoordinates().get(j), previousStreet);
@@ -297,7 +282,7 @@ public class ViewLine extends Polyline {
         getPoints().addAll(new Double[] { (double) previousStreet.getCoordinates().get(previousStreet.getCoordinates().size()-1).getX(), 
                                           (double) previousStreet.getCoordinates().get(previousStreet.getCoordinates().size()-1).getY() });
         line.addCoordinate(previousStreet.getCoordinates().get(previousStreet.getCoordinates().size()-1), previousStreet);
-        // END - ...
+
     }
 
     /**
