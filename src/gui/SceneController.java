@@ -4,6 +4,7 @@ package gui;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
@@ -196,55 +197,59 @@ public class SceneController implements Initializable {
         FileChooser fileChooser = new FileChooser();
         File file = fileChooser.showOpenDialog(null);
         if (file != null) {
-            Parser.parse(file);
+
+            String errMsg = Parser.parse(file);
             work_area.getChildren().clear();
 
-            try {
-                String background = Parser.getBackgroundPath();
-                int width = Parser.getWidth();
-                int height = Parser.getHeight();
-                work_area.getChildren().add(new ImageView(new Image(background, width, height, false, true)));
-            } catch (java.lang.IllegalArgumentException err) {
-                work_area.setBackground(new Background(new BackgroundImage(new Image("ground.png", 375, 216, false, true),
-                BackgroundRepeat.REPEAT,BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,BackgroundSize.DEFAULT))); 
+            if (errMsg == null) {
+            
+                try {
+                    String background = Parser.getBackgroundPath();
+                    int width = Parser.getWidth();
+                    int height = Parser.getHeight();
+                    work_area.getChildren().add(new ImageView(new Image(background, width, height, false, true)));
+                } catch (java.lang.IllegalArgumentException err) {
+                    work_area.setBackground(new Background(new BackgroundImage(new Image("ground.png", 375, 216, false, true),
+                    BackgroundRepeat.REPEAT,BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,BackgroundSize.DEFAULT))); 
+                }
+
+                List<Street> streets = Parser.getStreets();
+                this.viewStreets = new ArrayList<>();
+                for (int i = 0; i < streets.size(); i++) {
+                    this.viewStreets.add(new ViewStreet(streets.get(i), work_area, infoBox));
+                }
+
+                List<Stop> stops = Parser.getStops();
+                this.viewStops = new ArrayList<>();
+                for (int i = 0; i < stops.size(); i++) {
+                    this.viewStops.add(new ViewStop(stops.get(i), work_area, infoBox));
+                }
+
+                vehiclesGroup = new Group();
+
+                List<Vehicle> vehicles = Parser.getVehicles();
+                this.viewVehicles = new ArrayList<>();
+                for (int i = vehicles.size() -1; i >= 0; i--) {
+                    this.viewVehicles.add(new ViewVehicle(vehicles.get(i),vehiclesGroup , infoBox));
+                }
+
+                List<Line> lines = Parser.getLines();
+                this.viewLines = new ArrayList<>();
+                for (int i = 0; i < lines.size(); i++) {
+                    this.viewLines.add(new ViewLine(lines.get(i),vehiclesGroup , work_area, infoBox));
+                }
+
+                work_area.getChildren().add(this.vehiclesGroup);
+
+                this.NewPushed = true;
+
+            } else {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setHeaderText(errMsg);
+                alert.setTitle("Wrong input file");
+                alert.show();
             }
-            // FIX!
-
-            List<Street> streets = Parser.getStreets();
-            this.viewStreets = new ArrayList<>();
-            for (int i = 0; i < streets.size(); i++) {
-                this.viewStreets.add(new ViewStreet(streets.get(i), work_area, infoBox));
-            }
-
-            List<Stop> stops = Parser.getStops();
-            this.viewStops = new ArrayList<>();
-            for (int i = 0; i < stops.size(); i++) {
-                this.viewStops.add(new ViewStop(stops.get(i), work_area, infoBox));
-            }
-
-            vehiclesGroup = new Group();
-
-            List<Vehicle> vehicles = Parser.getVehicles();
-            this.viewVehicles = new ArrayList<>();
-            for (int i = vehicles.size() -1; i >= 0; i--) {
-                this.viewVehicles.add(new ViewVehicle(vehicles.get(i),vehiclesGroup , infoBox));
-            }
-
-            List<Line> lines = Parser.getLines();
-            this.viewLines = new ArrayList<>();
-            for (int i = 0; i < lines.size(); i++) {
-                this.viewLines.add(new ViewLine(lines.get(i),vehiclesGroup , work_area, infoBox));
-            }
-
-            work_area.getChildren().add(this.vehiclesGroup);
-
-
-            this.NewPushed = true;
-
-        } else {
-            System.out.println("No file choosed");
         }
-
     }
 
     /**

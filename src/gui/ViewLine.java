@@ -169,7 +169,8 @@ public class ViewLine extends Polyline {
 
     /**
     * Draw the line object if connection ...-END exists
-    * @param tmp street-stop SimpleImmutableEntry
+    * @param currentStreet current street
+    * @param currentStop current stop
     * @param i number in route
     */
     private void something_END(Street currentStreet, Stop currentStop, int i){
@@ -198,7 +199,8 @@ public class ViewLine extends Polyline {
 
     /**
     * Draw the line object if connection ...-BEGIN exists
-    * @param tmp street-stop SimpleImmutableEntry
+    * @param currentStreet current street
+    * @param currentStop current stop
     * @param i number in route
     */
     private void something_BEGIN(Street currentStreet, Stop currentStop, int i){
@@ -224,7 +226,8 @@ public class ViewLine extends Polyline {
 
     /**
     * Draw the line object if connection BEGIN-.. exists
-    * @param tmp street-stop SimpleImmutableEntry
+    * @param previousStreet previous street
+    * @param previousStop previous stop
     * @param i number in route
     */
     private void BEGIN_something(Street previousStreet, Stop previousStop, int i){
@@ -255,7 +258,8 @@ public class ViewLine extends Polyline {
 
     /**
     * Draw the line object if connection END-.. exists
-    * @param tmp street-stop SimpleImmutableEntry
+    * @param previousStreet previous street
+    * @param previousStop previous stop
     * @param i number in route
     */
     private void END_something(Street previousStreet, Stop previousStop, int i){
