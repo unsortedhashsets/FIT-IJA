@@ -94,7 +94,7 @@ public class ViewStop extends Circle {
         public void handle(MouseEvent e) {
             if (e.getButton() == MouseButton.PRIMARY)
             {   
-                InfoBoxController.InfoBoxController(infoBox, stop);
+                new InfoBoxController(infoBox, stop);
             }
         }
     };

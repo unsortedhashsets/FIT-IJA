@@ -346,7 +346,7 @@ public class ViewLine extends Polyline {
         public void handle(MouseEvent e) {
             if (e.getButton() == MouseButton.PRIMARY)
             {   
-                InfoBoxController.InfoBoxController(infoBox, line);
+                new InfoBoxController(infoBox, line);
             } else if (e.getButton() == MouseButton.SECONDARY)
             {                
                 stopGroup.toFront();

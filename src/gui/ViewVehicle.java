@@ -118,7 +118,7 @@ public class ViewVehicle extends Circle {
         public void handle(MouseEvent e) {
             if (e.getButton() == MouseButton.PRIMARY)
             {   
-                InfoBoxController.InfoBoxController(infoBox, vehicle);
+                new InfoBoxController(infoBox, vehicle);
             }
         }
     };

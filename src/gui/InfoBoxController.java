@@ -40,7 +40,7 @@ public class InfoBoxController {
     * @param infoBox parent infoBox object
     * @param line line to provide information about
     */
-    public static void InfoBoxController(VBox infoBox, Line line) {
+    public InfoBoxController(VBox infoBox, Line line) {
 
         // Clear VBox
         infoBox.getChildren().clear();
@@ -81,7 +81,7 @@ public class InfoBoxController {
     * @param infoBox parent infoBox object
     * @param street street to provide information about
     */
-    public static void InfoBoxController(VBox infoBox, Street street) {
+    public InfoBoxController(VBox infoBox, Street street) {
 
         // Clear VBox
         infoBox.getChildren().clear();
@@ -108,7 +108,7 @@ public class InfoBoxController {
     * @param infoBox parent infoBox object
     * @param stop stop to provide information about
     */
-    public static void InfoBoxController(VBox infoBox, Stop stop) {
+    public InfoBoxController(VBox infoBox, Stop stop) {
 
         // Clear VBox
         infoBox.getChildren().clear();
@@ -132,7 +132,7 @@ public class InfoBoxController {
     * @param infoBox parent infoBox object
     * @param vehicle vehicle to provide information about
     */
-    public static void InfoBoxController(VBox infoBox, Vehicle vehicle) {
+    public InfoBoxController(VBox infoBox, Vehicle vehicle) {
 
         // Clear VBox
         infoBox.getChildren().clear();

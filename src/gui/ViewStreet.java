@@ -110,7 +110,7 @@ public class ViewStreet extends Polyline {
         public void handle(MouseEvent e) {
             if (e.getButton() == MouseButton.PRIMARY)
             {   
-                InfoBoxController.InfoBoxController(infoBox, street);
+                new InfoBoxController(infoBox, street);
             } else if (e.getButton() == MouseButton.SECONDARY)
             {
                 contextMenu.getItems().add(open_close);
