@@ -187,7 +187,7 @@ public class Vehicle implements Runnable{
         ArrayList<SimpleImmutableEntry<Stop, Integer>> schedule = new ArrayList<>();
         
         Iterator<SimpleImmutableEntry<Coordinate, Object>> iterator = listOfCoors.iterator();
-        SimpleImmutableEntry<Coordinate, Object> nextPair = iterator.next();
+        SimpleImmutableEntry<Coordinate, Object> pair = iterator.next();
         
         boolean inCurrentLine = false;
 
@@ -196,17 +196,17 @@ public class Vehicle implements Runnable{
         double time = 0;
 
         while (iterator.hasNext()){
-            nextPair = iterator.next();
+            pair = iterator.next();
 
-            if (nextPair.equals(this.arrival)){
+            if (pair.equals(this.arrival)){
                 inCurrentLine = true;
             }
 
             if (inCurrentLine){
                 previous = next;
-                next = nextPair.getKey();
+                next = pair.getKey();
 
-                Object object = nextPair.getValue();
+                Object object = pair.getValue();
                 double delay = getDelay(object);
                 time += next.length(previous) / (delay * velocity);
                 
