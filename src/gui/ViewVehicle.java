@@ -16,7 +16,7 @@ import vehicles.Trolley;
 import vehicles.Vehicle;
 
 /**
- * Graphic representation of the Vehicle the scene
+ * Graphic representation of the Vehicle in the scene
  * @author Mikhail Abramov (xabram00)
  * @author Serhii Salatskyi (xsalat00)
  *

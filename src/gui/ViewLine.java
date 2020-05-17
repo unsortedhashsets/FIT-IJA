@@ -22,7 +22,7 @@ import maps.Stop;
 import maps.Street;
 
 /**
- * Graphic representation of Line the scene
+ * Graphic representation of Line in the scene
  * @author Mikhail Abramov (xabram00)
  * @author Serhii Salatskyi (xsalat00)
  *

@@ -17,7 +17,7 @@ import maps.Coordinate;
 import maps.Street;
 
 /**
- * Graphic representation of the Street the scene
+ * Graphic representation of the Street in the scene
  * @author Mikhail Abramov (xabram00)
  * @author Serhii Salatskyi (xsalat00)
  *

@@ -12,7 +12,7 @@ import javafx.scene.shape.Circle;
 import maps.Stop;
 
 /**
- * Graphic representation of the Stop the scene
+ * Graphic representation of the Stop in the scene
  * @author Mikhail Abramov (xabram00)
  * @author Serhii Salatskyi (xsalat00)
  *
