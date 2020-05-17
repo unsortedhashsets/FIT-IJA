@@ -7,6 +7,6 @@
 Commands: 
  ant clean - delete folders dest and build
  and clean-doc - delete folder doc
- ant compile - compile programm
+ ant compile - compile program
  ant doc - compile documentation
  ant run - run compiled program
