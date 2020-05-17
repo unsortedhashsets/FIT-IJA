@@ -18,7 +18,7 @@ public class AboutController {
     public AboutController() {
 
         this.about = new Stage();
-        this.about.setTitle("");
+        this.about.setTitle("About");
         this.about.setWidth(400);
         this.about.setHeight(400);
         this.about.initModality(Modality.APPLICATION_MODAL);

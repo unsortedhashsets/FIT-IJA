@@ -41,7 +41,7 @@ import internal.InternalClock;
 import internal.Parser;
 
 /**
- * Scen controller (Scene.fxml)
+ * Scene controller (Scene.fxml)
  * 
  * @author Mikhail Abramov (xabram00)
  * @author Serhii Salatskyi (xsalat00)

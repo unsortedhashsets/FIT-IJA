@@ -63,7 +63,12 @@ public class ViewLine extends Polyline {
     */
     private void setupToolTip() {
         Tooltip tooltip = new Tooltip();
-        tooltip.setText("line: " + line.getID() + "\n\nRoute:\n" + (line.getRoute().stream().map(entry -> entry.getKey().getId() + ":" + entry.getValue() + ";\n").collect(Collectors.joining())));
+        tooltip.setText("line: " + line.getID() + "\n\n" + 
+                        "Route:\n" + (line.getRoute().stream()
+                                          .map(entry -> entry.getKey().getId() 
+                                                      + ":" 
+                                                      + entry.getValue() 
+                                                      + ";\n").collect(Collectors.joining())));
         Tooltip.install(this, tooltip);
         tooltip.setStyle("-fx-background-radius: 6 6 6 6; -fx-background-color:	linear-gradient( " + line.getColor() + " , #808080 );");
 
@@ -99,7 +104,9 @@ public class ViewLine extends Polyline {
                     // FIND J next street index of the previous stop
                     if (!(setJ)) {
                         for (int t = 0; t < currentStreet.getCoordinates().size(); t++){
-                            if (checkIfStopIsBetweenCoords(previousStop, previousStreet.getCoordinates().get(t), previousStreet.getCoordinates().get(t + 1))) {
+                            if (Street.isInStreet(previousStop.getCoordinate(), 
+                                                  previousStreet.getCoordinates().get(t), 
+                                                  previousStreet.getCoordinates().get(t + 1))) {
                                 j = t+1;
                                 break;
                             }
@@ -117,7 +124,9 @@ public class ViewLine extends Polyline {
                     // N STOPS IF ON ONE not STRAIGHT LINE
                     } else {
                         for (; j < currentStreet.getCoordinates().size() - 1; j++) {
-                            if (checkIfStopIsBetweenCoords(currentStop, currentStreet.getCoordinates().get(j), currentStreet.getCoordinates().get(j + 1))) {
+                            if (Street.isInStreet(currentStop.getCoordinate(), 
+                                                  currentStreet.getCoordinates().get(j), 
+                                                  currentStreet.getCoordinates().get(j + 1))) {
                                 drawStop(currentStop.getCoordinate());
 
                                 getPoints().addAll(new Double[] { (double) currentStreet.getCoordinates().get(j).getX(), 
@@ -184,7 +193,9 @@ public class ViewLine extends Polyline {
                                               (double) currentStreet.getCoordinates().get(c).getY() });
             line.addCoordinate(currentStreet.getCoordinates().get(c), currentStreet);
                 
-            if (checkIfStopIsBetweenCoords(currentStop, currentStreet.getCoordinates().get(c), currentStreet.getCoordinates().get(c-1))) { 
+            if (Street.isInStreet(currentStop.getCoordinate(),
+                                  currentStreet.getCoordinates().get(c),
+                                  currentStreet.getCoordinates().get(c-1))) { 
                 drawStop(currentStop.getCoordinate());
                 getPoints().addAll(new Double[] { (double) currentStop.getCoordinate().getX(), 
                                                   (double) currentStop.getCoordinate().getY() });
@@ -214,7 +225,9 @@ public class ViewLine extends Polyline {
                                               (double) currentStreet.getCoordinates().get(c).getY() });
             line.addCoordinate(currentStreet.getCoordinates().get(c), currentStreet); 
 
-            if (checkIfStopIsBetweenCoords(currentStop, currentStreet.getCoordinates().get(c), currentStreet.getCoordinates().get(c+1))) { 
+            if (Street.isInStreet(currentStop.getCoordinate(),
+                                  currentStreet.getCoordinates().get(c),
+                                  currentStreet.getCoordinates().get(c+1))) { 
                 drawStop(currentStop.getCoordinate());
                 getPoints().addAll(new Double[] { (double) currentStop.getCoordinate().getX(), 
                                                   (double) currentStop.getCoordinate().getY() });
@@ -239,7 +252,9 @@ public class ViewLine extends Polyline {
                 line.addCoordinate(previousStreet.getCoordinates().get(c), previousStreet);
 
                 continue;
-            } else if (checkIfStopIsBetweenCoords(previousStop, previousStreet.getCoordinates().get(c), previousStreet.getCoordinates().get(c-1))) { 
+            } else if (Street.isInStreet(previousStop.getCoordinate(),
+                                         previousStreet.getCoordinates().get(c),
+                                         previousStreet.getCoordinates().get(c-1))) { 
                 for (int j = c - 1; j >= 0; j--) {
                     getPoints().addAll(new Double[] { (double) previousStreet.getCoordinates().get(j).getX(), 
                                                       (double) previousStreet.getCoordinates().get(j).getY() });
@@ -272,7 +287,9 @@ public class ViewLine extends Polyline {
 
                 continue;
 
-            } else if (checkIfStopIsBetweenCoords(previousStop, previousStreet.getCoordinates().get(c), previousStreet.getCoordinates().get(c+1))) { 
+            } else if (Street.isInStreet(previousStop.getCoordinate(),
+                                         previousStreet.getCoordinates().get(c),
+                                         previousStreet.getCoordinates().get(c+1))) { 
                 for (int j = c + 1; j < previousStreet.getCoordinates().size() - 1; j++) {
                     getPoints().addAll(new Double[] { (double) previousStreet.getCoordinates().get(j).getX(), 
                                                       (double) previousStreet.getCoordinates().get(j).getY() });
@@ -300,28 +317,6 @@ public class ViewLine extends Polyline {
         circle.setStyle("-fx-opacity: 0.8; -fx-fill: " + line.getColor());
         this.stopGroup.getChildren().add(circle);
     } 
-
-    /**
-    * Control if between two coordinates exists stop
-    * @param s Stop
-    * @param first first coordinate
-    * @param second second coordinate
-    */
-    private Boolean checkIfStopIsBetweenCoords(Stop s, Coordinate first, Coordinate second) {
-        // test point in x-range
-        if ((first.getX() <= s.getCoordinate().getX() && s.getCoordinate().getX() <= second.getX())
-                || (second.getX() <= s.getCoordinate().getX() && s.getCoordinate().getX() <= first.getX())) {
-            // test point in y-range
-            if ((first.getY() <= s.getCoordinate().getY() && s.getCoordinate().getY() <= second.getY())
-                    || (second.getY() <= s.getCoordinate().getY() && s.getCoordinate().getY() <= first.getY())) {
-                // test point is on the line
-                if ((s.getCoordinate().diffX(first) * second.diffY(first)) == (second.diffX(first) * s.getCoordinate().diffY(first))) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
 
     /**
     * EventHandler - mouse entered the line graphic representation

@@ -18,6 +18,14 @@ import maps.Stop;
 import maps.Street;
 import vehicles.Vehicle;
 
+/**
+ * Class that parses an input map schema.
+ * Also this class contains all information about all elements of the map.
+ * 
+ * @author Mikhail Abramov (xabram00)
+ * @author Serhii Salatskyi (xsalat00)
+ *
+ */
 public class Parser {
     private static List<Street> streets;
     private static List<Stop> stops;
@@ -28,13 +36,19 @@ public class Parser {
     private static int width;
     private static int height;
 
+    private Parser(){}
+
+    /**
+     * General method that parses all instances (streets, stops, and lines).
+     * @param XML An input schema of the map.
+     * @return An error message, if error exists, else null.
+     */ 
     public static String parse(File XML) {
         streets = new ArrayList<>();
         stops = new ArrayList<>();
         lines = new ArrayList<>();
         vehicles = new ArrayList<>();
 
-        
         try {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -60,6 +74,10 @@ public class Parser {
         return null;
     }
 
+    /**
+     * Method that parses all streets.
+     * @param list List of streets.
+     */ 
     private static void parseStreets(NodeList list) throws Exception {
         int listLength = list.getLength();
         for (int index = 0; index < listLength; index++) {
@@ -84,6 +102,10 @@ public class Parser {
         }
     }
 
+    /**
+     * Method that parses all stops.
+     * @param list List of stops.
+     */ 
     private static void parseStops(NodeList list) throws Exception {
         int listLength = list.getLength();
         for (int index = 0; index < listLength; index++) {
@@ -112,6 +134,10 @@ public class Parser {
         }
     }
 
+    /**
+     * Method that parses all lines.
+     * @param list List of lines.
+     */ 
     private static void parseLines(NodeList list) throws Exception {
         int listLength = list.getLength();
         for (int index = 0; index < listLength; index++) {
@@ -181,30 +207,58 @@ public class Parser {
         }
     }
 
+    /**
+     * Returns the list of streets.
+     * @return The list of streets.
+    */
     public static List<Street> getStreets() {
         return streets;
     }
 
+    /**
+     * Returns the list of stops.
+     * @return The list of stops.
+    */
     public static List<Stop> getStops() {
         return stops;
     }
 
+    /**
+     * Returns the list of lines.
+     * @return The list of lines.
+    */
     public static List<Line> getLines() {
         return lines;
     }
 
+    /**
+     * Returns the list of vehicles.
+     * @return The list of vehicles.
+    */
     public static List<Vehicle> getVehicles() {
         return vehicles;
     }
 
+    /**
+     * Returns the path to the background.
+     * @return The path to the background.
+    */
     public static String getBackgroundPath() {
         return backgroundPath;
     }
     
+    /**
+     * Returns the width of the background.
+     * @return The width of the background.
+    */
     public static int getWidth() {
         return width;
     }
 
+    /**
+     * Returns the height of the background.
+     * @return The height of the background.
+    */
     public static int getHeight() {
         return height;
     }

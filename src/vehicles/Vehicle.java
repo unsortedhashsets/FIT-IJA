@@ -12,6 +12,19 @@ import maps.Line;
 import maps.Stop;
 import maps.Street;
 
+/**
+ * The class Vehicle represents a vehicle on the map.
+ * An instance of this class has unique ID, 
+ * position on the map,
+ * line, where this vehicle is driving,
+ * a period of time, when this vehicle is driving,
+ * list of key position in the line, 
+ * and vehicle's velocity. 
+ * 
+ * @author Mikhail Abramov (xabram00)
+ * @author Serhii Salatskyi (xsalat00)
+ *
+ */
 public class Vehicle implements Runnable{
     private String id;
     private Line line;
@@ -36,6 +49,14 @@ public class Vehicle implements Runnable{
     private double double_X;
     private double double_Y;
 
+    /**
+     * Consructs a Vehicle object with given parameters.
+     * @param id ID of this vehicle.
+     * @param line A line, where this vehicle is driving.
+     * @param from From what time this vehicle is driving.
+     * @param to Till what time this vehicle is driving.
+     * @param velocity The velocity of this vehicle.
+     */ 
     protected Vehicle(String id, Line line, LocalTime from, LocalTime to, double velocity){
         this.id = id;
         this.line = line;
@@ -82,6 +103,10 @@ public class Vehicle implements Runnable{
         return delay;
     }
 
+    /**
+     * Actualizes the position of this vehicle every 1 ms. 
+     * @return true, if this vehicle is in a stop, otherwise false
+    */
     public boolean actualizePosition(){
         double time = 0.001;
 
@@ -130,18 +155,34 @@ public class Vehicle implements Runnable{
         return false;
     }
 
+    /**
+     * Returns the identifier of this vehicle.
+     * @return The identifier of this vehicle.
+    */
     public String getId(){
         return this.id;
     }
-
-    public double getVelocity(){
-        return this.velocity;
+    
+    /**
+     * Returns the line, where this vehicle is driving.
+     * @return The line, where this vehicle is driving.
+    */
+    public Line getLine() {
+        return this.line;
     }
 
+    /**
+     * Returns the position of this vehicle.
+     * @return The position of this vehicle.
+    */
     public Coordinate getPosition(){
         return this.position;
     }   
 
+    /**
+     * Creates the schedule for this vehicle and return that.
+     * @return The current schedule of this vehicle.
+    */
     public ArrayList<SimpleImmutableEntry<Stop, Integer>> getSchedule(){
         ArrayList<SimpleImmutableEntry<Stop, Integer>> schedule = new ArrayList<>();
         
@@ -177,6 +218,11 @@ public class Vehicle implements Runnable{
         return schedule;
     }
 
+    /**
+     * This method involves continuous driving of this vehicle.
+     * Also this method handles the behavior of this vehicle at stops
+     * or if this vehicle is driving on a certain period of the time.
+    */
     @Override
     public void run() {
         setMovingParameters();
@@ -211,6 +257,9 @@ public class Vehicle implements Runnable{
         }
     }
 
+    /**
+     * Creates a new thread for this instance and start it.
+    */
     public void start() {
         this.isStopped = false;
         if (this.thread == null) {
@@ -219,6 +268,9 @@ public class Vehicle implements Runnable{
         }
     }
 
+    /**
+     * Stops created thread of this vehicle.
+    */
     public void stop() {
         this.isStopped = true;
         if (this.thread != null) {
@@ -226,10 +278,10 @@ public class Vehicle implements Runnable{
         }
     }
 
-    public Line getLine() {
-        return this.line;
-    }
-
+    /**
+     * Converts this Vehicle object to a String. 
+     * @return A string representation of this vehicle.
+    */
     @Override
     public String toString(){
         return "\nis running from : " + this.from +

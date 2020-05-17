@@ -9,4 +9,4 @@ Commands:
  and clean-doc - delete folder doc
  ant compile - compile programm
  ant doc - compile documentation
- ant run - run compiled programm
+ ant run - run compiled program

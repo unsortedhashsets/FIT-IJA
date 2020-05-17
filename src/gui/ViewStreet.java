@@ -86,7 +86,7 @@ public class ViewStreet extends Polyline {
             tooltip.setText(
                 "street: " + street.getId() +
                 "\n\nTraffic situation: " + street.getDrivingDifficulties() +
-                "\nStatus: " + street.GetStatusString()
+                "\nStatus: " + street.getStatusString()
             );
             setEffect(glow);
         }
