@@ -71,8 +71,9 @@ public class Vehicle implements Runnable{
      * Updates key positions, if the line of this vehicle has been changed.
      */ 
     public void updateKeyPositions(){
+        // get copy of line's list
         this.listOfCoors = (ArrayList<SimpleImmutableEntry<Coordinate, Object>>) 
-                            this.line.getCoordinates().stream().collect(Collectors.toList());
+                           this.line.getCoordinates().stream().collect(Collectors.toList());
         if (isReversed)
             Collections.reverse(listOfCoors);
         this.iter = listOfCoors.iterator();
@@ -81,6 +82,13 @@ public class Vehicle implements Runnable{
 
         while (!arrival.equals(this.arrival) && this.iter.hasNext()){
             arrival = iter.next();
+        }
+
+        if (!arrival.equals(this.arrival)){
+            this.arrival = arrival;
+            this.position = arrival.getKey();
+            this.double_X = arrival.getKey().getX();
+            this.double_Y = arrival.getKey().getY();
         }
     }
 
@@ -95,8 +103,9 @@ public class Vehicle implements Runnable{
 
 
     private void setMovingParameters(){
+        // get copy of line's list
         this.listOfCoors = (ArrayList<SimpleImmutableEntry<Coordinate, Object>>) 
-                            this.line.getCoordinates().stream().collect(Collectors.toList());
+                           this.line.getCoordinates().stream().collect(Collectors.toList());
         this.iter = listOfCoors.iterator();
         this.isReversed = false;
 

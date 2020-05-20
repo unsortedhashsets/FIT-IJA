@@ -378,9 +378,6 @@ public class ViewLine extends Polyline {
                             @Override
                             public void handle(MouseEvent ev) {
                                 if (ev.getButton() == MouseButton.PRIMARY) {
-
-                                    System.out.println(ev.getPickResult().getIntersectedNode().getId());
-
                                     String picked_street_id = ev.getPickResult().getIntersectedNode().getId();
 
                                     for (ViewStreet vStreet : viewStreets){
@@ -392,8 +389,6 @@ public class ViewLine extends Polyline {
                                     for (ViewStreet tmp : viewStreets) {
                                         tmp.setOnMouseClicked(tmp.oldHandler);
                                     }
-
-                                    System.out.println(TMP_route);
 
                                     SimpleImmutableEntry<Street, Stop> first = TMP_route.get(0);
                                     SimpleImmutableEntry<Street, Stop> last = TMP_route.get(TMP_route.size() - 1);
@@ -409,27 +404,18 @@ public class ViewLine extends Polyline {
                                         }
                                     }
 
-                                    System.out.println("First element: " + first_index.get(first_index.size()-1) + " Second element: " + last_index.get(0));
-
                                     for (int i = last_index.get(0)-1; i >= first_index.get(first_index.size()-1)+1 ; i--){
-                                        System.out.println(line.route.get(i));
                                         line.route.remove(i);
                                     }
 
                                     TMP_route.remove(0);
                                     TMP_route.remove(TMP_route.size()-1);
 
-                                    System.out.println(line.route);
-                                    System.out.println(TMP_route);
-
                                     int size = TMP_route.size();
                                     for (int i = first_index.get(first_index.size()-1)+1; i <= size+first_index.get(first_index.size()-1); i++){
                                         line.route.add(i, TMP_route.get(0));
-                                        System.out.println(TMP_route.get(0));
                                         TMP_route.remove(0);
                                     }
-
-                                    System.out.println(line.route);
 
                                     work_pane.getChildren().remove(stopGroup);
 
