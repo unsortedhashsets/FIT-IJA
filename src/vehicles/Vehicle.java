@@ -69,7 +69,7 @@ public class Vehicle implements Runnable{
      * Updates key positions, if the line of this vehicle has been changed.
      */ 
     public void updateKeyPositions(){
-        Collections.copy(this.listOfCoors, this.line.getCoordinates());
+        this.listOfCoors = new ArrayList<SimpleImmutableEntry<Coordinate, Object>>(this.line.getCoordinates());
         if (isReversed)
             Collections.reverse(listOfCoors);
         this.iter = listOfCoors.iterator();
@@ -92,7 +92,7 @@ public class Vehicle implements Runnable{
 
 
     private void setMovingParameters(){
-        Collections.copy(this.listOfCoors, this.line.getCoordinates());
+        this.listOfCoors = new ArrayList<SimpleImmutableEntry<Coordinate, Object>>(this.line.getCoordinates());
         this.iter = listOfCoors.iterator();
         this.isReversed = false;
 
