@@ -23,6 +23,7 @@ public class Line {
     private String color;
 
     private String type;
+    private ArrayList<Vehicle> lineVehicles;
     private int counterID;
 
     private ArrayList<SimpleImmutableEntry<Street, Stop>> route;
@@ -41,6 +42,7 @@ public class Line {
         this.type = type;
         this.counterID = 0;
 
+        this.lineVehicles = new ArrayList<Vehicle>();
         this.route = new ArrayList<SimpleImmutableEntry<Street, Stop>>();
         this.coordinates = new ArrayList<SimpleImmutableEntry<Coordinate, Object>>();
     }
@@ -114,17 +116,25 @@ public class Line {
      */ 
     public Vehicle createVehicle(LocalTime from, LocalTime to) {
         String vehicleID = "(" + this.id + ")_" + (++counterID);
+        Vehicle vehicle;
 
         switch (this.type) {
             case "tram":
-                return new Tram(vehicleID, this, from, to);
+                vehicle = new Tram(vehicleID, this, from, to);
+                break;
             case "trolley":
-                return new Trolley(vehicleID, this, from, to);
+                vehicle = new Trolley(vehicleID, this, from, to);
+                break;
             case "autobus":
-                return new Autobus(vehicleID, this, from, to);
+                vehicle = new Autobus(vehicleID, this, from, to);
+                break;
             default:
-                return null;
+                vehicle = null;
+                break;
         }
+
+        this.lineVehicles.add(vehicle);
+        return vehicle;
     }
 
     /**
@@ -149,5 +159,13 @@ public class Line {
      */ 
     public ArrayList<SimpleImmutableEntry<Coordinate, Object>> getCoordinates(){
         return this.coordinates;
+    }
+
+    /**
+     * Returns list of vehicles on this line.
+     * @return List of vehicles on this line.
+     */ 
+    public ArrayList<Vehicle> getVehicles(){
+        return this.lineVehicles;
     }
 }
