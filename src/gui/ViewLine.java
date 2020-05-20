@@ -363,8 +363,8 @@ public class ViewLine extends Polyline {
                 contextMenu.getItems().add(defaultLine);
                 newLine.setOnAction(event1 -> {
 
-                    line.OLD_route = line.route;
-                    line.OLD_coordinates = line.coordinates;
+                    line.OLD_route = new ArrayList<SimpleImmutableEntry<Street, Stop>>(line.route);
+                    line.OLD_coordinates = new ArrayList<SimpleImmutableEntry<Coordinate, Object>>(line.coordinates);
 
                     line.coordinates = new ArrayList<SimpleImmutableEntry<Coordinate, Object>>();
                     ArrayList<SimpleImmutableEntry<Street, Stop>> NEW_route = new ArrayList<SimpleImmutableEntry<Street, Stop>>();
@@ -429,9 +429,6 @@ public class ViewLine extends Polyline {
 
                                     System.out.println(line.route);
 
-
-                                    
-                                    stopGroup.getChildren().remove(this);
                                     work_pane.getChildren().remove(stopGroup);
 
                                     new ViewLine(line, f_group , work_pane, infoBox, viewStreets);
@@ -446,10 +443,9 @@ public class ViewLine extends Polyline {
                 });
                 defaultLine.setOnAction(event1 -> {
 
-                    line.route = line.OLD_route;
-                    line.coordinates = line.OLD_coordinates;
+                    line.route = new ArrayList<SimpleImmutableEntry<Street, Stop>>(line.OLD_route);
+                    line.coordinates = new ArrayList<SimpleImmutableEntry<Coordinate, Object>>();
 
-                    stopGroup.getChildren().remove(this);
                     work_pane.getChildren().remove(stopGroup);
 
                     new ViewLine(line, f_group , work_pane, infoBox, viewStreets);
