@@ -4,6 +4,8 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.AbstractMap.SimpleImmutableEntry;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 import java.util.Iterator;
 
 import internal.InternalClock;
@@ -69,16 +71,17 @@ public class Vehicle implements Runnable{
      * Updates key positions, if the line of this vehicle has been changed.
      */ 
     public void updateKeyPositions(){
-        this.listOfCoors = new ArrayList<SimpleImmutableEntry<Coordinate, Object>>(this.line.getCoordinates());
+        this.listOfCoors = (ArrayList<SimpleImmutableEntry<Coordinate, Object>>) 
+                            this.line.getCoordinates().stream().collect(Collectors.toList());
         if (isReversed)
             Collections.reverse(listOfCoors);
         this.iter = listOfCoors.iterator();
         
         SimpleImmutableEntry<Coordinate, Object> arrival = iter.next();
 
-        do {
+        while (!arrival.equals(this.arrival) && this.iter.hasNext()){
             arrival = iter.next();
-        } while (!arrival.equals(this.arrival) || this.iter.hasNext());
+        }
     }
 
     private void setAxisVelocities() {
@@ -92,7 +95,8 @@ public class Vehicle implements Runnable{
 
 
     private void setMovingParameters(){
-        this.listOfCoors = new ArrayList<SimpleImmutableEntry<Coordinate, Object>>(this.line.getCoordinates());
+        this.listOfCoors = (ArrayList<SimpleImmutableEntry<Coordinate, Object>>) 
+                            this.line.getCoordinates().stream().collect(Collectors.toList());
         this.iter = listOfCoors.iterator();
         this.isReversed = false;
 
