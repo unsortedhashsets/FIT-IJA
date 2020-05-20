@@ -363,8 +363,10 @@ public class ViewLine extends Polyline {
                 contextMenu.getItems().add(defaultLine);
                 newLine.setOnAction(event1 -> {
 
-                    line.OLD_route = new ArrayList<SimpleImmutableEntry<Street, Stop>>(line.route);
-                    line.OLD_coordinates = new ArrayList<SimpleImmutableEntry<Coordinate, Object>>(line.coordinates);
+                    if (line.OLD_route == null && line.OLD_coordinates == null){
+                        line.OLD_route = new ArrayList<SimpleImmutableEntry<Street, Stop>>(line.route);
+                        line.OLD_coordinates = new ArrayList<SimpleImmutableEntry<Coordinate, Object>>(line.coordinates);
+                    }
 
                     line.coordinates = new ArrayList<SimpleImmutableEntry<Coordinate, Object>>();
                     ArrayList<SimpleImmutableEntry<Street, Stop>> NEW_route = new ArrayList<SimpleImmutableEntry<Street, Stop>>();

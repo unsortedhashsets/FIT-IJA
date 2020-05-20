@@ -29,8 +29,8 @@ public class Line {
     public ArrayList<SimpleImmutableEntry<Street, Stop>> route;
     public ArrayList<SimpleImmutableEntry<Coordinate, Object>> coordinates;
 
-    public ArrayList<SimpleImmutableEntry<Street, Stop>> OLD_route;
-    public ArrayList<SimpleImmutableEntry<Coordinate, Object>> OLD_coordinates;
+    public ArrayList<SimpleImmutableEntry<Street, Stop>> OLD_route = null;
+    public ArrayList<SimpleImmutableEntry<Coordinate, Object>> OLD_coordinates = null;
 
     /**
      * Consructs a Line object with given parameters.
