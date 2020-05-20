@@ -65,6 +65,22 @@ public class Vehicle implements Runnable{
         this.velocity = velocity;
     }
 
+    /**
+     * Updates key positions, if the line of this vehicle has been changed.
+     */ 
+    public void updateKeyPositions(){
+        Collections.copy(this.listOfCoors, this.line.getCoordinates());
+        if (isReversed)
+            Collections.reverse(listOfCoors);
+        this.iter = listOfCoors.iterator();
+        
+        SimpleImmutableEntry<Coordinate, Object> arrival = iter.next();
+
+        do {
+            arrival = iter.next();
+        } while (!arrival.equals(this.arrival) || this.iter.hasNext());
+    }
+
     private void setAxisVelocities() {
         int length_X = arrival.getKey().diffX(departure.getKey());
         int length_Y = arrival.getKey().diffY(departure.getKey());
@@ -74,8 +90,9 @@ public class Vehicle implements Runnable{
         this.velocity_Y = (length != 0) ? (this.velocity * length_Y) / length : 0;
     }
 
+
     private void setMovingParameters(){
-        this.listOfCoors = new ArrayList<SimpleImmutableEntry<Coordinate, Object>>(this.line.getCoordinates());
+        Collections.copy(this.listOfCoors, this.line.getCoordinates());
         this.iter = listOfCoors.iterator();
         this.isReversed = false;
 
@@ -112,9 +129,7 @@ public class Vehicle implements Runnable{
 
         while (!(0 <= Math.abs(time) && Math.abs(time) <= 1.0E-7)){  // double accuracy
             double acceleration = InternalClock.getAccelerationLevel();
-
-            Object delayObject = (isReversed) ? this.arrival.getValue() : this.departure.getValue();
-            double delay = getDelay(delayObject);
+            double delay = getDelay(this.arrival.getValue());
 
             double distance_X = delay * acceleration * velocity_X * 0.001; // 1.0 = 1 second
             double distance_Y = delay * acceleration * velocity_Y * 0.001; // 1.0 = 1 second
