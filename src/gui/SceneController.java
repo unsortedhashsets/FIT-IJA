@@ -236,7 +236,7 @@ public class SceneController implements Initializable {
                 List<Line> lines = Parser.getLines();
                 this.viewLines = new ArrayList<>();
                 for (int i = 0; i < lines.size(); i++) {
-                    this.viewLines.add(new ViewLine(lines.get(i),vehiclesGroup , work_area, infoBox));
+                    this.viewLines.add(new ViewLine(lines.get(i),vehiclesGroup , work_area, infoBox, viewStreets));
                 }
 
                 work_area.getChildren().add(this.vehiclesGroup);

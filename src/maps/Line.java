@@ -26,8 +26,11 @@ public class Line {
     private ArrayList<Vehicle> lineVehicles;
     private int counterID;
 
-    private ArrayList<SimpleImmutableEntry<Street, Stop>> route;
-    private ArrayList<SimpleImmutableEntry<Coordinate, Object>> coordinates;
+    public ArrayList<SimpleImmutableEntry<Street, Stop>> route;
+    public ArrayList<SimpleImmutableEntry<Coordinate, Object>> coordinates;
+
+    public ArrayList<SimpleImmutableEntry<Street, Stop>> OLD_route;
+    public ArrayList<SimpleImmutableEntry<Coordinate, Object>> OLD_coordinates;
 
     /**
      * Consructs a Line object with given parameters.
@@ -120,13 +123,17 @@ public class Line {
 
         switch (this.type) {
             case "tram":
-                vehicle =  new Tram(vehicleID, this, from, to);
+                vehicle = new Tram(vehicleID, this, from, to);
+                break;
             case "trolley":
-                vehicle =  new Trolley(vehicleID, this, from, to);
+                vehicle = new Trolley(vehicleID, this, from, to);
+                break;
             case "autobus":
                 vehicle = new Autobus(vehicleID, this, from, to);
+                break;
             default:
                 vehicle = null;
+                break;
         }
 
         this.lineVehicles.add(vehicle);

@@ -23,7 +23,7 @@ import maps.Street;
  *
  */
 public class ViewStreet extends Polyline {
-    private Street street;
+    public Street street;
     private Glow glow = new Glow();
     Tooltip tooltip = new Tooltip();
     ContextMenu contextMenu = new ContextMenu();
@@ -31,6 +31,7 @@ public class ViewStreet extends Polyline {
     MenuItem changeTraffic = new MenuItem("Set up traffic situation");
     AnchorPane work_pane;
     VBox infoBox;
+    public EventHandler<MouseEvent> oldHandler;
 
     /**
     * Constructor of the graphic Street representation 
