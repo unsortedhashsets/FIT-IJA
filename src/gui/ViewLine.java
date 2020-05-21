@@ -51,6 +51,7 @@ public class ViewLine extends Polyline {
      * @param Front_Group  front objects group
      * @param in_work_pane parent pane
      * @param in_infoBox   input infoBox object
+     * @param in_viewStreets   input streets
      */
     public ViewLine(Line in_line, Group Front_Group, AnchorPane in_work_pane, VBox in_infoBox,
             List<ViewStreet> in_viewStreets) {
