@@ -369,7 +369,6 @@ public class ViewLine extends Polyline {
                     }
 
                     line.coordinates = new ArrayList<SimpleImmutableEntry<Coordinate, Object>>();
-                    ArrayList<SimpleImmutableEntry<Street, Stop>> NEW_route = new ArrayList<SimpleImmutableEntry<Street, Stop>>();
                     ArrayList<SimpleImmutableEntry<Street, Stop>> TMP_route = new ArrayList<SimpleImmutableEntry<Street, Stop>>();
 
                     for (ViewStreet tmp : viewStreets) {
@@ -424,6 +423,9 @@ public class ViewLine extends Polyline {
                                     for (Vehicle i : line.getVehicles()){
                                         i.updateKeyPositions();
                                     }
+
+                                    f_group.toFront();
+
                                 }
                             }
                         });
@@ -441,6 +443,9 @@ public class ViewLine extends Polyline {
                     for (Vehicle i : line.getVehicles()){
                         i.updateKeyPositions();
                     }
+
+                    f_group.toFront();
+                    
                 });
                 contextMenu.show(work_pane, e.getScreenX(), e.getScreenY());
             }

@@ -61,7 +61,7 @@
     </target>
 
     <!-- ant run command -->
-    <target name="run" depends="compile">
+    <target name="run">
         <java jar="dest/ija-app.jar" fork="true"/>
     </target>
 
